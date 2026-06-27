@@ -5,15 +5,54 @@
     <title>proj3 - pokenot</title>
 
     <style>
-        canvas {
-            border: 1px solid black;
+
+        #gameBox {
+            position: relative;
+            width: 800px;
+            height: 600px;
+        }
+
+        #canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 800px;
+            height: 600px;
+            z-index: 1;
+            background: lightgreen; /* testing only */
+            border: 3px solid red;  /* testing only */
+        }
+
+        #mypokemon {
+            position: absolute;
+            left: 300px;
+            top: 250px;
+            width: 120px;
+            height: 120px;
+            z-index: 2;
+            image-rendering: pixelated;
+            pointer-events: none;
+        }
+        #encounterpokemon{
+            position: absolute;
+            left: 1000px;
+            top: 250px;
+            width: 120px;
+            height: 120px;
+            z-index: 2;
+            image-rendering: pixelated;
+            pointer-events: none;
         }
     </style>
 </head>
 
 <body>
-
+<div id="gameBox">
     <canvas id="canvas" width="800" height="600"></canvas>
+    <img id="mypokemon" src="assets/backgrounds/charizardx.gif">
+    <img id="encounterpokemon" src="assets/backgrounds/charizard.gif">
+
+</div>
 
     <script src="js/assets.js"></script>
     <script src="js/game.js"></script>
