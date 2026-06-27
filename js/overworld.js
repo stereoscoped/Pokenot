@@ -2,6 +2,11 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+document.getElementById("mypokemon").style.visibility = "hidden";
+document.getElementById("encounterpokemon").style.visibility = "hidden";
+
+
+
 //add map change functionality
     //if map == town ->s
 const walls =
