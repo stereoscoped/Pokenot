@@ -6,6 +6,10 @@ const town = new Image();
 town.src = "assets/backgrounds/town.jpg";
 
 //const route
+const battle_background = new Image();
+battle_background.src = "assets/backgrounds/route1_battle_1.png";
+
+
 
 //const gym
 
