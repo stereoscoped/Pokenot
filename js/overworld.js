@@ -16,6 +16,7 @@ const grass =
 
 function updateOverworld(){
     updatePlayer();
+    updateGrassParticles();
 }
 
 function drawOverworld() {
@@ -58,4 +59,5 @@ function drawOverworld() {
     }
 
     drawPlayer();
+    drawGrassParticles();
 }
