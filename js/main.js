@@ -4,6 +4,10 @@ function update() {
             updateOverworld();
             break;
 
+        case BATTLE_START:
+            updateTransition();
+            break;
+
         case BATTLE:
             updateBattle();
             break;
@@ -14,6 +18,10 @@ function draw() {
     switch (gameState) {
         case OVERWORLD:
             drawOverworld();
+            break;
+
+        case BATTLE_START:
+            drawTransition();
             break;
 
         case BATTLE:

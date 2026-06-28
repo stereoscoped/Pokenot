@@ -1,7 +1,3 @@
-//canvas and drawing context
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
 //add map change functionality
     //if map == town ->s
 const walls =
@@ -20,6 +16,7 @@ const grass =
 
 function updateOverworld(){
     updatePlayer();
+    updateGrassParticles();
 }
 
 function drawOverworld() {
@@ -62,4 +59,5 @@ function drawOverworld() {
     }
 
     drawPlayer();
+    drawGrassParticles();
 }

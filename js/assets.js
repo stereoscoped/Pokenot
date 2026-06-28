@@ -1,3 +1,7 @@
+//canvas and drawing context
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
 //load assets here to be used
 const trainer = new Image();
 trainer.src = "assets/trainers/trainer_sprite.png";

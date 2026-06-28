@@ -83,9 +83,9 @@ function updatePlayer() {
     let playerBox =
     {
         x: newX,
-        y: newY,
+        y: newY + player.height * .75,
         w: player.width,
-        h: player.height
+        h: player.height / 4
     };
 
     let blocked = false;
