@@ -1,7 +1,6 @@
 //battle stuff -- TODO
 function startBattle() {
     gameState = BATTLE;
-    playMusic("battle");
 }
 
 function updateBattle() {

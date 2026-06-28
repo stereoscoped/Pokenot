@@ -23,7 +23,7 @@ function collideGrass() {
     for (let patch of grass) {
         if (collides(playerBox, patch)) {
             if (Math.random() < 0.02) {
-                startBattle();
+                battleTransition();
             }
         }
     }
