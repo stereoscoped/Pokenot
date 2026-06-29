@@ -1,5 +1,8 @@
 function update() {
     switch (gameState) {
+        case INTRO:
+            updateIntro();
+            break;
         case MENU:
             update_start();
             break;
@@ -19,6 +22,9 @@ function update() {
 
 function draw() {
     switch (gameState) {
+        case INTRO:
+            drawIntro();
+            break;
         case MENU:
             start_Game();
             break;

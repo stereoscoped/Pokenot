@@ -1,5 +1,6 @@
 //basically list game states here
 const MENU = "menu";
+const INTRO = "intro";
 const OVERWORLD = "overworld";
 const BATTLE_START = "battle_start";
 const BATTLE = "battle";
