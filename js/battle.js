@@ -4,6 +4,18 @@ function startBattle() {
     gameState = BATTLE;
      let myPokemon = document.getElementById("mypokemon");
      let enemyPokemon = document.getElementById("encounterpokemon");
+
+     // currently random pokemon will appear 
+    let randomNum = Math.floor(Math.random() * 151) + 1;
+    let randomNum2 = Math.floor(Math.random() * 151) + 1;
+
+    let pokemonName = pokedex[randomNum];
+    let pokemonName2 = pokedex[randomNum2];
+
+    myPokemon.src=`assets/pokemon/pokemon_back_sprites/${pokemonName}.gif`
+    enemyPokemon.src=`assets/pokemon/pokemon_front_sprites/${pokemonName2}.gif`
+    
+    
     myPokemon.style.visibility = "visible";
     enemyPokemon.style.visibility = "visible";
 
