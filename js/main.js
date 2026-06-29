@@ -38,5 +38,6 @@ function gameLoop() {
 
 
 trainer.onload = function () {
+    loadPokemonDatabase();
     gameLoop();
 };
