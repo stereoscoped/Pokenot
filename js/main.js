@@ -1,5 +1,8 @@
 function update() {
     switch (gameState) {
+        case MENU:
+            update_start();
+            break;
         case OVERWORLD:
             updateOverworld();
             break;
@@ -16,8 +19,14 @@ function update() {
 
 function draw() {
     switch (gameState) {
+        case MENU:
+            start_Game();
+            break;
         case OVERWORLD:
             drawOverworld();
+            document.getElementById("mypokemon").style.visibility = "hidden";
+            document.getElementById("encounterpokemon").style.visibility = "hidden";
+
             break;
 
         case BATTLE_START:

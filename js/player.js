@@ -21,36 +21,36 @@ let playerBox = [];
 
 const animations = {
     down:
-    {
-        startX: 280,
-        startY: 50,
-        frameWidth: 23,
-        frameTot: 4
-    },
+        {
+            startX: 280,
+            startY: 50,
+            frameWidth: 23,
+            frameTot: 4
+        },
 
     up:
-    {
-        startX: 280,
-        startY: 154,
-        frameWidth: 23,
-        frameTot: 4
-    },
+        {
+            startX: 280,
+            startY: 154,
+            frameWidth: 23,
+            frameTot: 4
+        },
 
     right:
-    {
-        startX: 275,
-        startY: 85,
-        frameWidth: 25,
-        frameTot: 4
-    },
+        {
+            startX: 275,
+            startY: 85,
+            frameWidth: 25,
+            frameTot: 4
+        },
 
     left:
-    {
-        startX: 275,
-        startY: 118,
-        frameWidth: 25,
-        frameTot: 4
-    }
+        {
+            startX: 275,
+            startY: 118,
+            frameWidth: 25,
+            frameTot: 4
+        }
 };
 
 // function getPlayerBox() {
@@ -95,12 +95,12 @@ function updatePlayer() {
     }
 
     playerBox =
-    {
-        x: newX + player.width * PLAYER_SCALE * .2,
-        y: newY + player.height * PLAYER_SCALE * .75,
-        w: player.width * PLAYER_SCALE * .6,
-        h: (player.height / 4) * PLAYER_SCALE
-    };
+        {
+            x: newX + player.width * PLAYER_SCALE * .2,
+            y: newY + player.height * PLAYER_SCALE * .75,
+            w: player.width * PLAYER_SCALE * .6,
+            h: (player.height / 4) * PLAYER_SCALE
+        };
 
     let blocked = false;
 
