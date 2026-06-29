@@ -7,5 +7,5 @@ const GYM = "gym";
 const WIN = "win";
 const LOSE = "lose";
 
-let gameState = OVERWORLD;
+let gameState = MENU;
 playMusic(currentMap.music);
