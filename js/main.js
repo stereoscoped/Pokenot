@@ -3,7 +3,12 @@ function update() {
         case OVERWORLD:
             updateOverworld();
             break;
-
+       case MENU:
+            update_start();
+            break;
+        case BATTLE_START:
+            updateTransition();
+            break;
         case BATTLE:
             updateBattle();
             break;
@@ -12,6 +17,9 @@ function update() {
 
 function draw() {
     switch (gameState) {
+        case MENU:
+            start_Game();
+             break;
         case OVERWORLD:
             drawOverworld();
             // hides the gif
@@ -19,7 +27,9 @@ function draw() {
            document.getElementById("encounterpokemon").style.visibility = "hidden";
 
             break;
-
+        case BATTLE_START:
+            drawTransition();
+            break;
         case BATTLE:
             drawBattle();
 
