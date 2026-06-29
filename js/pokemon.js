@@ -16,7 +16,7 @@ class Pokemon {
 }
 
 // Global data states
-let pokemonMasterRoster = []; 
+let pokeDex = []; 
 let playerTeam = [];          
 let enemyTeam = [];           
 
@@ -35,13 +35,13 @@ async function loadPokemonDatabase() {
         }
         
         // Transform raw database rows into instance objects
-        pokemonMasterRoster = rawData.map(item => new Pokemon(item));
-        console.log("Database Integration Successful! Master Roster:", pokemonMasterRoster);
+        pokeDex = rawData.map(item => new Pokemon(item));
+        console.log("Database Integration Successful! Master Roster:", pokeDex);
         
         // TEMPORARY SEED FOR TEAM BATTLE UI TESTING:
-        if (pokemonMasterRoster.length >= 2) {
-            playerTeam = [pokemonMasterRoster[0]]; // Pikachu
-            enemyTeam = [pokemonMasterRoster[1]];  // Bulbasaur
+        if (pokeDex.length >= 2) {
+            playerTeam = [pokeDex[0]]; // Pikachu
+            enemyTeam = [pokeDex[1]];  // Bulbasaur
         }
 
     } catch (error) {
