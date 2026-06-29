@@ -44,7 +44,7 @@ try {
     }
 
     // Send it to JavaScript file as clean JSON data
-    echo json_encode($pokemon_list);
+    echo json_encode(array_values($pokemon_list));
 
 } catch (PDOException $e) {
     echo json_encode(['error' => $e->getMessage()]);
