@@ -13,10 +13,10 @@ const trainer = new Image();
 trainer.src = "assets/trainers/trainer_sprite.png";
 
 const town = new Image();
-town.src = "assets/backgrounds/town.jpg";
+town.src = "assets/backgrounds/town.png";
 
 const route = new Image();
-route.src = "assets/backgrounds/rt1 long.jpg";
+route.src = "assets/backgrounds/rt1 long.png";
 
 const start_image= new Image();
 start_image.src="assets/backgrounds/start.png";
