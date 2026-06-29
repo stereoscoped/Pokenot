@@ -9,7 +9,8 @@ trainer.src = "assets/trainers/trainer_sprite.png";
 const town = new Image();
 town.src = "assets/backgrounds/town.jpg";
 
-//const route
+const route = new Image();
+route.src = "assets/backgrounds/rt1 long.jpg";
 
 //const gym
 
@@ -20,7 +21,7 @@ town.src = "assets/backgrounds/town.jpg";
 //audio//
 const music = {
     town: new Audio("assets/audio/Driftveil City.mp3"),
-    // route: new Audio("assets/audio/route.mp3"),
+    route: new Audio("assets/audio/Route 1.mp3"),
     battle: new Audio("assets/audio/Battle.mp3"),
     // victory: new Audio("assets/audio/victory.mp3")
 }

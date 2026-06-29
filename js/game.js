@@ -8,4 +8,4 @@ const WIN = "win";
 const LOSE = "lose";
 
 let gameState = OVERWORLD;
-playMusic("town");
+playMusic(currentMap.music);

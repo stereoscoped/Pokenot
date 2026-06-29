@@ -1,6 +1,14 @@
 let grassParticles = [];
 const MAX_GRASS_PARTICLES = 100;
 
+// let playerBox =
+// {
+//     x: player.x,
+//     y: player.y + player.height / 2,
+//     w: player.width,
+//     h: player.height / 2
+// };
+
 //collision check btwn objects
 function collides(a, b) {
     return (
@@ -13,17 +21,22 @@ function collides(a, b) {
 
 //func collideWall(){}
 
+function collideMapChange() {
+    // console.log("calling collide map change func");
+    for (let exit of currentMap.exits) {
+        if (collides(playerBox, exit)) {
+            console.log("loading " + exit.destination);
+            loadMap(
+                exit.destination,
+                exit.entrance
+            );
+        }
+    }
+}
+
 //grass encounter
 function collideGrass() {
-    let playerBox =
-    {
-        x: player.x,
-        y: player.y,
-        w: player.width,
-        h: player.height
-    };
-
-    for (let patch of grass) {
+    for (let patch of currentMap.grass) {
         if (collides(playerBox, patch)) {
             if (Math.random() < 0.2) {
                 spawnGrassParticles();
@@ -112,20 +125,25 @@ function drawGrassParticles() {
 
     for (let p of grassParticles) {
 
-    ctx.save();
+        ctx.save();
 
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.angle);
+        // convert particle world coords to screen coords and scale size
+        let sx = p.x * MAP_SCALE - camera.x;
+        let sy = p.y * MAP_SCALE - camera.y;
+        let ssize = p.size * MAP_SCALE * 0.5; // smaller on screen
 
-    ctx.beginPath();
+        ctx.translate(sx, sy);
+        ctx.rotate(p.angle);
 
-    ctx.moveTo(-2, 0);
-    ctx.lineTo(0, -p.size);
-    ctx.lineTo(2, 0);
+        ctx.beginPath();
 
-    ctx.stroke();
+        ctx.moveTo(-2 * MAP_SCALE, 0);
+        ctx.lineTo(0, -ssize);
+        ctx.lineTo(2 * MAP_SCALE, 0);
 
-    ctx.restore();
+        ctx.stroke();
+
+        ctx.restore();
     }
 
     ctx.lineWidth = 1;
