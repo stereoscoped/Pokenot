@@ -3,7 +3,7 @@ function update() {
         case OVERWORLD:
             updateOverworld();
             break;
-       case MENU:
+        case MENU:
             update_start();
             break;
         case BATTLE_START:
