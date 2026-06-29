@@ -1,16 +1,19 @@
+//canvas and drawing context
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
 //load assets here to be used
 const trainer = new Image();
 trainer.src = "assets/trainers/trainer_sprite.png";
 
 const town = new Image();
-town.src = "assets/backgrounds/town.jpg";
+town.src = "assets/backgrounds/town.png";
 
-//const route
+const route = new Image();
+route.src = "assets/backgrounds/rt1 long.jpg";
+
 const battle_background = new Image();
 battle_background.src = "assets/backgrounds/route1_battle_1.png";
-
-const start_image= new Image();
-start_image.src="assets/backgrounds/start.png";
 
 //const gym
 
@@ -21,7 +24,7 @@ start_image.src="assets/backgrounds/start.png";
 //audio//
 const music = {
     town: new Audio("assets/audio/Driftveil City.mp3"),
-    // route: new Audio("assets/audio/route.mp3"),
+    route: new Audio("assets/audio/Route 1.mp3"),
     battle: new Audio("assets/audio/Battle.mp3"),
     // victory: new Audio("assets/audio/victory.mp3")
 }

@@ -1,7 +1,9 @@
 //playerdata
+const PLAYER_SCALE = 0.75; // additional scale applied to player sprite and hitbox
+
 let player = {
-    x: 360,
-    y: 417,
+    x: 110,
+    y: 167,
 
     width: 25,
     height: 30,
@@ -14,6 +16,8 @@ let player = {
 
     speed: 2
 };
+
+let playerBox = [];
 
 const animations = {
     down:
@@ -49,6 +53,16 @@ const animations = {
     }
 };
 
+// function getPlayerBox() {
+//     return {
+//         x: newX,
+//         y: newY + player.height * .75,
+//         w: player.width,
+//         h: player.height / 4
+//     };
+// }
+
+
 function updatePlayer() {
     let moving = false;
 
@@ -80,19 +94,19 @@ function updatePlayer() {
         moving = true;
     }
 
-    let playerBox =
+    playerBox =
     {
-        x: newX,
-        y: newY,
-        w: player.width,
-        h: player.height
+        x: newX + player.width * PLAYER_SCALE * .2,
+        y: newY + player.height * PLAYER_SCALE * .75,
+        w: player.width * PLAYER_SCALE * .6,
+        h: (player.height / 4) * PLAYER_SCALE
     };
 
     let blocked = false;
 
     //if going to hit collision box, stop moving
     //causes sticky walls for now, should update later if we stick with this
-    for (let wall of walls) {
+    for (let wall of currentMap.walls) {
         if (collides(playerBox, wall)) {
             blocked = true;
             break;
@@ -100,10 +114,11 @@ function updatePlayer() {
     }
 
     if (!blocked) {
-        if (newX > 0 && (newX + player.width) < canvas.width) {
+        // Use map bounds (in map units) not canvas pixels — keep coordinates consistent with MAP_SCALE used when drawing
+        if (newX > 0 && (newX + player.width * PLAYER_SCALE) < currentMap.width) {
             player.x = newX;
         }
-        if (newY > 0 && (newY + player.height) < canvas.height) {
+        if (newY > 0 && (newY + player.height * PLAYER_SCALE) < currentMap.height) {
             player.y = newY;
         }
     }
@@ -119,6 +134,7 @@ function updatePlayer() {
             player.frameCounter = 0;
         }
         collideGrass();
+        collideMapChange();
     }
     else {
         player.frame = 1;
@@ -138,14 +154,13 @@ function drawPlayer() {
     let sourceY =
         anim.startY;
 
-    //shift strafe anims to be a bit more centered
-    //not needed for this one
-    // let drawX = player.x;
-    // if (
-    //     player.direction === "left" || player.direction === "right"
-    // ) {
-    //     drawX += 30;
-    // }
+    let drawX =
+        player.x * MAP_SCALE -
+        camera.x;
+
+    let drawY =
+        player.y * MAP_SCALE -
+        camera.y;
 
     ctx.drawImage(
         trainer,
@@ -156,11 +171,37 @@ function drawPlayer() {
         anim.frameWidth,
         player.height,
 
-        // drawX,
-        player.x,
-        player.y,
+        drawX,
+        drawY,
+
+        player.width * MAP_SCALE * PLAYER_SCALE,
+        player.height * MAP_SCALE * PLAYER_SCALE
+    );
+}
+
+function drawPlayerTransition() {
+
+    let anim = animations[player.direction];
+
+    let sourceX =
+        anim.startX +
+        player.frame * anim.frameWidth;
+
+    let sourceY = anim.startY;
+
+    ctx.drawImage(
+        trainer,
+
+        sourceX,
+        sourceY,
 
         anim.frameWidth,
-        player.height
+        player.height,
+
+        player.x * MAP_SCALE,
+        player.y * MAP_SCALE,
+
+        player.width * MAP_SCALE * PLAYER_SCALE,
+        player.height * MAP_SCALE * PLAYER_SCALE
     );
 }
