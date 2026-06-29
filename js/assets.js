@@ -1,200 +1,140 @@
-//load assets here to be used
-const trainer = new Image();
-trainer.src = "assets/trainers/trainer_sprite.png";
+//collision check bt
+// wn objects
+let grassParticles = [];
+const MAX_GRASS_PARTICLES = 100;
 
-const town = new Image();
-town.src = "assets/backgrounds/town.jpg";
-
-//const route
-const battle_background = new Image();
-battle_background.src = "assets/backgrounds/route1_battle_1.png";
-
-const start_image= new Image();
-start_image.src="assets/backgrounds/start.png";
-
-//const gym
-
-//const battle_grass
-
-
-
-//audio//
-const music = {
-    town: new Audio("assets/audio/Driftveil City.mp3"),
-    // route: new Audio("assets/audio/route.mp3"),
-    battle: new Audio("assets/audio/Battle.mp3"),
-    // victory: new Audio("assets/audio/victory.mp3")
+function collides(a, b) {
+    return (
+        a.x < b.x + b.w &&
+        a.x + a.w > b.x &&
+        a.y < b.y + b.h &&
+        a.y + a.h > b.y
+    );
 }
 
-for (let song in music) {
-    music[song].loop = true;
+//func collideWall(){}
+
+//grass encounter
+function collideGrass() {
+    let playerBox =
+    {
+        x: player.x,
+        y: player.y,
+        w: player.width,
+        h: player.height
+    };
+
+    for (let patch of grass) {
+        if (collides(playerBox, patch)) {
+            if (Math.random() < 0.2) {
+                spawnGrassParticles();
+            }
+            if (Math.random() < 0.005) {
+                battleTransition();
+            }
+        }
+    }
+
+
 }
 
-let currentSong = null;
+function spawnGrassParticles() {
 
-function playMusic(song) {
-    if (currentSong === music[song])
+    if (grassParticles.length > MAX_GRASS_PARTICLES) {
         return;
+    }
 
-    if (currentSong)
-        currentSong.pause();
+    for (let i = 0; i < 4; i++) {
 
-    currentSong = music[song];
+        let particle =
+            {
+                x: player.x + player.width / 2,
+                y: player.y + player.height,
 
-    currentSong.currentTime = 0;
-    currentSong.play();
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: -1 - Math.random(),
+
+                life: 20,
+                size: 4 + Math.random() * 3,
+
+                //rand rotation
+                angle: (Math.random() - 0.5) * 0.8,       // Initial angle (≈ ±45°)
+                rotationSpeed: (Math.random() - 0.5) * 0.15
+            };
+
+        //throw grass depending on player movement?
+        switch (player.direction) {
+
+            // case "up":
+            //     particle.vy = 1 + Math.random();
+            //     break;
+
+            // case "down":
+            //     particle.vy = -1 - Math.random();
+            //     break;
+
+            // case "left":
+            //     particle.vx = 1 + Math.random();
+            //     break;
+
+            // case "right":
+            //     particle.vx = -1 - Math.random();
+            //     break;
+        }
+
+        grassParticles.push(particle);
+    }
 }
-// pokedex to sprite
-const pokedex = {
-    1: "bulbasaur",
-    2: "ivysaur",
-    3: "venusaur",
-    4: "charmander",
-    5: "charmeleon",
-    6: "charizard",
-    7: "squirtle",
-    8: "wartortle",
-    9: "blastoise",
-    10: "caterpie",
-    11: "metapod",
-    12: "butterfree",
-    13: "weedle",
-    14: "kakuna",
-    15: "beedrill",
-    16: "pidgey",
-    17: "pidgeotto",
-    18: "pidgeot",
-    19: "rattata",
-    20: "raticate",
-    21: "spearow",
-    22: "fearow",
-    23: "ekans",
-    24: "arbok",
-    25: "pikachu",
-    26: "raichu",
-    27: "sandshrew",
-    28: "sandslash",
-    29: "nidoranf",
-    30: "nidorina",
-    31: "nidoqueen",
-    32: "nidoranm",
-    33: "nidorino",
-    34: "nidoking",
-    35: "clefairy",
-    36: "clefable",
-    37: "vulpix",
-    38: "ninetales",
-    39: "jigglypuff",
-    40: "wigglytuff",
-    41: "zubat",
-    42: "golbat",
-    43: "oddish",
-    44: "gloom",
-    45: "vileplume",
-    46: "paras",
-    47: "parasect",
-    48: "venonat",
-    49: "venomoth",
-    50: "diglett",
-    51: "dugtrio",
-    52: "meowth",
-    53: "persian",
-    54: "psyduck",
-    55: "golduck",
-    56: "mankey",
-    57: "primeape",
-    58: "growlithe",
-    59: "arcanine",
-    60: "poliwag",
-    61: "poliwhirl",
-    62: "poliwrath",
-    63: "abra",
-    64: "kadabra",
-    65: "alakazam",
-    66: "machop",
-    67: "machoke",
-    68: "machamp",
-    69: "bellsprout",
-    70: "weepinbell",
-    71: "victreebel",
-    72: "tentacool",
-    73: "tentacruel",
-    74: "geodude",
-    75: "graveler",
-    76: "golem",
-    77: "ponyta",
-    78: "rapidash",
-    79: "slowpoke",
-    80: "slowbro",
-    81: "magnemite",
-    82: "magneton",
-    83: "farfetchd",
-    84: "doduo",
-    85: "dodrio",
-    86: "seel",
-    87: "dewgong",
-    88: "grimer",
-    89: "muk",
-    90: "shellder",
-    91: "cloyster",
-    92: "gastly",
-    93: "haunter",
-    94: "gengar",
-    95: "onix",
-    96: "drowzee",
-    97: "hypno",
-    98: "krabby",
-    99: "kingler",
-    100: "voltorb",
-    101: "electrode",
-    102: "exeggcute",
-    103: "exeggutor",
-    104: "cubone",
-    105: "marowak",
-    106: "hitmonlee",
-    107: "hitmonchan",
-    108: "lickitung",
-    109: "koffing",
-    110: "weezing",
-    111: "rhyhorn",
-    112: "rhydon",
-    113: "chansey",
-    114: "tangela",
-    115: "kangaskhan",
-    116: "horsea",
-    117: "seadra",
-    118: "goldeen",
-    119: "seaking",
-    120: "staryu",
-    121: "starmie",
-    122: "mrmime",
-    123: "scyther",
-    124: "jynx",
-    125: "electabuzz",
-    126: "magmar",
-    127: "pinsir",
-    128: "tauros",
-    129: "magikarp",
-    130: "gyarados",
-    131: "lapras",
-    132: "ditto",
-    133: "eevee",
-    134: "vaporeon",
-    135: "jolteon",
-    136: "flareon",
-    137: "porygon",
-    138: "omanyte",
-    139: "omastar",
-    140: "kabuto",
-    141: "kabutops",
-    142: "aerodactyl",
-    143: "snorlax",
-    144: "articuno",
-    145: "zapdos",
-    146: "moltres",
-    147: "dratini",
-    148: "dragonair",
-    149: "dragonite",
-    150: "mewtwo",
-    151: "mew"
-};
+
+function updateGrassParticles() {
+
+    for (let i = grassParticles.length - 1; i >= 0; i--) {
+
+        let p = grassParticles[i];
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        //bit of gravity
+        p.vy += 0.15;
+
+        p.angle += p.rotationSpeed;
+
+        p.life--;
+
+        if (p.life <= 0) {
+            grassParticles.splice(i, 1);
+        }
+    }
+}
+
+function drawGrassParticles() {
+
+    ctx.strokeStyle = "#3f8f3f";
+    ctx.lineWidth = 2;
+
+    for (let p of grassParticles) {
+
+        ctx.save();
+
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+
+        ctx.beginPath();
+
+        ctx.moveTo(-2, 0);
+        ctx.lineTo(0, -p.size);
+        ctx.lineTo(2, 0);
+
+        ctx.stroke();
+
+        ctx.restore();
+    }
+
+    ctx.lineWidth = 1;
+}
+
+
+
+//line of sight of npc trainer?
+//func collideAggro(){}
