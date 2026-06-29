@@ -1,9 +1,9 @@
-//collision check btwn objects
-'
-    let grassParticles = [];
+//collision check bt
+// wn objects
+let grassParticles = [];
 const MAX_GRASS_PARTICLES = 100;
 
-    function collides(a, b) {
+function collides(a, b) {
     return (
         a.x < b.x + b.w &&
         a.x + a.w > b.x &&
@@ -15,14 +15,14 @@ const MAX_GRASS_PARTICLES = 100;
 //func collideWall(){}
 
 //grass encounter
- function collideGrass() {
+function collideGrass() {
     let playerBox =
-    {
-        x: player.x,
-        y: player.y,
-        w: player.width,
-        h: player.height
-    };
+        {
+            x: player.x,
+            y: player.y,
+            w: player.width,
+            h: player.height
+        };
 
     for (let patch of grass) {
         if (collides(playerBox, patch)) {
@@ -35,7 +35,7 @@ const MAX_GRASS_PARTICLES = 100;
         }
     }
 
- 
+
 }
 
 function spawnGrassParticles() {
@@ -133,6 +133,7 @@ function drawGrassParticles() {
 
     ctx.lineWidth = 1;
 }
+
 
 
 //line of sight of npc trainer?
