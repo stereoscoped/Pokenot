@@ -11,11 +11,14 @@ const CAMERA_FOCUS = 0.75;
 //0 -> zoom center of screen
 //1 -> exactly on player
 
-let cameraX = 0;
-let cameraY = 0;
+let focusX = 0;
+let focusY = 0;
 
-let targetCameraX = 0;
-let targetCameraY = 0;
+let startFocusX = 0;
+let startFocusY = 0;
+
+let targetFocusX = 0;
+let targetFocusY = 0;
 
 
 function battleTransition() {
@@ -76,6 +79,7 @@ function updateTransition() {
             (transitionTimer - SHAKE_TIME) /
             (TRANSITION_TIME - SHAKE_TIME);
 
+        t = Math.min(t, 1);
         t = 1 - Math.pow(1 - t, 3);
 
         zoomScale = 1 + 2 * t;
