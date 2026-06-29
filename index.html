@@ -5,11 +5,11 @@
     <title>proj3 - pokenot</title>
 
     <style>
-
         #gameBox {
             position: relative;
             width: 800px;
             height: 600px;
+            overflow: hidden;
         }
 
         #canvas {
@@ -19,29 +19,32 @@
             width: 800px;
             height: 600px;
             z-index: 1;
-            background: lightgreen; /* testing only */
-            border: 4px solid red;  /* testing only */
+            border: 4px solid red;
+            box-sizing: border-box;
         }
 
-        #mypokemon {
+        .pokemon {
             position: absolute;
-            left: 300px;
-            top: 250px;
-            width: 120px;
-            height: 120px;
             z-index: 2;
             image-rendering: pixelated;
             pointer-events: none;
+            transform: translate(-50%, -100%);
         }
-        #encounterpokemon{
-            position: absolute;
-            left: 1000px;
+
+        /* back sprite */
+        #mypokemon {
+            left: 230px;
+            top: 350px;
+            width: 220px;
+            height: auto;
+        }
+
+        /* front sprite */
+        #encounterpokemon {
+            left: 620px;
             top: 250px;
-            width: 120px;
-            height: 120px;
-            z-index: 2;
-            image-rendering: pixelated;
-            pointer-events: none;
+            width: 150px;
+            height: auto;
         }
     </style>
 </head>
@@ -49,9 +52,13 @@
 <body>
 <div id="gameBox">
     <canvas id="canvas" width="800" height="600"></canvas>
+    <img class = "pokemon" id="mypokemon" src="assets/pokemon_back_sprites/charizard.gif">
+    <img class = "pokemon"id="encounterpokemon" src="assets/pokemon_front_sprites/charizard.gif">
+
+</div>
+
     <!-- load first -->
     <script src="js/assets.js"></script>
-
     <script src="js/maps.js"></script>
     <script src="js/input.js"></script>
     <script src="js/pokemon.js"></script>
@@ -61,10 +68,10 @@
     <script src="js/battle_start.js"></script>
     <script src="js/battle.js"></script>
     <script src="js/game.js"></script>
-    <script src="js/start.js"></script>
+<script src="js/start.js"></script>
 
 
-    <!-- load last -->
+<!-- load last -->
     <script src="js/main.js"></script>
 
 </body>
