@@ -178,3 +178,30 @@ function drawPlayer() {
         player.height * MAP_SCALE * PLAYER_SCALE
     );
 }
+
+function drawPlayerTransition() {
+
+    let anim = animations[player.direction];
+
+    let sourceX =
+        anim.startX +
+        player.frame * anim.frameWidth;
+
+    let sourceY = anim.startY;
+
+    ctx.drawImage(
+        trainer,
+
+        sourceX,
+        sourceY,
+
+        anim.frameWidth,
+        player.height,
+
+        player.x * MAP_SCALE,
+        player.y * MAP_SCALE,
+
+        player.width * MAP_SCALE * PLAYER_SCALE,
+        player.height * MAP_SCALE * PLAYER_SCALE
+    );
+}
