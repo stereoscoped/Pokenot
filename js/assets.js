@@ -2,22 +2,30 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+
+document.getElementById("mypokemon").style.visibility = "hidden";
+document.getElementById("encounterpokemon").style.visibility = "hidden";
+
+
+
 //load assets here to be used
 const trainer = new Image();
 trainer.src = "assets/trainers/trainer_sprite.png";
 
 const town = new Image();
-town.src = "assets/backgrounds/town.png";
+town.src = "assets/backgrounds/town.jpg";
 
 const route = new Image();
 route.src = "assets/backgrounds/rt1 long.jpg";
 
-const battle_background = new Image();
-battle_background.src = "assets/backgrounds/route1_battle_1.png";
+const start_image= new Image();
+start_image.src="assets/backgrounds/start.png";
 
 //const gym
 
 //const battle_grass
+const battle_background = new Image();
+battle_background.src = "assets/backgrounds/route1_battle_1.png";
 
 
 
@@ -47,7 +55,6 @@ function playMusic(song) {
     currentSong.currentTime = 0;
     currentSong.play();
 }
-// pokedex to sprite
 const pokedex = {
     1: "bulbasaur",
     2: "ivysaur",
