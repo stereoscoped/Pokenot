@@ -11,10 +11,19 @@ let playerPokemon;
 // TEMPORARY!!! replace with enemy/wild Pokenot from DB or encounter table
 let enemyPokemon;
 
-let mainBattleOptions = ["Fight", "Run"];
+let mainBattleOptions = ["Fight", "Heal", "Switch", "Run"];
 
 // TEMPORARY!!! replace with moves loaded from DB
 let attackOptions = [];
+let switchOptions = [];
+let healOptions = ["Use Potion", "Back"];
+ 
+// TEMPORARY!!! replace with player's inventory from DB
+let healingPotions = 3;
+let potionHealAmount = 4;
+
+// TEMPORARY!!! replace with player's team from DB
+let selectedTeamIndex = 0;
 
 function startBattle() {
     gameState = BATTLE;
@@ -36,17 +45,33 @@ function startBattle() {
     enemyPokemonSprite.style.visibility = "visible";
 
     // TEMPORARY!!! replace with player's selected Pokenot from DB
-    playerPokemon = makePokemon(
-        pokemonName,
-        100,
-        15,
-        5,
-        10,
-        [
-            { name: "Tackle", power: 12 },
-            { name: "Fire Blast", power: 22 }
-        ]
-    );
+    playerTeam = [
+        makePokemon(
+            pokemonName,
+            100,
+            15,
+            5,
+            10,
+            [
+                { name: "Tackle", power: 12 },
+                { name: "Fire Blast", power: 22 }
+            ]
+        ),
+        makePokemon(
+            "pikachu",
+            80,
+            18,
+            4,
+            14,
+            [
+                { name: "Quick Attack", power: 10 },
+                { name: "Thunder Shock", power: 20 }
+            ]
+        )
+    ];
+
+    selectedTeamIndex = 0;
+    playerPokemon = playerTeam[selectedTeamIndex];
 
     // TEMPORARY!!! replace with enemy/wild Pokenot from DB or encounter table
     enemyPokemon = makePokemon(
@@ -77,7 +102,7 @@ function makePokemon(name, hp, attack, defense, speed, moves) {
     return {
         name: name,
         hp: hp,
-        maxHP: hp,
+        maxHp: hp,
         attack: attack,
         defense: defense,
         speed: speed,
@@ -88,7 +113,7 @@ function makePokemon(name, hp, attack, defense, speed, moves) {
 function updateBattle() {
     let options = getBattleOptions();
 
-    if (keys["arrowup"]) {
+    if (keys["arrowup"] || keys["w"]) {
         selectedBattleOption--;
 
         if (selectedBattleOption < 0) {
@@ -96,9 +121,10 @@ function updateBattle() {
         }
 
         keys["arrowup"] = false;
+        keys["w"] = false;
     }
 
-    if (keys["arrowdown"]) {
+    if (keys["arrowdown"] || keys["s"]) {
         selectedBattleOption++;
 
         if (selectedBattleOption >= options.length) {
@@ -106,32 +132,31 @@ function updateBattle() {
         }
 
         keys["arrowdown"] = false;
+        keys["s"] = false;
     }
 
     if (keys["enter"]) {
         chooseBattleOption();
         keys["enter"] = false;
     }
-
-    if (keys["escape"] || keys["backspace"]) {
-        battleMenu = "main";
-        selectedBattleOption = 0;
-
-        keys["escape"] = false;
-        keys["backspace"] = false;
-    }
-
-    // old quick run option
-    if (keys["1"]) {
-        endBattle();
-        keys["1"] = false;
-    }
 }
 
 function getBattleOptions() {
     if (battleMenu === "moves") {
-        return attackOptions;
+        return attackOptions.concat(["Back"]);
     }
+
+    if (battleMenu === "heal") {
+        return healOptions;
+    }
+    if (battleMenu === "switch") {
+        switchOptions = playerTeam.map(function(pokemon) {
+            return pokemon.name;
+        });
+
+        return switchOptions.concat(["Back"]);
+    }
+    
 
     return mainBattleOptions;
 }
@@ -147,11 +172,41 @@ function chooseBattleOption() {
             battleMenu = "moves";
             selectedBattleOption = 0;
             battleMessage = "Choose an attack.";
+        } else if (selectedBattleOption === 1) {
+            battleMenu = "heal";
+            selectedBattleOption = 0;
+            battleMessage = "You have " + healingPotions + " potions.";
+        } else if (selectedBattleOption === 2) {
+            battleMenu = "switch";
+            selectedBattleOption = 0;
+            battleMessage = "Choose a Pokenot.";
         } else {
             endBattle();
         }
     } else if (battleMenu === "moves") {
-        playerAttack(selectedBattleOption);
+        if (selectedBattleOption === attackOptions.length) {
+            battleMenu = "main";
+            selectedBattleOption = 0;
+            battleMessage = "What will you do?";
+        } else {
+            playerAttack(selectedBattleOption);
+        }
+    } else if (battleMenu === "heal") {
+        if (selectedBattleOption === 0) {
+            usePotion();
+        } else {
+            battleMenu = "main";
+            selectedBattleOption = 0;
+            battleMessage = "What will you do?";
+        }
+    } else if (battleMenu === "switch") {
+        if (selectedBattleOption === playerTeam.length) {
+            battleMenu = "main";
+            selectedBattleOption = 0;
+            battleMessage = "What will you do?";
+        } else {
+            switchPokemon(selectedBattleOption);
+        }
     }
 }
 
@@ -186,6 +241,66 @@ function playerAttack(moveIndex) {
     selectedBattleOption = 0;
 }
 
+function usePotion() {
+    if (healingPotions <= 0) {
+        battleMessage = "You have no potions left!";
+        battleMenu = "main";
+        selectedBattleOption = 0;
+        return;
+    }
+
+    if (playerPokemon.hp >= playerPokemon.maxHp) {
+        battleMessage = playerPokemon.name + " already has full HP!";
+        battleMenu = "main";
+        selectedBattleOption = 0;
+        return;
+    }
+
+    let oldHp = playerPokemon.hp;
+
+    playerPokemon.hp += potionHealAmount;
+
+    if (playerPokemon.hp > playerPokemon.maxHp) {
+        playerPokemon.hp = playerPokemon.maxHp;
+    }
+
+    healingPotions--;
+
+    let healedAmount = playerPokemon.hp - oldHp;
+
+    battleMessage = playerPokemon.name + " healed " + healedAmount + " HP!";
+
+    enemyAttack();
+
+    battleMenu = "main";
+    selectedBattleOption = 0;
+}
+
+function switchPokemon(teamIndex) {
+    if (teamIndex === selectedTeamIndex) {
+        battleMessage = playerPokemon.name + " is already fighting!";
+        battleMenu = "main";
+        selectedBattleOption = 0;
+        return;
+    }
+
+    selectedTeamIndex = teamIndex;
+    playerPokemon = playerTeam[selectedTeamIndex];
+    attackOptions = playerPokemon.moves.map(function(move) {
+        return move.name;
+    });
+
+    let myPokemon = document.getElementById("mypokemon");
+    myPokemon.src = `assets/pokemon_back_sprites/${playerPokemon.name}.gif`;
+
+    battleMessage = "Go, " + playerPokemon.name + "!";
+
+    enemyAttack();
+
+    battleMenu = "main";
+    selectedBattleOption = 0;
+}
+
 function enemyAttack() {
     let moveIndex = Math.floor(Math.random() * enemyPokemon.moves.length);
     let move = enemyPokemon.moves[moveIndex];
@@ -214,68 +329,3 @@ function getDamage(attacker, defender, move) {
     return damage;
 }
 
-function drawBattle() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    drawBattleBackground();
-    drawPokemonInfo();
-    drawBattleTextBox();
-    drawBattleMenu();
-}
-
-function drawBattleBackground() {
-    ctx.fillStyle = "lightgreen";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.drawImage(
-        battle_background,
-        0,
-        0,
-        canvas.width,
-        canvas.height - 150
-    );
-}
-
-function drawPokemonInfo() {
-    ctx.fillStyle = "black";
-
-    drawHealthText(enemyPokemon, 50, 60);
-    drawHealthText(playerPokemon, 50, 180);
-}
-
-function drawHealthText(pokemon, x, y) {
-    ctx.fillText(pokemon.name, x, y);
-
-    ctx.fillText(
-        "HP: " + pokemon.hp + "/" + pokemon.maxHP,
-        x,
-        y + 25
-    );
-}
-
-function drawBattleTextBox() {
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 450, canvas.width, 150);
-
-    ctx.strokeStyle = "black";
-    ctx.strokeRect(0, 450, canvas.width, 150);
-
-    ctx.fillStyle = "black";
-    ctx.fillText(battleMessage, 30, 490);
-}
-
-function drawBattleMenu() {
-    let options = getBattleOptions();
-
-    ctx.fillStyle = "black";
-
-    for (let i = 0; i < options.length; i++) {
-        let optionText = options[i];
-
-        if (i === selectedBattleOption) {
-            optionText = "> " + optionText;
-        }
-
-        ctx.fillText(optionText, 520, 490 + i * 25);
-    }
-}
