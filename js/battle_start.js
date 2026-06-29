@@ -11,11 +11,14 @@ const CAMERA_FOCUS = 0.75;
 //0 -> zoom center of screen
 //1 -> exactly on player
 
-let cameraX = 0;
-let cameraY = 0;
+let focusX = 0;
+let focusY = 0;
 
-let targetCameraX = 0;
-let targetCameraY = 0;
+let startFocusX = 0;
+let startFocusY = 0;
+
+let targetFocusX = 0;
+let targetFocusY = 0;
 
 
 function battleTransition() {
@@ -25,19 +28,34 @@ function battleTransition() {
     transitionTimer = 0;
     zoomScale = 1;
 
-    //default cam
-    cameraX = 0;
-    cameraY = 0;
+    //current screen in world coords
+    startFocusX =
+        camera.x + canvas.width / 2;
 
-    //zoom to player * camera focus
-    let desiredX =
-        player.x + player.width / 2 - canvas.width / 2;
+    startFocusY =
+        camera.y + canvas.height / 2;
 
-    let desiredY =
-        player.y + player.height / 2 - canvas.height / 2;
+    //player in world coords
+    let playerCenterX =
+        player.x * MAP_SCALE +
+        (player.width * PLAYER_SCALE * MAP_SCALE) / 2;
 
-    targetCameraX = desiredX * CAMERA_FOCUS;
-    targetCameraY = desiredY * CAMERA_FOCUS;
+    let playerCenterY =
+        player.y * MAP_SCALE +
+        (player.height * PLAYER_SCALE * MAP_SCALE) / 2;
+
+    //start from center
+    focusX = startFocusX;
+    focusY = startFocusY;
+
+    //zoom toward player based on camera_focus
+    targetFocusX =
+        startFocusX +
+        (playerCenterX - startFocusX) * CAMERA_FOCUS;
+
+    targetFocusY =
+        startFocusY +
+        (playerCenterY - startFocusY) * CAMERA_FOCUS;
 }
 
 function updateTransition() {
@@ -61,12 +79,18 @@ function updateTransition() {
             (transitionTimer - SHAKE_TIME) /
             (TRANSITION_TIME - SHAKE_TIME);
 
+        t = Math.min(t, 1);
         t = 1 - Math.pow(1 - t, 3);
 
         zoomScale = 1 + 2 * t;
 
-        cameraX = targetCameraX * t;
-        cameraY = targetCameraY * t;
+        focusX =
+            startFocusX +
+            (targetFocusX - startFocusX) * t;
+
+        focusY =
+            startFocusY +
+            (targetFocusY - startFocusY) * t;
     }
 
     if (transitionTimer >= TRANSITION_TIME) {
@@ -85,28 +109,32 @@ function drawTransition() {
     );
 
     ctx.scale(zoomScale, zoomScale);
+
+    //move focus point to screen center
     ctx.translate(
-        -canvas.width / 2 - cameraX,
-        -canvas.height / 2 - cameraY
+        -focusX,
+        -focusY
     );
 
+    //draw map
     ctx.drawImage(
-        town,
+        currentMap.image,
         0,
         0,
-        canvas.width,
-        canvas.height
+        currentMap.width * MAP_SCALE,
+        currentMap.height * MAP_SCALE
     );
 
-    for (let wall of walls) {
-        ctx.strokeRect(
-            wall.x,
-            wall.y,
-            wall.w,
-            wall.h
-        );
-    }
+    // for (let wall of currentMap.walls) {
+    //     ctx.strokeRect(
+    //         wall.x * MAP_SCALE,
+    //         wall.y * MAP_SCALE,
+    //         wall.w * MAP_SCALE,
+    //         wall.h * MAP_SCALE
+    //     );
+    // }
 
-    drawPlayer();
+    drawPlayerTransition();
+
     ctx.restore();
 }

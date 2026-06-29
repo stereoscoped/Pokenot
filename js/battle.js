@@ -7,7 +7,7 @@ function updateBattle() {
     //run
     if (keys["1"]) {
         gameState = OVERWORLD;
-        playMusic("town");
+        playMusic(currentMap.music);
     }
 }
 
