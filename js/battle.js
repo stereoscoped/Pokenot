@@ -12,8 +12,8 @@ function startBattle() {
     let pokemonName = pokedex[randomNum];
     let pokemonName2 = pokedex[randomNum2];
 
-    myPokemon.src=`assets/pokemon/pokemon_back_sprites/${pokemonName}.gif`
-    enemyPokemon.src=`assets/pokemon/pokemon_front_sprites/${pokemonName2}.gif`
+    myPokemon.src=`assets/pokemon_back_sprites/${pokemonName}.gif`
+    enemyPokemon.src=`assets/pokemon_front_sprites/${pokemonName2}.gif`
     
     
     myPokemon.style.visibility = "visible";
