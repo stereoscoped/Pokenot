@@ -120,7 +120,7 @@ function updateGrassParticles() {
 
 function drawGrassParticles() {
 
-    ctx.strokeStyle = "#3f8f3f";
+    ctx.strokeStyle = "#35a535";
     ctx.lineWidth = 2;
 
     for (let p of grassParticles) {
