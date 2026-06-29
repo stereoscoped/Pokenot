@@ -31,7 +31,7 @@ async function loadPokemonDatabase() {
         //See if the server sent an error object instead of an array
         if (rawData.error) {
             console.error("The PHP server reported a database error:", rawData.error);
-            return; // Stop execution before crashing on .map()
+            return; 
         }
         
         // Transform raw database rows into instance objects

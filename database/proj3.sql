@@ -27,5 +27,5 @@ CREATE TABLE pokemon_attacks (
     attack_id INT,
     PRIMARY KEY (pokemon_id, attack_id),
     FOREIGN KEY (pokemon_id) REFERENCES pokemon(id) ON DELETE CASCADE,
-    FOREIGN KEY (attack_id) REFERENCES attacks(id) ON DELETE CASCADE  -- <-- Fix is right here!
+    FOREIGN KEY (attack_id) REFERENCES attacks(id) ON DELETE CASCADE  
 );

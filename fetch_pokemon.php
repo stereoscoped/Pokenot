@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 
 //  XAMPP settings
 $host = 'localhost';
-$db   = 'pokemon_battle'; // Change to your database name
+$db   = 'pokemon_battle'; 
 $user = 'root'; 
 $pass = ''; 
 
