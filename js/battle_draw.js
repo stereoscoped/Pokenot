@@ -1,5 +1,3 @@
-let uppercasename=pokemon.name;
-let pkmname=uppercasename.toUpperCase();
 function drawBattle() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -36,8 +34,9 @@ function drawHealthText(pokemon, x, y) {
     ctx.fill();
     ctx.stroke();
 
-     ctx.fillStyle = "black";
-    ctx.fillText(pkmname, x, y);
+    let uppercasename=pokemon.name;
+    ctx.fillStyle = "black";
+    ctx.fillText(uppercasename.toUpperCase(), x, y);
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 3;
     ctx.beginPath();
