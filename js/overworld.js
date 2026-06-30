@@ -90,18 +90,6 @@ function drawOverworld() {
         );
     }
 
-    //debug collision boxes
-    for (let ledge of currentMap.ledges) {
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(
-            ledge.x * MAP_SCALE - camera.x,
-            ledge.y * MAP_SCALE - camera.y,
-
-            ledge.w * MAP_SCALE,
-            ledge.h * MAP_SCALE
-        );
-    }
-
     //debug grass
     for (let gras of currentMap.grass) {
         ctx.strokeStyle = "red";
