@@ -21,17 +21,26 @@ function drawBattleBackground() {
 function drawPokemonInfo() {
     ctx.fillStyle = "black";
 
-    drawHealthText(enemyPokemon, 50, 60);
-    drawHealthText(playerPokemon, 50, 180);
+    drawHealthText(enemyPokemon, 50, 55);
+    drawHealthText(playerPokemon, 500, 375);
 }
 
 function drawHealthText(pokemon, x, y) {
-    ctx.fillText(pokemon.name, x, y);
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "orange";
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.roundRect(x-20, y-20, 240, 70, [10, 40]);
+    ctx.fill();
+    ctx.stroke();
 
+    ctx.fillStyle = "black";
+    ctx.fillText(pokemon.name, x, y);
+    
     ctx.fillText(
         "HP: " + pokemon.hp + "/" + pokemon.maxHp,
         x,
-        y + 25
+        y + 30
     );
 }
 
