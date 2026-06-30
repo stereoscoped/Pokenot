@@ -1,3 +1,5 @@
+let uppercasename=pokemon.name;
+let pkmname=uppercasename.toUpperCase();
 function drawBattle() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -27,16 +29,43 @@ function drawPokemonInfo() {
 
 function drawHealthText(pokemon, x, y) {
     ctx.fillStyle = "white";
-    ctx.strokeStyle = "orange";
+    ctx.strokeStyle = "#324128";
     ctx.beginPath();
-    ctx.fillStyle = "white";
-    ctx.roundRect(x-20, y-20, 240, 70, [10, 40]);
+    ctx.fillStyle = "#FEFCE1";
+    ctx.roundRect(x-20, y-40, 240, 90, [10, 40]);
     ctx.fill();
     ctx.stroke();
 
+     ctx.fillStyle = "black";
+    ctx.fillText(pkmname, x, y);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.roundRect(x+50, y+10, 150, 20,40);
+    ctx.fill();
+    ctx.stroke();
+
+   let color;
+    if(pokemon.hp < 55 && pokemon.hp >30){
+       color= "#F7E563";
+    }
+    if(pokemon.hp >= 55){
+        color= "#95E8A4";
+    }
+    if(pokemon.hp <=30){
+        color= "#DA6546";
+
+    }
+
+       ctx.beginPath();
+     let hp=(pokemon.hp/pokemon.maxHp)*150
+    ctx.fillStyle = color;
+    ctx.roundRect(x+50, y+10, hp, 20,20);
+    ctx.lineWidth = 3;
+    ctx.fill();
     ctx.fillStyle = "black";
-    ctx.fillText(pokemon.name, x, y);
-    
+
     ctx.fillText(
         "HP: " + pokemon.hp + "/" + pokemon.maxHp,
         x,
