@@ -15,24 +15,58 @@ function drawBattleBackground() {
         0,
         0,
         canvas.width,
-        canvas.height - 150
+        canvas.height
     );
 }
 function drawPokemonInfo() {
     ctx.fillStyle = "black";
 
-    drawHealthText(enemyPokemon, 50, 55);
-    drawHealthText(playerPokemon, 500, 375);
+    drawHealthText(enemyPokemon,1, 50, 55);
+    drawHealthText(playerPokemon,0, 500, 375);
 }
 
-function drawHealthText(pokemon, x, y) {
+function drawHealthText(pokemon,who, x, y) {
     ctx.fillStyle = "white";
     ctx.strokeStyle = "#324128";
     ctx.beginPath();
     ctx.fillStyle = "#FEFCE1";
-    ctx.roundRect(x-20, y-40, 240, 90, [10, 40]);
-    ctx.fill();
-    ctx.stroke();
+    // 0 is mypokemo
+    if(who === 1){
+        ctx.fillStyle = "#FEFCE1";
+
+        ctx.roundRect(x-20, y-40, 240, 90,  [30, 30, 0, 30]);
+        ctx.fill();
+        ctx.stroke();
+         ctx.beginPath();
+        ctx.fillStyle = "gold";
+
+        ctx.moveTo(x+250, y);
+        ctx.lineTo(x+245-20, y-15);
+        ctx.lineTo(x+245-20, y+15);
+        ctx.lineTo(x+250, y);
+        ctx.fill()
+
+        ctx.stroke()
+     }
+    if(who === 0){
+        ctx.fillStyle = "#FEFCE1";
+        ctx.roundRect(x-20, y-40, 240, 90,  [30, 30, 50, 0]);
+
+         ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.fillStyle = "gold";
+
+        ctx.moveTo(x-50, y);
+        ctx.lineTo(x-25, y-15);
+        ctx.lineTo(x-25, y+15);
+        ctx.lineTo(x-50, y);
+        ctx.fill()
+
+        ctx.stroke()
+    }
+
+
 
     let uppercasename=pokemon.name;
     ctx.fillStyle = "black";
@@ -45,9 +79,9 @@ function drawHealthText(pokemon, x, y) {
     ctx.fill();
     ctx.stroke();
 
-   let color;
+    let color;
     if(pokemon.hp < 55 && pokemon.hp >30){
-       color= "#F7E563";
+        color= "#F7E563";
     }
     if(pokemon.hp >= 55){
         color= "#95E8A4";
@@ -57,8 +91,8 @@ function drawHealthText(pokemon, x, y) {
 
     }
 
-       ctx.beginPath();
-     let hp=(pokemon.hp/pokemon.maxHp)*150
+    ctx.beginPath();
+    let hp=(pokemon.hp/pokemon.maxHp)*150
     ctx.fillStyle = color;
     ctx.roundRect(x+50, y+10, hp, 20,20);
     ctx.lineWidth = 3;
@@ -78,11 +112,16 @@ function drawBattleTextBox() {
 
     ctx.strokeStyle = "black";
     ctx.lineWidth = 4;
+    ctx.beginPath();
+     ctx.fillStyle = "#19345A";
+    ctx.fillRect(10, 460,canvas.width-320, 130);
+
+    ctx.stroke()
     ctx.strokeRect(0, 450, canvas.width, 150);
 
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "white";
     ctx.font = "18px 'Press Start 2P'";
-    drawWrappedBattleMessage(battleMessage, 45, 495, 420, 28);
+    drawWrappedBattleMessage(battleMessage, 45, 500, 420, 28);
 }
 
 function drawWrappedBattleMessage(text, x, y, maxWidth, lineHeight) {
@@ -109,7 +148,7 @@ function drawBattleMenu() {
     let options = getBattleOptions();
 
     let menuWidth = 300;
-    let menuHeight = 150;
+    let menuHeight = 200;
     let menuX = canvas.width - menuWidth;
     let menuY = 450;
 
@@ -120,10 +159,11 @@ function drawBattleMenu() {
     ctx.lineWidth = 3;
     ctx.strokeRect(menuX, menuY, menuWidth, menuHeight);
 
+
     ctx.font = "18px 'Press Start 2P'";
 
     for (let i = 0; i < options.length; i++) {
-        let optionY = menuY + 28 + i * 27;
+        let optionY = menuY + 38 + i * 27;
 
         if (i === selectedBattleOption) {
             ctx.fillStyle = "#dcdcdc";
