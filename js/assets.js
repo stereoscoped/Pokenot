@@ -18,10 +18,14 @@ town.src = "assets/backgrounds/town.png";
 const route = new Image();
 route.src = "assets/backgrounds/rt1 long.png";
 
+const cave_entr = new Image();
+cave_entr.src = "assets/backgrounds/cave entr.png";
+
+const cave = new Image();
+cave.src = "assets/backgrounds/cave.png";
+
 const start_image= new Image();
 start_image.src="assets/backgrounds/start.png";
-
-//const gym
 
 //const battle_grass
 const battle_background = new Image();

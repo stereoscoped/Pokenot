@@ -78,9 +78,7 @@ const townMap = {
 
     ledges: [],
 
-    grass: [
-        // { x: 400, y: 0, w: 80, h: 67 }
-    ],
+    grass: [],
 
     exits: [
         {
@@ -240,44 +238,117 @@ const route1Map = {
     }
 };
 
-//         { x: 146, y: 545, w: 13, h: 32 },
-//         { x: 195, y: 545, w: 13, h: 32 },
-//     ],
+const caveEntrMap = {
+    name: "caveEntr",
 
-//     grass: [
-//          { x: 160, y: 95, w: 200, h: 65 },
-//         { x: 225, y: 190, w: 200, h: 65 },
-//         { x: 192, y: 350, w: 63, h: 65 },
-//         { x: 64, y: 450, w: 250, h: 250 },
-//     ],
+    image: cave_entr,
 
-//     exits: [
-//         {
-//             x: 155,
-//             y: 560,
-//             w: 40,
-//             h: 30,
+    music: "route",
 
-//             destination: "town",
-//             entrance: "north"
-//         }
-//     ],
+    width: 320,
+    height: 568,
+    walls: [
+        // left wall
+        { x: 0, y: 0, w: 136, h: 440 },
 
-//     spawnPoints: {
-//         south:
-//         {
-//             x: 170,
-//             y: 520,
+        // // right wall
+        { x: 182, y: 0, w: 136, h: 440 },
+    ],
 
-//             direction: "up"
-//         }
-//     }
-// };
+    ledges: [],
+
+    grass: [],
+
+    exits: [
+        {
+            x: 95,
+            y: 560,
+            w: 130,
+            h: 30,
+
+            destination: "route1",
+            entrance: "north"
+        },
+        {
+            x: 140,
+            y: 70,
+            w: 40,
+            h: 10,
+
+            destination: "cave",
+            entrance: "south"
+        }
+    ],
+
+    spawnPoints: {
+        south:
+        {
+            x: 150,
+            y: 530,
+
+            direction: "up"
+        },
+        north:
+        {
+            x: 150,
+            y: 80,
+
+            direction: "down"
+        }
+    }
+};
+
+const caveMap = {
+    name: "cave",
+
+    image: cave,
+
+    music: "route",
+
+    width: 320,
+    height: 480,
+    walls: [],
+
+    ledges: [],
+
+    grass: [],
+
+    exits: [
+        {
+            x: 144,
+            y: 415,
+            w: 30,
+            h: 30,
+
+            destination: "caveEntr",
+            entrance: "north"
+        },
+    ],
+
+    spawnPoints: {
+        south:
+        {
+            x: 150,
+            y: 390,
+
+            direction: "up"
+        },
+        north:
+        {
+            x: 175,
+            y: 30,
+
+            direction: "down"
+        }
+    }
+};
+
 
 const maps = {
     town: townMap,
     route1: route1Map,
-    // caveEntr: caveEntrMap
+    caveEntr: caveEntrMap,
+    cave: caveMap
 };
 
-let currentMap = townMap;
+let currentMap = caveMap;
