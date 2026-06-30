@@ -351,4 +351,4 @@ const maps = {
     cave: caveMap
 };
 
-let currentMap = caveMap;
+let currentMap = townMap;

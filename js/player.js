@@ -14,7 +14,7 @@ let player = {
     frameCounter: 0,
     framesUntilUpdate: 8,
 
-    speed: 2,
+    speed: 1.5,
     jumpOffset: 0,
 };
 
@@ -64,6 +64,15 @@ let jumpEndY = 0;
 let downHeld = 0;
 const DOWN_HOLD_TIME = 18;
 
+function getPlayerBox(x = player.x, y = player.y) {
+    return {
+        x: x + player.width * PLAYER_SCALE * 0.2,
+        y: y + player.height * PLAYER_SCALE * 0.75,
+        w: player.width * PLAYER_SCALE * 0.6,
+        h: player.height * PLAYER_SCALE / 4
+    };
+}
+
 function startJump(ledge) {
     jumping = true;
     jumpTimer = 0;
@@ -92,89 +101,139 @@ function updateJump() {
     }
 }
 
+function movePlayerX(dx) {
+    if (dx === 0)
+        return;
+
+    let newX = player.x + dx;
+
+    let box = getPlayerBox(newX, player.y);
+
+    let blocked = false;
+
+    for (let wall of currentMap.walls) {
+        if (collides(box, wall)) {
+            blocked = true;
+            break;
+        }
+    }
+
+    if (!blocked) {
+        player.x = newX;
+    }
+}
+
+function movePlayerY(dy) {
+    if (dy === 0)
+        return;
+
+    let newY = player.y + dy;
+
+    let box = getPlayerBox(player.x, newY);
+
+    let blocked = false;
+
+    for (let wall of currentMap.walls) {
+        if (collides(box, wall)) {
+            blocked = true;
+            break;
+        }
+    }
+
+    if (!blocked) {
+        playerBox = box;
+        blocked = collideLedges();
+    }
+
+    if (!blocked) {
+        player.y = newY;
+    }
+}
+
 function updatePlayer() {
     if (jumping) {
         updateJump();
         return;
     }
 
-    let moving = false;
+    let dx = 0;
+    let dy = 0;
 
-    let newX = player.x;
-    let newY = player.y;
+    if (keys["d"] || keys["arrowright"])
+        dx++;
 
-    //add better world / canvas collisions later
-    if (keys["d"] || keys["arrowright"]) {
+    if (keys["a"] || keys["arrowleft"])
+        dx--;
+
+    if (keys["w"] || keys["arrowup"])
+        dy--;
+
+    if (keys["s"] || keys["arrowdown"])
+        dy++;
+
+    //update look dir -> prioritize horizontal
+    if (dx > 0)
         player.direction = "right";
-        newX += player.speed;
-        moving = true;
-    }
-
-    if (keys["a"] || keys["arrowleft"]) {
+    else if (dx < 0)
         player.direction = "left";
-        newX -= player.speed;
-        moving = true;
-    }
-
-    if (keys["w"] || keys["arrowup"]) {
-        player.direction = "up";
-        newY -= player.speed;
-        moving = true;
-    }
-
-    if (keys["s"] || keys["arrowdown"]) {
+    else if (dy > 0)
         player.direction = "down";
-        newY += player.speed;
-        moving = true;
-    }
+    else if (dy < 0)
+        player.direction = "up";
 
-    playerBox =
-    {
-        x: newX + player.width * PLAYER_SCALE * .2,
-        y: newY + player.height * PLAYER_SCALE * .75,
-        w: player.width * PLAYER_SCALE * .6,
-        h: (player.height / 4) * PLAYER_SCALE
-    };
-
-    let blocked = false;
-
-    for (let wall of currentMap.walls) {
-        if (collides(playerBox, wall)) {
-            blocked = true;
-            // console.log(blocked);
-            break;
-        }
-    }
-
-    if (!blocked) {
-        blocked = collideLedges();
-    }
-
-    if (!blocked) {
-        // Use map bounds (in map units) not canvas pixels — keep coordinates consistent with MAP_SCALE used when drawing
-        if (newX > 0 && (newX + player.width * PLAYER_SCALE) < currentMap.width) {
-            player.x = newX;
-        }
-        if (newY > 0 && (newY + player.height * PLAYER_SCALE) < currentMap.height) {
-            player.y = newY;
-        }
-    }
+    //normalize diagonal speed
+    let moving = (dx !== 0 || dy !== 0);
 
     if (moving) {
-        //advance anim sprite every "framesUntilUpdate" frames
-        player.frameCounter++;
+        let length = Math.sqrt(dx * dx + dy * dy);
 
-        if (player.frameCounter > player.framesUntilUpdate) {
-            player.frame =
-                (player.frame + 1) % animations[player.direction].frameTot;
+        dx /= length;
+        dy /= length;
 
-            player.frameCounter = 0;
-        }
+        dx *= player.speed;
+        dy *= player.speed;
+    }
+
+    movePlayerX(dx);
+    movePlayerY(dy);
+
+    player.x = Math.max(
+        0,
+        Math.min(
+            player.x,
+            currentMap.width - player.width * PLAYER_SCALE
+        )
+    );
+
+    player.y = Math.max(
+        0,
+        Math.min(
+            player.y,
+            currentMap.height - player.height * PLAYER_SCALE
+        )
+    );
+
+    //update hitbox
+    playerBox = getPlayerBox();
+
+    //collision checks that dont affect movement
+    if (moving) {
         collideGrass();
         collideMapChange();
     }
+
+    if (moving) {
+        player.frameCounter++;
+
+        if (player.frameCounter > player.framesUntilUpdate) {
+            player.frame++;
+            player.frame %= animations[player.direction].frameTot;
+            player.frameCounter = 0;
+        }
+    }
     else {
         player.frame = 1;
+        player.frameCounter = 0;
     }
 }
 
