@@ -14,56 +14,90 @@ let player = {
     frameCounter: 0,
     framesUntilUpdate: 8,
 
-    speed: 2
+    speed: 2,
+    jumpOffset: 0,
 };
 
 let playerBox = [];
 
 const animations = {
     down:
-        {
-            startX: 280,
-            startY: 50,
-            frameWidth: 23,
-            frameTot: 4
-        },
+    {
+        startX: 280,
+        startY: 50,
+        frameWidth: 23,
+        frameTot: 4
+    },
 
     up:
-        {
-            startX: 280,
-            startY: 154,
-            frameWidth: 23,
-            frameTot: 4
-        },
+    {
+        startX: 280,
+        startY: 154,
+        frameWidth: 23,
+        frameTot: 4
+    },
 
     right:
-        {
-            startX: 275,
-            startY: 85,
-            frameWidth: 25,
-            frameTot: 4
-        },
+    {
+        startX: 275,
+        startY: 85,
+        frameWidth: 25,
+        frameTot: 4
+    },
 
     left:
-        {
-            startX: 275,
-            startY: 118,
-            frameWidth: 25,
-            frameTot: 4
-        }
+    {
+        startX: 275,
+        startY: 118,
+        frameWidth: 25,
+        frameTot: 4
+    }
 };
 
-// function getPlayerBox() {
-//     return {
-//         x: newX,
-//         y: newY + player.height * .75,
-//         w: player.width,
-//         h: player.height / 4
-//     };
-// }
+let jumpTimer = 0;
+const JUMP_TIME = 18;
 
+let jumping = false;
+let jumpStartY = 0;
+let jumpEndY = 0;
+
+let downHeld = 0;
+const DOWN_HOLD_TIME = 18;
+
+function startJump(ledge) {
+    jumping = true;
+    jumpTimer = 0;
+    jumpStartY = player.y;
+    jumpEndY = ledge.y + 16;
+}
+
+function updateJump() {
+    jumpTimer++;
+    let t = jumpTimer / JUMP_TIME;
+
+    if (t > 1)
+        t = 1;
+
+    player.y =
+        jumpStartY +
+        (jumpEndY - jumpStartY) * t;
+
+
+    player.jumpOffset =
+        -Math.sin(t * Math.PI) * 12;
+
+    if (t >= 1) {
+        jumping = false;
+        player.jumpOffset = 0;
+    }
+}
 
 function updatePlayer() {
+    if (jumping) {
+        updateJump();
+        return;
+    }
+
     let moving = false;
 
     let newX = player.x;
@@ -95,22 +129,25 @@ function updatePlayer() {
     }
 
     playerBox =
-        {
-            x: newX + player.width * PLAYER_SCALE * .2,
-            y: newY + player.height * PLAYER_SCALE * .75,
-            w: player.width * PLAYER_SCALE * .6,
-            h: (player.height / 4) * PLAYER_SCALE
-        };
+    {
+        x: newX + player.width * PLAYER_SCALE * .2,
+        y: newY + player.height * PLAYER_SCALE * .75,
+        w: player.width * PLAYER_SCALE * .6,
+        h: (player.height / 4) * PLAYER_SCALE
+    };
 
     let blocked = false;
 
-    //if going to hit collision box, stop moving
-    //causes sticky walls for now, should update later if we stick with this
     for (let wall of currentMap.walls) {
         if (collides(playerBox, wall)) {
             blocked = true;
+            // console.log(blocked);
             break;
         }
+    }
+
+    if (!blocked) {
+        blocked = collideLedges();
     }
 
     if (!blocked) {
@@ -160,8 +197,25 @@ function drawPlayer() {
 
     let drawY =
         player.y * MAP_SCALE -
-        camera.y;
+        camera.y +
+        player.jumpOffset;
 
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        drawX + player.width * MAP_SCALE * PLAYER_SCALE / 2,
+        player.y * MAP_SCALE - camera.y + player.height * MAP_SCALE * PLAYER_SCALE,
+
+        10,
+        4,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
     ctx.drawImage(
         trainer,
 

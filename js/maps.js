@@ -76,6 +76,8 @@ const townMap = {
         { x: 63, y: 210, w: 67, h: 70 },
     ],
 
+    ledges: [],
+
     grass: [
         // { x: 400, y: 0, w: 80, h: 67 }
     ],
@@ -130,36 +132,6 @@ const route1Map = {
 
 
         // =========================
-        // LOG FENCES
-        // only block the logs, not the grass/path
-        // =========================
-
-        // upper-left log fence
-        { x: 75, y: 85, w: 70, h: 8 },
-
-        // upper-right small log fence
-        { x: 256, y: 85, w: 27, h: 8 },
-
-        // second-left log fence
-        { x: 75, y: 150, w: 48, h: 8 },
-
-        // middle log near two trees
-        { x: 107, y: 210, w: 55, h: 8 },
-
-        // small left log
-        { x: 70, y: 310, w: 35, h: 8 },
-
-        // long right log
-        { x: 160, y: 310, w: 118, h: 8 },
-
-        // lower-left log, placed above grass so it does not block encounter grass
-        { x: 75, y: 442, w: 55, h: 8 },
-
-        // lower-right log, placed above grass so it does not block encounter grass
-        { x: 206, y: 442, w: 74, h: 8 },
-
-
-        // =========================
         // TREE / BUSH HITBOXES
         // small body/trunk area only
         // =========================
@@ -191,8 +163,39 @@ const route1Map = {
         { x: 195, y: 545, w: 13, h: 32 },
     ],
 
+    ledges: [
+        // =========================
+        // LOG FENCES
+        // only block the logs, not the grass/path
+        // =========================
+
+        // upper-left log fence
+        { x: 75, y: 85, w: 70, h: 8 },
+
+        // upper-right small log fence
+        { x: 256, y: 85, w: 27, h: 8 },
+
+        // second-left log fence
+        { x: 75, y: 150, w: 48, h: 8 },
+
+        // middle log near two trees
+        { x: 107, y: 210, w: 55, h: 8 },
+
+        // small left log
+        { x: 70, y: 310, w: 35, h: 8 },
+
+        // long right log
+        { x: 160, y: 310, w: 118, h: 8 },
+
+        // lower-left log, placed above grass so it does not block encounter grass
+        { x: 75, y: 442, w: 55, h: 8 },
+
+        // lower-right log, placed above grass so it does not block encounter grass
+        { x: 206, y: 442, w: 74, h: 8 },
+    ],
+
     grass: [
-         { x: 160, y: 95, w: 200, h: 65 },
+        { x: 160, y: 95, w: 200, h: 65 },
         { x: 225, y: 190, w: 200, h: 65 },
         { x: 192, y: 350, w: 63, h: 65 },
         { x: 64, y: 450, w: 250, h: 250 },
@@ -207,6 +210,15 @@ const route1Map = {
 
             destination: "town",
             entrance: "north"
+        },
+        {
+            x: 155,
+            y: 0,
+            w: 40,
+            h: 20,
+
+            destination: "caveEntr",
+            entrance: "south"
         }
     ],
 
@@ -217,15 +229,55 @@ const route1Map = {
             y: 520,
 
             direction: "up"
+        },
+        north:
+        {
+            x: 175,
+            y: 30,
+
+            direction: "down"
         }
     }
 };
 
+//         { x: 146, y: 545, w: 13, h: 32 },
+//         { x: 195, y: 545, w: 13, h: 32 },
+//     ],
+
+//     grass: [
+//          { x: 160, y: 95, w: 200, h: 65 },
+//         { x: 225, y: 190, w: 200, h: 65 },
+//         { x: 192, y: 350, w: 63, h: 65 },
+//         { x: 64, y: 450, w: 250, h: 250 },
+//     ],
+
+//     exits: [
+//         {
+//             x: 155,
+//             y: 560,
+//             w: 40,
+//             h: 30,
+
+//             destination: "town",
+//             entrance: "north"
+//         }
+//     ],
+
+//     spawnPoints: {
+//         south:
+//         {
+//             x: 170,
+//             y: 520,
+
+//             direction: "up"
+//         }
+//     }
+// };
 
 const maps = {
     town: townMap,
     route1: route1Map,
-    // gym: gymMap
+    // caveEntr: caveEntrMap
 };
 
 let currentMap = townMap;
