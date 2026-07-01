@@ -18,22 +18,34 @@ town.src = "assets/backgrounds/town.png";
 const route = new Image();
 route.src = "assets/backgrounds/rt1 long.png";
 
+const cave_entr = new Image();
+cave_entr.src = "assets/backgrounds/cave entr.png";
+
+const cave = new Image();
+cave.src = "assets/backgrounds/cave.png";
+
 const start_image= new Image();
 start_image.src="assets/backgrounds/start.png";
 
-//const gym
+const lab = new Image();
+lab.src = "assets/backgrounds/lab.png";
 
 //const battle_grass
 const battle_background = new Image();
 battle_background.src = "assets/backgrounds/route1_battle_1.png";
 
 
+const stater_background = new Image();
+stater_background.src = "assets/backgrounds/stater.png";
 
 //audio//
 const music = {
-    town: new Audio("assets/audio/Driftveil City.mp3"),
-    route: new Audio("assets/audio/Route 1.mp3"),
-    battle: new Audio("assets/audio/Battle.mp3"),
+    townBGM: new Audio("assets/audio/Driftveil City.mp3"),
+    routeBGM: new Audio("assets/audio/Route 1.mp3"),
+    labBGM: new Audio("assets/audio/Lab Theme.mp3"),
+    caveEntrBGM: new Audio("assets/audio/Cave Entr.mp3"),
+    caveBGM: new Audio("assets/audio/Cave.mp3"),
+    battleBGM: new Audio("assets/audio/Battle.mp3"),
     // victory: new Audio("assets/audio/victory.mp3")
 }
 
@@ -55,6 +67,7 @@ function playMusic(song) {
     currentSong.currentTime = 0;
     currentSong.play();
 }
+
 const pokedex = {
     1: "bulbasaur",
     2: "ivysaur",
