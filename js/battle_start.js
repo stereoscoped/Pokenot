@@ -23,7 +23,7 @@ let targetFocusY = 0;
 
 function battleTransition() {
     gameState = BATTLE_START;
-    playMusic(currentMap.music);
+    playMusic("battleBGM");
 
     transitionTimer = 0;
     zoomScale = 1;

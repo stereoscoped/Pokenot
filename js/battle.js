@@ -96,7 +96,7 @@ function startBattle() {
     let enemypokemon=enemyPokemon.name;
     battleMessage = "A wild " + enemypokemon.toUpperCase() + " appeared!";
 
-    playMusic(currentMap.music);
+    playMusic("battleBGM");
 }
 
 function makePokemon(name, hp, attack, defense, speed, moves) {
