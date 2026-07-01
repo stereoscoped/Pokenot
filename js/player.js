@@ -2,8 +2,8 @@
 const PLAYER_SCALE = 0.75; // additional scale applied to player sprite and hitbox
 
 let player = {
-    x: 110,
-    y: 167,
+    x: 150,
+    y: 90,
 
     width: 25,
     height: 30,
@@ -14,130 +14,226 @@ let player = {
     frameCounter: 0,
     framesUntilUpdate: 8,
 
-    speed: 2
+    speed: 1.5,
+    jumpOffset: 0,
 };
 
 let playerBox = [];
 
 const animations = {
     down:
-        {
-            startX: 280,
-            startY: 50,
-            frameWidth: 23,
-            frameTot: 4
-        },
+    {
+        startX: 280,
+        startY: 50,
+        frameWidth: 23,
+        frameTot: 4
+    },
 
     up:
-        {
-            startX: 280,
-            startY: 154,
-            frameWidth: 23,
-            frameTot: 4
-        },
+    {
+        startX: 280,
+        startY: 154,
+        frameWidth: 23,
+        frameTot: 4
+    },
 
     right:
-        {
-            startX: 275,
-            startY: 85,
-            frameWidth: 25,
-            frameTot: 4
-        },
+    {
+        startX: 275,
+        startY: 85,
+        frameWidth: 25,
+        frameTot: 4
+    },
 
     left:
-        {
-            startX: 275,
-            startY: 118,
-            frameWidth: 25,
-            frameTot: 4
-        }
+    {
+        startX: 275,
+        startY: 118,
+        frameWidth: 25,
+        frameTot: 4
+    }
 };
 
-// function getPlayerBox() {
-//     return {
-//         x: newX,
-//         y: newY + player.height * .75,
-//         w: player.width,
-//         h: player.height / 4
-//     };
-// }
+let jumpTimer = 0;
+const JUMP_TIME = 18;
+
+let jumping = false;
+let jumpStartY = 0;
+let jumpEndY = 0;
+
+let downHeld = 0;
+const DOWN_HOLD_TIME = 18;
+
+function getPlayerBox(x = player.x, y = player.y) {
+    return {
+        x: x + player.width * PLAYER_SCALE * 0.2,
+        y: y + player.height * PLAYER_SCALE * 0.75,
+        w: player.width * PLAYER_SCALE * 0.6,
+        h: player.height * PLAYER_SCALE / 4
+    };
+}
+
+function startJump(ledge) {
+    jumping = true;
+    jumpTimer = 0;
+    jumpStartY = player.y;
+    jumpEndY = ledge.y + 16;
+}
+
+function updateJump() {
+    jumpTimer++;
+    let t = jumpTimer / JUMP_TIME;
+
+    if (t > 1)
+        t = 1;
+
+    player.y =
+        jumpStartY +
+        (jumpEndY - jumpStartY) * t;
 
 
-function updatePlayer() {
-    let moving = false;
+    player.jumpOffset =
+        -Math.sin(t * Math.PI) * 12;
 
-    let newX = player.x;
-    let newY = player.y;
-
-    //add better world / canvas collisions later
-    if (keys["d"] || keys["arrowright"]) {
-        player.direction = "right";
-        newX += player.speed;
-        moving = true;
+    if (t >= 1) {
+        jumping = false;
+        player.jumpOffset = 0;
     }
+}
 
-    if (keys["a"] || keys["arrowleft"]) {
-        player.direction = "left";
-        newX -= player.speed;
-        moving = true;
-    }
+function movePlayerX(dx) {
+    if (dx === 0)
+        return;
 
-    if (keys["w"] || keys["arrowup"]) {
-        player.direction = "up";
-        newY -= player.speed;
-        moving = true;
-    }
+    let newX = player.x + dx;
 
-    if (keys["s"] || keys["arrowdown"]) {
-        player.direction = "down";
-        newY += player.speed;
-        moving = true;
-    }
-
-    playerBox =
-        {
-            x: newX + player.width * PLAYER_SCALE * .2,
-            y: newY + player.height * PLAYER_SCALE * .75,
-            w: player.width * PLAYER_SCALE * .6,
-            h: (player.height / 4) * PLAYER_SCALE
-        };
+    let box = getPlayerBox(newX, player.y);
 
     let blocked = false;
 
-    //if going to hit collision box, stop moving
-    //causes sticky walls for now, should update later if we stick with this
     for (let wall of currentMap.walls) {
-        if (collides(playerBox, wall)) {
+        if (collides(box, wall)) {
             blocked = true;
             break;
         }
     }
 
     if (!blocked) {
-        // Use map bounds (in map units) not canvas pixels — keep coordinates consistent with MAP_SCALE used when drawing
-        if (newX > 0 && (newX + player.width * PLAYER_SCALE) < currentMap.width) {
-            player.x = newX;
-        }
-        if (newY > 0 && (newY + player.height * PLAYER_SCALE) < currentMap.height) {
-            player.y = newY;
+        player.x = newX;
+    }
+}
+
+function movePlayerY(dy) {
+    if (dy === 0)
+        return;
+
+    let newY = player.y + dy;
+
+    let box = getPlayerBox(player.x, newY);
+
+    let blocked = false;
+
+    for (let wall of currentMap.walls) {
+        if (collides(box, wall)) {
+            blocked = true;
+            break;
         }
     }
 
+    if (!blocked) {
+        playerBox = box;
+        blocked = collideLedges();
+    }
+
+    if (!blocked) {
+        player.y = newY;
+    }
+}
+
+function updatePlayer() {
+    if (jumping) {
+        updateJump();
+        return;
+    }
+
+    let dx = 0;
+    let dy = 0;
+
+    if (keys["d"] || keys["arrowright"])
+        dx++;
+
+    if (keys["a"] || keys["arrowleft"])
+        dx--;
+
+    if (keys["w"] || keys["arrowup"])
+        dy--;
+
+    if (keys["s"] || keys["arrowdown"])
+        dy++;
+
+    //update look dir -> prioritize horizontal
+    if (dx > 0)
+        player.direction = "right";
+    else if (dx < 0)
+        player.direction = "left";
+    else if (dy > 0)
+        player.direction = "down";
+    else if (dy < 0)
+        player.direction = "up";
+
+    //normalize diagonal speed
+    let moving = (dx !== 0 || dy !== 0);
+
     if (moving) {
-        //advance anim sprite every "framesUntilUpdate" frames
-        player.frameCounter++;
+        let length = Math.sqrt(dx * dx + dy * dy);
 
-        if (player.frameCounter > player.framesUntilUpdate) {
-            player.frame =
-                (player.frame + 1) % animations[player.direction].frameTot;
+        dx /= length;
+        dy /= length;
 
-            player.frameCounter = 0;
-        }
+        dx *= player.speed;
+        dy *= player.speed;
+    }
+
+    movePlayerX(dx);
+    movePlayerY(dy);
+
+    player.x = Math.max(
+        0,
+        Math.min(
+            player.x,
+            currentMap.width - player.width * PLAYER_SCALE
+        )
+    );
+
+    player.y = Math.max(
+        0,
+        Math.min(
+            player.y,
+            currentMap.height - player.height * PLAYER_SCALE
+        )
+    );
+
+    //update hitbox
+    playerBox = getPlayerBox();
+
+    //collision checks that dont affect movement
+    if (moving) {
         collideGrass();
         collideMapChange();
     }
+
+    if (moving) {
+        player.frameCounter++;
+
+        if (player.frameCounter > player.framesUntilUpdate) {
+            player.frame++;
+            player.frame %= animations[player.direction].frameTot;
+            player.frameCounter = 0;
+        }
+    }
     else {
         player.frame = 1;
+        player.frameCounter = 0;
     }
 }
 
@@ -160,8 +256,25 @@ function drawPlayer() {
 
     let drawY =
         player.y * MAP_SCALE -
-        camera.y;
+        camera.y +
+        player.jumpOffset;
 
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        drawX + player.width * MAP_SCALE * PLAYER_SCALE / 2,
+        player.y * MAP_SCALE - camera.y + player.height * MAP_SCALE * PLAYER_SCALE,
+
+        10,
+        4,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
     ctx.drawImage(
         trainer,
 
