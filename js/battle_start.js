@@ -1,140 +1,179 @@
-let transitionTimer = 0;
-
-const SHAKE_TIME = 30;          //delay until battle music starts
-let shakeX = 0;
-let shakeY = 0;
-
-const TRANSITION_TIME = 180;   // 180 frames -> 3s@60fps
-let zoomScale = 1;
-
-const CAMERA_FOCUS = 0.75;
-//0 -> zoom center of screen
-//1 -> exactly on player
-
-let focusX = 0;
-let focusY = 0;
-
-let startFocusX = 0;
-let startFocusY = 0;
-
-let targetFocusX = 0;
-let targetFocusY = 0;
-
-
-function battleTransition() {
-    gameState = BATTLE_START;
-    playMusic("battle");
-
-    transitionTimer = 0;
-    zoomScale = 1;
-
-    //current screen in world coords
-    startFocusX =
-        camera.x + canvas.width / 2;
-
-    startFocusY =
-        camera.y + canvas.height / 2;
-
-    //player in world coords
-    let playerCenterX =
-        player.x * MAP_SCALE +
-        (player.width * PLAYER_SCALE * MAP_SCALE) / 2;
-
-    let playerCenterY =
-        player.y * MAP_SCALE +
-        (player.height * PLAYER_SCALE * MAP_SCALE) / 2;
-
-    //start from center
-    focusX = startFocusX;
-    focusY = startFocusY;
-
-    //zoom toward player based on camera_focus
-    targetFocusX =
-        startFocusX +
-        (playerCenterX - startFocusX) * CAMERA_FOCUS;
-
-    targetFocusY =
-        startFocusY +
-        (playerCenterY - startFocusY) * CAMERA_FOCUS;
-}
-
-function updateTransition() {
-
-    transitionTimer++;
-
-    if (transitionTimer < SHAKE_TIME) {
-        // random shake
-        shakeX = (Math.random() - 0.5) * 10;
-        shakeY = (Math.random() - 0.5) * 10;
-
-        zoomScale = 1;
-    }
-    else {
-        // stop shaking
-        shakeX = 0;
-        shakeY = 0;
-
-        // zoom to target
-        let t =
-            (transitionTimer - SHAKE_TIME) /
-            (TRANSITION_TIME - SHAKE_TIME);
-
-        t = Math.min(t, 1);
-        t = 1 - Math.pow(1 - t, 3);
-
-        zoomScale = 1 + 2 * t;
-
-        focusX =
-            startFocusX +
-            (targetFocusX - startFocusX) * t;
-
-        focusY =
-            startFocusY +
-            (targetFocusY - startFocusY) * t;
-    }
-
-    if (transitionTimer >= TRANSITION_TIME) {
-        zoomScale = 1;
-        startBattle();
-    }
-}
-
-function drawTransition() {
+function drawBattle() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
 
-    ctx.translate(
-        canvas.width / 2 + shakeX,
-        canvas.height / 2 + shakeY
-    );
+    drawBattleBackground();
+    drawPokemonInfo();
+    drawBattleTextBox();
+    drawBattleMenu();
+}
+function drawBattleBackground() {
+    ctx.fillStyle = "lightgreen";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.scale(zoomScale, zoomScale);
-
-    //move focus point to screen center
-    ctx.translate(
-        -focusX,
-        -focusY
-    );
-
-    //draw map
     ctx.drawImage(
-        currentMap.image,
+        battle_background,
         0,
         0,
-        currentMap.width * MAP_SCALE,
-        currentMap.height * MAP_SCALE
+        canvas.width,
+        canvas.height
     );
+}
+function drawPokemonInfo() {
+    ctx.fillStyle = "black";
 
-    // for (let wall of currentMap.walls) {
-    //     ctx.strokeRect(
-    //         wall.x * MAP_SCALE,
-    //         wall.y * MAP_SCALE,
-    //         wall.w * MAP_SCALE,
-    //         wall.h * MAP_SCALE
-    //     );
-    // }
+    drawHealthText(enemyPokemon,1, 50, 55);
+    drawHealthText(playerPokemon,0, 500, 375);
+}
 
-    drawPlayerTransition();
+function drawHealthText(pokemon,who, x, y) {
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "#324128";
+    ctx.beginPath();
+    ctx.fillStyle = "#FEFCE1";
+    // 0 is mypokemo
+    if(who === 1){
+        ctx.fillStyle = "#FEFCE1";
 
-    ctx.restore();
+        ctx.roundRect(x-20, y-40, 240, 90,  [30, 30, 0, 30]);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.fillStyle = "gold";
+
+        ctx.moveTo(x+250, y);
+        ctx.lineTo(x+245-20, y-15);
+        ctx.lineTo(x+245-20, y+15);
+        ctx.lineTo(x+250, y);
+        ctx.fill()
+
+        ctx.stroke()
+    }
+    if(who === 0){
+        ctx.fillStyle = "#FEFCE1";
+        ctx.roundRect(x-20, y-40, 240, 90,  [30, 30, 50, 0]);
+
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.fillStyle = "gold";
+
+        ctx.moveTo(x-50, y);
+        ctx.lineTo(x-25, y-15);
+        ctx.lineTo(x-25, y+15);
+        ctx.lineTo(x-50, y);
+        ctx.fill()
+
+        ctx.stroke()
+    }
+
+
+
+    let uppercasename=pokemon.name;
+    ctx.fillStyle = "black";
+    ctx.fillText(uppercasename.toUpperCase(), x, y);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.roundRect(x+50, y+10, 150, 20,40);
+    ctx.fill();
+    ctx.stroke();
+
+    let color;
+    if(pokemon.hp < 55 && pokemon.hp >30){
+        color= "#F7E563";
+    }
+    if(pokemon.hp >= 55){
+        color= "#95E8A4";
+    }
+    if(pokemon.hp <=30){
+        color= "#DA6546";
+
+    }
+
+    ctx.beginPath();
+    let hp=(pokemon.hp/pokemon.maxHp)*150
+    ctx.fillStyle = color;
+    ctx.roundRect(x+50, y+10, hp, 20,20);
+    ctx.lineWidth = 3;
+    ctx.fill();
+    ctx.fillStyle = "black";
+
+    ctx.fillText(
+        "HP: " + pokemon.hp + "/" + pokemon.maxHp,
+        x,
+        y + 30
+    );
+}
+
+function drawBattleTextBox() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 450, canvas.width, 150);
+
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.fillStyle = "#19345A";
+    ctx.fillRect(10, 460,canvas.width-320, 130);
+
+    ctx.stroke()
+    ctx.strokeRect(0, 450, canvas.width, 150);
+
+    ctx.fillStyle = "white";
+    ctx.font = "18px 'Press Start 2P'";
+    drawWrappedBattleMessage(battleMessage, 45, 500, 420, 28);
+}
+
+function drawWrappedBattleMessage(text, x, y, maxWidth, lineHeight) {
+    let words = text.split(" ");
+    let line = "";
+
+    for (let i = 0; i < words.length; i++) {
+        let testLine = line + words[i] + " ";
+        let testWidth = ctx.measureText(testLine).width;
+
+        if (testWidth > maxWidth && i > 0) {
+            ctx.fillText(line, x, y);
+            line = words[i] + " ";
+            y += lineHeight;
+        } else {
+            line = testLine;
+        }
+    }
+
+    ctx.fillText(line, x, y);
+}
+
+function drawBattleMenu() {
+    let options = getBattleOptions();
+
+    let menuWidth = 300;
+    let menuHeight = 200;
+    let menuX = canvas.width - menuWidth;
+    let menuY = 450;
+
+    ctx.fillStyle = "#f8f8f8";
+    ctx.fillRect(menuX, menuY, menuWidth, menuHeight);
+
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(menuX, menuY, menuWidth, menuHeight);
+
+
+    ctx.font = "18px 'Press Start 2P'";
+
+    for (let i = 0; i < options.length; i++) {
+        let optionY = menuY + 38 + i * 27;
+
+        if (i === selectedBattleOption) {
+            ctx.fillStyle = "#dcdcdc";
+            ctx.fillRect(menuX + 10, optionY - 24, menuWidth - 20, 30);
+
+            ctx.fillStyle = "black";
+            ctx.fillText("> " + options[i], menuX + 25, optionY);
+        } else {
+            ctx.fillStyle = "black";
+            ctx.fillText(options[i], menuX + 50, optionY);
+        }
+    }
 }
