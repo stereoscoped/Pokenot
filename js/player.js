@@ -2,8 +2,8 @@
 const PLAYER_SCALE = 0.75; // additional scale applied to player sprite and hitbox
 
 let player = {
-    x: 110,
-    y: 167,
+    x: 150,
+    y: 90,
 
     width: 25,
     height: 30,

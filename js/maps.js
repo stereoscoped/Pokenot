@@ -1,9 +1,47 @@
+const labMap = {
+    name: "lab",
+
+    image: lab,
+
+    music: "labBGM",
+
+    width: 320,
+    height: 277,
+    walls: [],
+
+    ledges: [],
+
+    grass: [],
+
+    exits: [
+        {
+            x: 137,
+            y: 275,
+            w: 50,
+            h: 30,
+
+            destination: "town",
+            entrance: "lab"
+        },
+    ],
+
+    spawnPoints: {
+        door:
+        {
+            x: 150,
+            y: 250,
+
+            direction: "up"
+        }
+    }
+};
+
 const townMap = {
     name: "Town",
 
     image: town,
 
-    music: "town",
+    music: "townBGM",
 
     width: 320,
     height: 280,
@@ -51,10 +89,10 @@ const townMap = {
         // =========================
 
         // sign beside left house
-        { x: 50, y: 78, w: 13, h: 14 },
+        { x: 50, y: 78, w: 13, h: 12 },
 
         // sign beside right house
-        { x: 178, y: 78, w: 13, h: 14 },
+        { x: 179, y: 78, w: 13, h: 12 },
 
 
         // =========================
@@ -89,6 +127,15 @@ const townMap = {
 
             destination: "route1",
             entrance: "south"
+        },
+        {
+            x: 197,
+            y: 175,
+            w: 13,
+            h: 10,
+
+            destination: "lab",
+            entrance: "door"
         }
     ],
 
@@ -97,6 +144,13 @@ const townMap = {
         {
             x: 175,
             y: 30,
+
+            direction: "down"
+        },
+        lab:
+        {
+            x: 195,
+            y: 175,
 
             direction: "down"
         }
@@ -109,7 +163,7 @@ const route1Map = {
 
     image: route,
 
-    music: "route",
+    music: "routeBGM",
 
     width: 320,
     height: 576,
@@ -139,10 +193,10 @@ const route1Map = {
         { x: 148, y: 65, w: 12, h: 92 },
 
         // left pair of bushes/trees
-        { x: 78, y: 200, w: 28, h: 22 },
+        { x: 75, y: 205, w: 28, h: 18 },
 
         // center pair of bushes/trees
-        { x: 162, y: 200, w: 30, h: 20 },
+        { x: 162, y: 205, w: 30, h: 18 },
 
         // lower horizontal tree row
         // ends before x = 192 so it does NOT block your lower-right grass
@@ -243,16 +297,22 @@ const caveEntrMap = {
 
     image: cave_entr,
 
-    music: "route",
+    music: "caveEntrBGM",
 
     width: 320,
     height: 568,
     walls: [
         // left wall
         { x: 0, y: 0, w: 136, h: 440 },
+        { x: 0, y: 0, w: 70, h: 4400 },
+        { x: 0, y: 545, w: 95, h: 400 },
+
 
         // // right wall
         { x: 182, y: 0, w: 136, h: 440 },
+        { x: 250, y: 0, w: 70, h: 4400 },
+        { x: 225, y: 545, w: 70, h: 4400 },
+
     ],
 
     ledges: [],
@@ -303,11 +363,24 @@ const caveMap = {
 
     image: cave,
 
-    music: "route",
+    music: "caveBGM",
 
     width: 320,
     height: 480,
-    walls: [],
+    walls: [
+        { x: 0, y: 0, w: 1000, h: 166 },
+        { x: 0, y: 420, w: 1000, h: 166 },
+    
+
+        { x: 0, y: 0, w: 90, h: 1000 },
+        { x: 0, y: 275, w: 145, h: 15 },
+        { x: 0, y: 280, w: 130, h: 4400 },
+
+        { x: 230, y: 0, w: 90, h: 1000 },
+        { x: 175, y: 275, w: 145, h: 15 },
+        { x: 190, y: 280, w: 130, h: 4400 },
+
+    ],
 
     ledges: [],
 
@@ -348,7 +421,8 @@ const maps = {
     town: townMap,
     route1: route1Map,
     caveEntr: caveEntrMap,
-    cave: caveMap
+    cave: caveMap,
+    lab: labMap
 };
 
-let currentMap = townMap;
+let currentMap = labMap;
