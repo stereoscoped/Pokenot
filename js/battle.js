@@ -70,7 +70,7 @@ function startBattle() {
     battleOver = false;
     battleMessage = "A wild " + enemyPokemon.name + " appeared!";
 
-    playMusic("battle");
+    playMusic("battleBGM");
 }
 
 function makePokemon(name, hp, attack, defense, speed, moves) {

@@ -1,13 +1,8 @@
 let grassParticles = [];
 const MAX_GRASS_PARTICLES = 100;
 
-// let playerBox =
-// {
-//     x: player.x,
-//     y: player.y + player.height / 2,
-//     w: player.width,
-//     h: player.height / 2
-// };
+let touchingLedge = false;
+let ledgeHoldTimer = 0;
 
 //collision check btwn objects
 function collides(a, b) {
@@ -21,11 +16,49 @@ function collides(a, b) {
 
 //func collideWall(){}
 
+function collideLedges() {
+    let onLedge = false;
+
+    for (let ledge of currentMap.ledges) {
+        if (!collides(playerBox, ledge))
+            continue;
+
+        onLedge = true;
+
+        let fromTop =
+            player.y + player.height < ledge.y + 8;
+
+        if (!fromTop)
+            return true;
+
+        if (keys["s"] || keys["arrowdown"]) {
+            ledgeHoldTimer++;
+
+            if (ledgeHoldTimer >= DOWN_HOLD_TIME) {
+                startJump(ledge);
+                ledgeHoldTimer = 0;
+                return false;
+            }
+        }
+        else {
+            ledgeHoldTimer = 0;
+        }
+        return true;
+    }
+
+    // Not touching any ledge anymore
+    if (!onLedge) {
+        ledgeHoldTimer = 0;
+    }
+
+    return false;
+}
+
 function collideMapChange() {
     // console.log("calling collide map change func");
     for (let exit of currentMap.exits) {
         if (collides(playerBox, exit)) {
-            console.log("loading " + exit.destination);
+            console.log("loading " + exit.destination + ": " + exit.entrance);
             loadMap(
                 exit.destination,
                 exit.entrance

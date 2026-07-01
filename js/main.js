@@ -45,7 +45,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-
 trainer.onload = function () {
     loadPokemonDatabase();
     gameLoop();

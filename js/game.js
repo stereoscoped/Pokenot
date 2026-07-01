@@ -8,4 +8,4 @@ const WIN = "win";
 const LOSE = "lose";
 
 let gameState = MENU;
-playMusic(currentMap.music);
+// playMusic(currentMap.music);
