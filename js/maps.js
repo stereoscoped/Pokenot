@@ -7,11 +7,41 @@ const labMap = {
 
     width: 320,
     height: 277,
-    walls: [],
+    walls: [
+        //back wall
+        { x: 0, y: 0, w: 1000, h: 35 },
+        { x: 0, y: 0, w: 100, h: 55 },
+        { x: 125, y: 0, w: 65, h: 65 },
+        { x: 193, y: 0, w: 10, h: 53 },
+        { x: 235, y: 0, w: 1000, h: 55 },
+
+        //left wall
+        { x: 15, y: 90, w: 75, h: 60 },
+        { x: 0, y: 125, w: 20, h: 25 },
+        { x: 90, y: 130, w: 15, h: 15 },
+        { x: 0, y: 175, w: 90, h: 55 },
+        { x: 0, y: 175, w: 20, h: 550 },
+
+        //close wall
+        { x: 0, y: 255, w: 120, h: 55 },
+        { x: 115, y: 225, w: 15, h: 55 },
+        { x: 188, y: 225, w: 15, h: 55 },
+        { x: 200, y: 255, w: 100, h: 55 },
+
+        //right
+        { x: 220, y: 206, w: 100, h: 55 },
+        { x: 215, y: 140, w: 85, h: 55 },
+        { x: 300, y: 125, w: 65, h: 30 },
+        { x: 202, y: 160, w: 15, h: 15 },
+    ],
 
     ledges: [],
 
     grass: [],
+
+    healZones: [
+        { x: 250, y: 50, w: 30, h: 10 },
+    ],
 
     exits: [
         {
@@ -117,6 +147,8 @@ const townMap = {
     ledges: [],
 
     grass: [],
+
+    healZones: [],
 
     exits: [
         {
@@ -250,8 +282,10 @@ const route1Map = {
         { x: 160, y: 95, w: 200, h: 65 },
         { x: 225, y: 190, w: 200, h: 65 },
         { x: 192, y: 350, w: 63, h: 65 },
-        { x: 64, y: 450, w: 250, h: 250 },
+        { x: 64, y: 460, w: 250, h: 250 },
     ],
+
+    healZones: [],
 
     exits: [
         {
@@ -319,6 +353,8 @@ const caveEntrMap = {
 
     grass: [],
 
+    healZones: [],
+
     exits: [
         {
             x: 95,
@@ -385,6 +421,8 @@ const caveMap = {
     ledges: [],
 
     grass: [],
+    
+    healZones: [],
 
     exits: [
         {

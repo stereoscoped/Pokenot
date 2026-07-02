@@ -48,3 +48,79 @@ async function loadPokemonDatabase() {
         console.error("Failed to integrate database with game system:", error);
     }
 }
+
+let canHeal = true;
+let healTimer = 0;
+const HEAL_TIME = 150;
+let previousMusic = "";
+
+function startHeal() {
+    if (gameState !== OVERWORLD)
+        return;
+
+    gameState = HEAL;
+    healTimer = 0;
+    previousMusic = currentMap.music;
+
+    if (currentSong)
+        currentSong.pause();
+
+    playSound("teamHeal", 1);
+
+    healParty();
+    canHeal = false;
+}
+
+function updateHeal() {
+    healTimer++;
+
+    if (healTimer >= HEAL_TIME) {
+        if (currentSong)
+            currentSong.play();
+
+        gameState = OVERWORLD;
+    }
+}
+
+function drawHeal() {
+    drawOverworld();
+
+    if (healTimer > 30) {
+        let alpha =
+            0.20 +
+            Math.sin(healTimer * 0.20) * 0.10;
+
+        //green glow
+        ctx.fillStyle = `rgba(120,255,150,${alpha})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        //white glow
+        ctx.fillStyle = `rgba(255,255,255,${alpha * 0.35})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+
+
+function healParty() {
+    for (let pokemon of playerTeam) {
+        pokemon.hp = pokemon.maxHP;
+    }
+
+}
+
+
+
+function addPokemonToPlayerTeam(pokemon) {
+    playerTeam.push(pokemon);
+    //console.log("player team test", playerTeam);
+
+}
+
+function addPokemonToEnemyTeam(pokemon) {
+    enemyTeam.push(pokemon);
+}
+
+function clearEnemyTeam() {
+    enemyTeam = [];
+}

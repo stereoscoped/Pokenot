@@ -17,7 +17,7 @@ let mainBattleOptions = ["Fight", "Heal", "Switch", "Run"];
 let attackOptions = [];
 let switchOptions = [];
 let healOptions = ["Use Potion", "Back"];
-
+ 
 // TEMPORARY!!! replace with player's inventory from DB
 let healingPotions = 3;
 let potionHealAmount = 4;
@@ -32,11 +32,11 @@ function startBattle() {
     let enemyPokemonSprite = document.getElementById("encounterpokemon");
 
     // TEMPORARY!!! currently random pokemon sprites will appear
-    let randomNum = Math.floor(Math.random() * 151) + 1;
-    let randomNum2 = Math.floor(Math.random() * 151) + 1;
-
-    let pokemonName = pokedex[randomNum];
-    let pokemonName2 = pokedex[randomNum2];
+    let randomNum = Math.floor(Math.random() * pokeDex.length);
+    let randomNum2 = Math.floor(Math.random() * pokeDex.length);
+    //Player's first pokemon is always the first in the pokedex for now, enemy is random
+    let pokemonName = playerTeam[0].name;
+    let pokemonName2 = pokeDex[randomNum2].name;
 
     myPokemon.src = `assets/pokemon_back_sprites/${pokemonName}.gif`;
     enemyPokemonSprite.src = `assets/pokemon_front_sprites/${pokemonName2}.gif`;
@@ -170,7 +170,6 @@ function getBattleOptions() {
 
         return switchOptions.concat(["Back"]);
     }
-
 
     return mainBattleOptions;
 }
@@ -334,7 +333,7 @@ function enemyAttack() {
 // TEMPORARY!!! basic damage formula, replace later with DB/stat/business rules
 function getDamage(attacker, defender, move) {
     let randomBonus = Math.floor(Math.random() * 6);
-    let damage = move.power + attacker.attack - defender.defense + randomBonus;
+    let damage = attacker.attack - defender.defense + randomBonus;
 
     if (damage < 1) {
         damage = 1;
