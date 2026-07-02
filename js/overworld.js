@@ -15,6 +15,7 @@ function loadMap(mapName, entrance) {
     camera.x = 0;
     camera.y = 0;
 
+    canHeal = true;
     playMusic(currentMap.music);
 }
 
@@ -78,50 +79,74 @@ function drawOverworld() {
         currentMap.height * MAP_SCALE
     );
 
-    //debug collision boxes
-    for (let wall of currentMap.walls) {
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(
-            wall.x * MAP_SCALE - camera.x,
-            wall.y * MAP_SCALE - camera.y,
+//     //debug collision boxes
+//     for (let wall of currentMap.walls) {
+//         ctx.strokeStyle = "black";
+//         ctx.strokeRect(
+//             wall.x * MAP_SCALE - camera.x,
+//             wall.y * MAP_SCALE - camera.y,
 
-            wall.w * MAP_SCALE,
-            wall.h * MAP_SCALE
-        );
-    }
+//             wall.w * MAP_SCALE,
+//             wall.h * MAP_SCALE
+//         );
+//     }
 
-    //debug grass
-    for (let gras of currentMap.grass) {
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(
-            gras.x * MAP_SCALE - camera.x,
-            gras.y * MAP_SCALE - camera.y,
-            gras.w * MAP_SCALE,
-            gras.h * MAP_SCALE
-        );
-    }
+//    //debug collision boxes
+//     for (let ledge of currentMap.ledges) {
+//         ctx.strokeStyle = "white";
+//         ctx.strokeRect(
+//             ledge.x * MAP_SCALE - camera.x,
+//             ledge.y * MAP_SCALE - camera.y,
 
-    //debug exit
-    for (let exit of currentMap.exits) {
-        ctx.strokeStyle = "blue";
-        ctx.strokeRect(
-            exit.x * MAP_SCALE - camera.x,
-            exit.y * MAP_SCALE - camera.y,
-            exit.w * MAP_SCALE,
-            exit.h * MAP_SCALE
-        );
-    }
+//             ledge.w * MAP_SCALE,
+//             ledge.h * MAP_SCALE
+//         );
+//     }
 
-    //debug player collision box
-    if (playerBox && typeof playerBox.x !== 'undefined') {
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(
-            playerBox.x * MAP_SCALE - camera.x,
-            playerBox.y * MAP_SCALE - camera.y,
-            playerBox.w * MAP_SCALE,
-            playerBox.h * MAP_SCALE
-        );
-    }
+//     //debug heal zone
+//     for (let zone of currentMap.healZones) {
+//         ctx.strokeStyle = "green";
+//         ctx.strokeRect(
+//             zone.x * MAP_SCALE - camera.x,
+//             zone.y * MAP_SCALE - camera.y,
+
+//             zone.w * MAP_SCALE,
+//             zone.h * MAP_SCALE
+//         );
+//     }
+
+//     //debug grass
+//     for (let gras of currentMap.grass) {
+//         ctx.strokeStyle = "red";
+//         ctx.strokeRect(
+//             gras.x * MAP_SCALE - camera.x,
+//             gras.y * MAP_SCALE - camera.y,
+//             gras.w * MAP_SCALE,
+//             gras.h * MAP_SCALE
+//         );
+//     }
+
+//     //debug exit
+//     for (let exit of currentMap.exits) {
+//         ctx.strokeStyle = "blue";
+//         ctx.strokeRect(
+//             exit.x * MAP_SCALE - camera.x,
+//             exit.y * MAP_SCALE - camera.y,
+//             exit.w * MAP_SCALE,
+//             exit.h * MAP_SCALE
+//         );
+//     }
+
+//     //debug player collision box
+//     if (playerBox && typeof playerBox.x !== 'undefined') {
+//         ctx.strokeStyle = "black";
+//         ctx.strokeRect(
+//             playerBox.x * MAP_SCALE - camera.x,
+//             playerBox.y * MAP_SCALE - camera.y,
+//             playerBox.w * MAP_SCALE,
+//             playerBox.h * MAP_SCALE
+//         );
+//     }
 
     drawPlayer();
     drawGrassParticles();
