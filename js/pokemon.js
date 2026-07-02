@@ -5,13 +5,12 @@ class Pokemon {
         this.id = parseInt(data.id);
         this.name = data.name;
         this.hp = parseInt(data.hp);
-        this.maxHp = parseInt(data.hp);
+        this.maxHP = parseInt(data.hp);
         this.attack = parseInt(data.attack);
         this.defense = parseInt(data.defense);
         this.speed = parseInt(data.speed);
-        this.imageUrl = data.image_url;
-
-        this.attacks = data.moves || [];
+        this.image_url = data.image_url; 
+        this.moves = data.moves || []; 
     }
 }
 
@@ -36,12 +35,14 @@ async function loadPokemonDatabase() {
 
         // Transform raw database rows into instance objects
         pokeDex = rawData.map(item => new Pokemon(item));
-        console.log("Database Integration Successful! Master Roster:", pokeDex);
+        console.log("Database Integration Successful!", pokeDex);
+        
 
-        // TEMPORARY SEED FOR TEAM BATTLE UI TESTING:
         if (pokeDex.length >= 2) {
-            playerTeam = [pokeDex[0]]; // Pikachu
-            enemyTeam = [pokeDex[1]];  // Bulbasaur
+            playerTeam[0] = pokeDex[150]; 
+            enemyTeam[0] = pokeDex[1];  
+            console.log("player team test", playerTeam);
+            console.log("enemy team test", enemyTeam);
         }
 
     } catch (error) {
