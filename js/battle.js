@@ -65,7 +65,9 @@ function startBattle() {
     battleMenu = "main";
     battleOver = false;
     let enemypokemon=enemyPokemon.name;
-    battleMessage = "A wild " + enemypokemon.toUpperCase() + " appeared!";
+    let rarity = getRarity(enemyPokemon);
+
+    battleMessage = "A wild " + rarity.toUpperCase() + " " + enemyPokemon.name.toUpperCase() + " appeared!";
 
     // start intro animation timeline
     startBattleIntro();

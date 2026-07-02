@@ -157,7 +157,7 @@ function drawBattleTextBox() {
     ctx.stroke()
     ctx.strokeRect(0, 450, canvas.width, 150);
 
-    ctx.fillStyle = "white";
+    ctx.fillStyle = getRarityColor(enemyPokemon);
     ctx.font = "18px 'Press Start 2P'";
     drawWrappedBattleMessage(battleMessage, 45, 500, 420, 28);
 }
