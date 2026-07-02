@@ -46,7 +46,7 @@ const music = {
     caveEntrBGM: new Audio("assets/audio/Cave Entr.mp3"),
     caveBGM: new Audio("assets/audio/Cave.mp3"),
     battleBGM: new Audio("assets/audio/Battle.mp3"),
-    // victory: new Audio("assets/audio/victory.mp3")
+    victory: new Audio("assets/audio/Victory.mp3")
 }
 
 for (let song in music) {
