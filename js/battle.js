@@ -32,8 +32,8 @@ function startBattle() {
     let enemyPokemonSprite = document.getElementById("encounterpokemon");
 
     // TEMPORARY!!! currently random pokemon sprites will appear
-    let randomNum = Math.floor(Math.random() * 151) + 1;
-    let randomNum2 = Math.floor(Math.random() * 151) + 1;
+    let randomNum = Math.floor(Math.random() * pokeDex.length);
+    let randomNum2 = Math.floor(Math.random() * pokeDex.length);
     //Player's first pokemon is always the first in the pokedex for now, enemy is random
     let pokemonName = playerTeam[0].name;
     let pokemonName2 = pokeDex[randomNum2].name;
@@ -46,7 +46,7 @@ function startBattle() {
 
     playerPokemon = playerTeam[0]; // First Pokemon of the player's team
 
-    enemyPokemon = pokeDex[randomNum2]; // Random Pokenot
+    enemyPokemon = structuredClone(pokeDex[randomNum2]); // Random Pokenot
 
     attackOptions = playerPokemon.moves.map(function(move) {
         return move.name;
@@ -60,17 +60,6 @@ function startBattle() {
     playMusic("battleBGM");
 }
 
-function makePokemon(name, hp, attack, defense, speed, moves) {
-    return {
-        name: name,
-        hp: hp,
-        maxHp: hp,
-        attack: attack,
-        defense: defense,
-        speed: speed,
-        moves: moves
-    };
-}
 
 function updateBattle() {
     let options = getBattleOptions();
@@ -211,7 +200,7 @@ function usePotion() {
         return;
     }
 
-    if (playerPokemon.hp >= playerPokemon.maxHp) {
+    if (playerPokemon.hp >= playerPokemon.maxHP) {
         battleMessage = playerPokemon.name + " already has full HP!";
         battleMenu = "main";
         selectedBattleOption = 0;
@@ -222,8 +211,8 @@ function usePotion() {
 
     playerPokemon.hp += potionHealAmount;
 
-    if (playerPokemon.hp > playerPokemon.maxHp) {
-        playerPokemon.hp = playerPokemon.maxHp;
+    if (playerPokemon.hp > playerPokemon.maxHP) {
+        playerPokemon.hp = playerPokemon.maxHP;
     }
 
     healingPotions--;

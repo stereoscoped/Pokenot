@@ -55,7 +55,18 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-trainer.onload = function () {
-    loadPokemonDatabase();
+
+trainer.onload = async function() {
+    await loadPokemonDatabase();
+    //Plays intro and adds starter 
+
+    //temp just a pikachu for now
+    addPokemonToPlayerTeam(structuredClone(pokeDex[24])); // Pikachu as starter
+    addPokemonToPlayerTeam(structuredClone(pokeDex[0])); // Ivysaur as starter
+    addPokemonToPlayerTeam(structuredClone(pokeDex[3])); // charmander as starter
+    addPokemonToPlayerTeam(structuredClone(pokeDex[6])); // squirtle as starter
+    console.log("player team test", playerTeam);
+    
+    
     gameLoop();
 };
