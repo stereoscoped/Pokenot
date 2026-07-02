@@ -38,12 +38,10 @@ async function loadPokemonDatabase() {
         console.log("Database Integration Successful!", pokeDex);
         
 
-        if (pokeDex.length >= 2) {
-            playerTeam[0] = pokeDex[150]; 
-            enemyTeam[0] = pokeDex[1];  
-            console.log("player team test", playerTeam);
-            console.log("enemy team test", enemyTeam);
-        }
+        playerTeam[0] = pokeDex[150]; 
+        //enemyTeam[0] = pokeDex[1];  
+        console.log("player team test", playerTeam);
+        //console.log("enemy team test", enemyTeam);
 
     } catch (error) {
         console.error("Failed to integrate database with game system:", error);
@@ -68,8 +66,7 @@ function startHeal() {
 
     playSound("teamHeal", 1);
 
-    console.log("TODO: make this actually heal")
-    // healParty();
+    healParty();
     canHeal = false;
 }
 
@@ -100,4 +97,28 @@ function drawHeal() {
         ctx.fillStyle = `rgba(255,255,255,${alpha * 0.35})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
+}
+
+
+
+function healParty() {
+    for (let pokemon of playerTeam) {
+        pokemon.hp = pokemon.maxHP;
+    }
+
+}
+
+
+
+function addPokemonToPlayerTeam(pokemon) {
+    playerTeam.push(pokemon);
+
+}
+
+function addPokemonToEnemyTeam(pokemon) {
+    enemyTeam.push(pokemon);
+}
+
+function clearEnemyTeam() {
+    enemyTeam = [];
 }
