@@ -25,9 +25,9 @@ function startBattle() {
     // TEMPORARY!!! currently random pokemon sprites will appear
     let randomNum = Math.floor(Math.random() * 151) + 1;
     let randomNum2 = Math.floor(Math.random() * 151) + 1;
-
-    let pokemonName = pokedex[randomNum];
-    let pokemonName2 = pokedex[randomNum2];
+    //Player's first pokemon is always the first in the pokedex for now, enemy is random
+    let pokemonName = pokeDex[0].name;
+    let pokemonName2 = pokeDex[randomNum2].name;
 
     myPokemon.src = `assets/pokemon_back_sprites/${pokemonName}.gif`;
     enemyPokemonSprite.src = `assets/pokemon_front_sprites/${pokemonName2}.gif`;
@@ -35,31 +35,9 @@ function startBattle() {
     myPokemon.style.visibility = "visible";
     enemyPokemonSprite.style.visibility = "visible";
 
-    // TEMPORARY!!! replace with player's selected Pokenot from DB
-    playerPokemon = makePokemon(
-        pokemonName,
-        100,
-        15,
-        5,
-        10,
-        [
-            { name: "Tackle", power: 12 },
-            { name: "Fire Blast", power: 22 }
-        ]
-    );
+    playerPokemon = pokeDex[0]; // Pikachu
 
-    // TEMPORARY!!! replace with enemy/wild Pokenot from DB or encounter table
-    enemyPokemon = makePokemon(
-        pokemonName2,
-        100,
-        12,
-        4,
-        8,
-        [
-            { name: "Scratch", power: 10 },
-            { name: "Bite", power: 16 }
-        ]
-    );
+    enemyPokemon = pokeDex[randomNum2]; // Random Pokenot
 
     attackOptions = playerPokemon.moves.map(function(move) {
         return move.name;
@@ -205,7 +183,7 @@ function enemyAttack() {
 // TEMPORARY!!! basic damage formula, replace later with DB/stat/business rules
 function getDamage(attacker, defender, move) {
     let randomBonus = Math.floor(Math.random() * 6);
-    let damage = move.power + attacker.attack - defender.defense + randomBonus;
+    let damage = attacker.attack - defender.defense + randomBonus;
 
     if (damage < 1) {
         damage = 1;
