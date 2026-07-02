@@ -41,8 +41,14 @@ function startBattle() {
     myPokemon.src = `assets/pokemon_back_sprites/${pokemonName}.gif`;
     enemyPokemonSprite.src = `assets/pokemon_front_sprites/${pokemonName2}.gif`;
 
-    myPokemon.style.visibility = "visible";
-    enemyPokemonSprite.style.visibility = "visible";
+    //start hidden
+    myPokemon.style.visibility = "hidden";
+    enemyPokemonSprite.style.visibility = "hidden";
+
+    // position enemy off-screen to match intro start
+    enemyPokemonSprite.style.left = (typeof battleIntro.enemyX !== 'undefined') ? battleIntro.enemyX + 'px' : '-200px';
+    // ensure player sprite fully transparent until its phase
+    myPokemon.style.opacity = '0';
 
     // TEMPORARY!!! replace with player's selected Pokenot from DB
     playerTeam = [
@@ -96,7 +102,8 @@ function startBattle() {
     let enemypokemon=enemyPokemon.name;
     battleMessage = "A wild " + enemypokemon.toUpperCase() + " appeared!";
 
-    playMusic("battleBGM");
+    // start intro animation timeline
+    startBattleIntro();
 }
 
 function makePokemon(name, hp, attack, defense, speed, moves) {
@@ -112,6 +119,12 @@ function makePokemon(name, hp, attack, defense, speed, moves) {
 }
 
 function updateBattle() {
+
+    if (battleIntro.active) {
+        updateBattleIntro();
+        return;
+    }
+
     let options = getBattleOptions();
 
     if (keys["arrowup"] || keys["w"]) {
