@@ -1,6 +1,5 @@
 USE pokemon_battle;
 
-
 DELETE FROM pokemon;
 DELETE FROM attacks;
 
@@ -34,7 +33,7 @@ INSERT INTO pokemon (id, name, hp, attack, defense, speed, image_url) VALUES
 (26, 'Raichu',     60, 90, 55, 110, 'assets/pokemon_front_sprites/raichu.png'),
 (27, 'Sandshrew',  50, 75, 85, 40, 'assets/pokemon_front_sprites/sandshrew.png'),
 (28, 'Sandslash',  75, 100, 110, 65, 'assets/pokemon_front_sprites/sandslash.png'),
-(29, 'Nidoran♀',   55, 47,  52,  41, 'assets/pokemon_front_sprites/nidoran_f.png'),
+(29, 'Nidoran',   55, 47,  52,  41, 'assets/pokemon_front_sprites/nidoranf.png'),
 (30, 'Nidorina',   70, 62,  67,  56, 'assets/pokemon_front_sprites/nidorina.png'),
 (31, 'Nidoqueen',  90, 92,  87,  76, 'assets/pokemon_front_sprites/nidoqueen.png'),
 (32, 'Nidoran♂',   46, 57,  40,  50, 'assets/pokemon_front_sprites/nidoran_m.png'),
@@ -313,25 +312,25 @@ INSERT INTO attacks (id, name, damage, accuracy) VALUES
 -- Link together with IDs
 INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 -- Bulbasaur (Tackle, Growl, Vine Whip, Razor Leaf)
-(1, 1), (1, 2), (1, 3), (1, 4),
+(1, 1), (1, 2), (1, 10), (1, 11),
 -- Ivysaur (Tackle, Vine Whip, Razor Leaf)
-(2, 1), (2, 3), (2, 4),
+(2, 1), (2, 10), (2, 11),
 -- Venusaur (Tackle, Razor Leaf, Solar Beam)
-(3, 1), (3, 4), (3, 5),
+(3, 1), (3, 11), (3, 13),
 
 -- Charmander (Scratch, Growl, Ember, Flamethrower)
-(4, 6), (4, 2), (4, 7), (4, 8),
+(4, 3), (4, 2), (4, 14), (4, 16),
 -- Charmeleon (Scratch, Ember, Flamethrower)
-(5, 6), (5, 7), (5, 8),
+(5, 3), (5, 14), (5, 16),
 -- Charizard (Scratch, Flamethrower, Fire Blast)
-(6, 6), (6, 8), (6, 9),
+(6, 3), (6, 16), (6, 17),
 
--- Squirtle (Tackle, Tail Whip/Growl, Water Gun, Bite)
-(7, 1), (7, 2), (7, 10), (7, 11),
+-- Squirtle (Tackle, Growl, Water Gun, Bite)
+(7, 1), (7, 2), (7, 18), (7, 59),
 -- Wartortle (Tackle, Water Gun, Bite, Hydro Pump)
-(8, 1), (8, 10), (8, 11), (8, 12),
--- Blastoise (Water Gun, Bite, Hydro Pump, Skull Bash)
-(9, 10), (9, 11), (9, 12), (9, 13),
+(8, 1), (8, 18), (8, 59), (8, 21),
+-- Blastoise (Water Gun, Bite, Hydro Pump, Body Slam)
+(9, 18), (9, 59), (9, 21), (9, 7),
 
 -- Caterpie (Tackle, String Shot, Bug Bite)
 (10, 1), (10, 41), (10, 42),
@@ -344,7 +343,7 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 (13, 44), (13, 41), (13, 42),
 -- Kakuna (Harden)
 (14, 43),
--- Beedrill (Twineedle, Poison Sting, Bug Bite, Cut/Tackle)
+-- Beedrill (Twineedle, Poison Sting, Bug Bite, Tackle)
 (15, 45), (15, 44), (15, 42), (15, 1),
 
 -- Pidgey (Tackle, Growl, Gust, Quick Attack)
@@ -355,75 +354,74 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 (18, 5), (18, 34), (18, 46), (18, 35),
 
 -- Rattata (Tackle, Quick Attack, Bite)
-(19, 1), (19, 5), (19, 11),
+(19, 1), (19, 5), (19, 59),
 -- Raticate (Quick Attack, Bite, Hyper Fang, Body Slam)
-(20, 5), (20, 11), (20, 47), (20, 7),
+(20, 5), (20, 59), (20, 47), (20, 7),
 
--- Spearow (Peck, Growl, Lear/Tackle, Aerial Ace/Gust)
+-- Spearow (Peck, Growl, Tackle, Gust)
 (21, 48), (21, 2), (21, 1), (21, 34),
--- Fearow (Peck, Drill Peck, Fly, Double Edge/Body Slam)
+-- Fearow (Peck, Drill Peck, Fly, Body Slam)
 (22, 48), (22, 49), (22, 35), (22, 7),
 
--- Ekans (Wrap/Tackle, Poison Sting, Acid)
+-- Ekans (Tackle, Poison Sting, Acid)
 (23, 1), (23, 44), (23, 50),
 -- Arbok (Bite, Poison Sting, Acid, Gunk Shot)
-(24, 11), (24, 44), (24, 50), (24, 51),
+(24, 59), (24, 44), (24, 50), (24, 51),
 
 -- Pikachu (Thunder Shock, Growl, Quick Attack, Thunderbolt)
 (25, 22), (25, 2), (25, 5), (25, 24),
 -- Raichu (Quick Attack, Thunderbolt, Thunder, Body Slam)
 (26, 5), (26, 24), (26, 25), (26, 7),
 
--- Sandshrew (Scratch, Defense Curl/Growl, Slash, Dig)
+-- Sandshrew (Scratch, Growl, Slash, Dig)
 (27, 3), (27, 2), (27, 9), (27, 52),
-
 -- Sandslash (Scratch, Slash, Dig, Earthquake)
 (28, 3), (28, 9), (28, 52), (28, 37),
 
 -- Nidoran♀ (Tackle, Growl, Poison Sting, Bite)
-(29, 1), (29, 2), (29, 53), (29, 11),
--- Nidorina (Tackle, Poison Sting, Bite, Sludge/Slash)
-(30, 1), (30, 53), (30, 11), (30, 9),
+(29, 1), (29, 2), (29, 53), (29, 59),
+-- Nidorina (Tackle, Poison Sting, Bite, Slash)
+(30, 1), (30, 53), (30, 59), (30, 9),
 -- Nidoqueen (Bite, Sludge Bomb, Earth Power, Earthquake)
-(31, 11), (31, 54), (31, 55), (31, 37),
+(31, 59), (31, 54), (31, 55), (31, 37),
 
--- Nidoran♂ (Tackle, Growl/Leer, Poison Sting, Double Kick)
+-- Nidoran♂ (Tackle, Growl, Poison Sting, Double Kick)
 (32, 1), (32, 2), (32, 53), (32, 38),
--- Nidorino (Tackle, Poison Sting, Double Kick, Help/Slash)
+-- Nidorino (Tackle, Poison Sting, Double Kick, Slash)
 (33, 1), (33, 53), (33, 38), (33, 9),
 -- Nidoking (Double Kick, Sludge Bomb, Earth Power, Earthquake)
 (34, 38), (34, 54), (34, 55), (34, 37),
 
--- Clefairy (Pound, Growl, Double Slap, Metronome/Psychic)
+-- Clefairy (Pound, Growl, Double Slap, Psychic)
 (35, 4), (35, 2), (35, 6), (35, 28),
 -- Clefable (Pound, Double Slap, Mega Punch, Psychic)
 (36, 4), (36, 6), (36, 56), (36, 28),
 
 -- Vulpix (Ember, Quick Attack, Flamethrower)
-(37, 14), (37, 57), (37, 16),
+(37, 14), (37, 5), (37, 16),
 -- Ninetales (Quick Attack, Flamethrower, Fire Blast)
-(38, 57), (38, 16), (38, 17),
+(38, 5), (38, 16), (38, 17),
 
 -- Jigglypuff (Pound, Growl, Double Slap, Body Slam)
 (39, 4), (39, 2), (39, 6), (39, 7),
--- Wigglytuff (Double Slap, Body Slam, Hyper Beam, Play Rough/Mega Punch)
+-- Wigglytuff (Double Slap, Body Slam, Hyper Beam, Mega Punch)
 (40, 6), (40, 7), (40, 8), (40, 56),
 
--- Zubat (Absorb/Tackle, Air Cutter, Bite)
+-- Zubat (Tackle, Air Cutter, Bite)
 (41, 1), (41, 58), (41, 59),
 -- Golbat (Air Cutter, Bite, Wing Attack)
 (42, 58), (42, 59), (42, 46),
 
--- Oddish (Absorb/Tackle, Acid, Mega Drain)
-(43, 1), (43, 60), (43, 12),
+-- Oddish (Tackle, Acid, Mega Drain)
+(43, 1), (43, 50), (43, 12),
 -- Gloom (Acid, Mega Drain, Razor Leaf)
-(44, 60), (44, 12), (44, 11),
+(44, 50), (44, 12), (44, 11),
 -- Vileplume (Mega Drain, Petal Blizzard, Solar Beam)
 (45, 12), (45, 61), (45, 13),
 
--- Paras (Scratch, Vine Whip/Mega Drain, X-Scissor)
+-- Paras (Scratch, Mega Drain, X-Scissor)
 (46, 3), (46, 12), (46, 62),
--- Parasect (Scratch, Mega Drain, X-Scissor, Growth/Slash)
+-- Parasect (Scratch, Mega Drain, X-Scissor, Slash)
 (47, 3), (47, 12), (47, 62), (47, 9),
 
 -- Venonat (Tackle, Confusion, Psybeam, Leech Life)
@@ -443,54 +441,52 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 
 -- Psyduck (Scratch, Water Gun, Confusion, Water Pulse)
 (54, 3), (54, 18), (54, 26), (54, 66),
-
 -- Golduck (Scratch, Water Gun, Confusion, Hydro Pump)
 (55, 3), (55, 18), (55, 26), (55, 21),
 
--- Mankey (Scratch, Low Kick/Tackle, Karate Chop)
+-- Mankey (Scratch, Tackle, Karate Chop)
 (56, 3), (56, 1), (56, 67),
--- Primeape (Scratch, Karate Chop, Cross Chop, Rage/Body Slam)
+-- Primeape (Scratch, Karate Chop, Cross Chop, Body Slam)
 (57, 3), (57, 67), (57, 68), (57, 7),
 
--- Growlithe (Bite, Roar/Growl, Ember, Flame Wheel)
+-- Growlithe (Bite, Growl, Ember, Flame Wheel)
 (58, 59), (58, 2), (58, 14), (58, 69),
--- Arcanine (Bite, Ember, Flamethrower, Extreme Speed/Body Slam)
+-- Arcanine (Bite, Ember, Flamethrower, Body Slam)
 (59, 59), (59, 14), (59, 16), (59, 7),
 
 -- Poliwag (Bubble, Water Gun, Body Slam)
 (60, 70), (60, 18), (60, 7),
 -- Poliwhirl (Bubble, Water Gun, Bubble Beam, Body Slam)
 (61, 70), (61, 18), (61, 19), (61, 7),
--- Poliwrath (Bubble Beam, Submission/Double Kick, Hydro Pump, Dynamic Punch)
+-- Poliwrath (Bubble Beam, Double Kick, Hydro Pump, Dynamic Punch)
 (62, 19), (62, 38), (62, 21), (62, 71),
 
--- Abra (Teleport/Pound, Confusion) - Giving him a basic attack so he can battle!
+-- Abra (Pound, Confusion)
 (63, 4), (63, 26),
 
 -- Kadabra (Confusion, Psybeam, Psychic)
-(64, 26), (64, 72), (64, 28),
--- Alakazam (Confusion, Psybeam, Psychic, Tri Attack/Hyper Beam)
-(65, 26), (65, 72), (65, 28), (65, 8),
+(64, 26), (64, 27), (64, 28),
+-- Alakazam (Confusion, Psybeam, Psychic, Hyper Beam)
+(65, 26), (65, 27), (65, 28), (65, 8),
 
--- Machop (Tackle, Low Kick/Karate Chop, Seismic Toss)
+-- Machop (Tackle, Karate Chop, Seismic Toss)
 (66, 1), (66, 67), (66, 73),
 -- Machoke (Karate Chop, Seismic Toss, Submission)
 (67, 67), (67, 73), (67, 74),
 -- Machamp (Karate Chop, Submission, Cross Chop, Dynamic Punch)
 (68, 67), (68, 74), (68, 68), (68, 71),
 
--- Bellsprout (Vine Whip, Growth/Growl, Acid)
-(69, 10), (69, 2), (69, 60),
+-- Bellsprout (Vine Whip, Growl, Acid)
+(69, 10), (69, 2), (69, 50),
 -- Weepinbell (Vine Whip, Acid, Razor Leaf)
-(70, 10), (70, 60), (70, 11),
+(70, 10), (70, 50), (70, 11),
 -- Victreebel (Razor Leaf, Sludge Bomb, Leaf Blade, Solar Beam)
 (71, 11), (71, 54), (71, 76), (71, 13),
 
 -- Tentacool (Poison Sting, Constrict, Acid, Water Gun)
-(72, 44), (72, 77), (72, 60), (72, 18),
-
+(72, 44), (72, 77), (72, 50), (72, 18),
 -- Tentacruel (Acid, Water Gun, Bubble Beam, Hydro Pump)
-(73, 60), (73, 18), (73, 19), (73, 21),
+(73, 50), (73, 18), (73, 19), (73, 21),
 
 -- Geodude (Tackle, Rock Throw, Rock Slide)
 (74, 1), (74, 36), (74, 78),
@@ -505,13 +501,12 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 (78, 14), (78, 80), (78, 16), (78, 17),
 
 -- Slowpoke (Tackle, Water Gun, Confusion, Water Pulse)
-(79, 1), (79, 18), (79, 26), (79, 81),
+(79, 1), (79, 18), (79, 26), (79, 66),
 -- Slowbro (Water Gun, Confusion, Surf, Psychic)
 (80, 18), (80, 26), (80, 20), (80, 28),
 
--- Magnemite (Tackle, Thunder Shock, Sonic Boom/Spark)
+-- Magnemite (Tackle, Thunder Shock, Thunderbolt)
 (81, 1), (81, 22), (81, 24),
-
 -- Magneton (Thunder Shock, Thunderbolt, Thunder, Tri Attack)
 (82, 22), (82, 24), (82, 25), (82, 82),
 
@@ -523,27 +518,26 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 -- Dodrio (Peck, Quick Attack, Pluck, Drill Peck)
 (85, 48), (85, 5), (85, 83), (85, 49),
 
--- Seel (Headbutt/Tackle, Water Gun, Ice Shard, Aqua Ring/Surf)
+-- Seel (Tackle, Water Gun, Ice Shard, Surf)
 (86, 1), (86, 18), (86, 86), (86, 20),
 -- Dewgong (Water Gun, Ice Shard, Surf, Ice Beam)
 (87, 18), (87, 86), (87, 20), (87, 32),
 
--- Grimer (Pound, Sludge, Mud Slap/Dig)
-(88, 4), (88, 84), (88, 52),
+-- Grimer (Pound, Sludge, Dig)
+(88, 4), (88, 39), (88, 52),
 -- Muk (Pound, Sludge, Sludge Bomb, Gunk Shot)
-(89, 4), (89, 84), (89, 54), (89, 85),
+(89, 4), (89, 39), (89, 54), (89, 51),
 
 -- Shellder (Tackle, Water Gun, Clamp, Ice Beam)
 (90, 1), (90, 18), (90, 87), (90, 32),
-
--- Cloyster (Clamp, Ice Beam, Spike Cannon/Tri Attack, Hydro Pump)
+-- Cloyster (Clamp, Ice Beam, Tri Attack, Hydro Pump)
 (91, 87), (91, 32), (91, 82), (91, 21),
 
--- Gastly (Lick/Pound, Night Shade, Confuse Ray/Psybeam)
+-- Gastly (Pound, Night Shade, Psybeam)
 (92, 4), (92, 29), (92, 27),
 -- Haunter (Night Shade, Shadow Ball, Dream Eater)
 (93, 29), (93, 88), (93, 30),
--- Gengar (Shadow Ball, Dream Eater, Psychic, Dark Pulse/Sludge Bomb)
+-- Gengar (Shadow Ball, Dream Eater, Psychic, Sludge Bomb)
 (94, 88), (94, 30), (94, 28), (94, 54),
 
 -- Onix (Tackle, Rock Throw, Rock Tomb, Earthquake)
@@ -554,12 +548,12 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 -- Hypno (Confusion, Headbutt, Psychic, Dream Eater)
 (97, 26), (97, 90), (97, 28), (97, 30),
 
--- Krabby (Vise Grip/Tackle, Mud Shot/Dig, Bubble Beam)
+-- Krabby (Tackle, Dig, Bubble Beam)
 (98, 1), (98, 52), (98, 19),
--- Kingler (Bubble Beam, Crabhammer, Slam/Body Slam, Hyper Beam)
+-- Kingler (Bubble Beam, Crabhammer, Body Slam, Hyper Beam)
 (99, 19), (99, 91), (99, 7), (99, 8),
 
--- Voltorb (Tackle, Thunder Shock, Swift/Thunderbolt)
+-- Voltorb (Tackle, Thunder Shock, Thunderbolt)
 (100, 1), (100, 22), (100, 24),
 -- Electrode (Thunder Shock, Thunderbolt, Thunder, Self-Destruct)
 (101, 22), (101, 24), (101, 25), (101, 92),
@@ -569,26 +563,26 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 -- Exeggutor (Confusion, Seed Bomb, Psychic, Solar Beam)
 (103, 26), (103, 93), (103, 28), (103, 13),
 
--- Cubone (Bone Club/Tackle, Headbutt, Bonemerang)
+-- Cubone (Tackle, Headbutt, Bonemerang)
 (104, 1), (104, 90), (104, 94),
--- Marowak (Headbutt, Bonemerang, Thrash/Body Slam, Earthquake)
+-- Marowak (Headbutt, Bonemerang, Body Slam, Earthquake)
 (105, 90), (105, 94), (105, 7), (105, 37),
 
--- Hitmonlee (Double Kick, Mega Kick/Mega Punch, High Jump Kick)
+-- Hitmonlee (Double Kick, Mega Punch, High Jump Kick)
 (106, 38), (106, 56), (106, 95),
--- Hitmonchan (Fire Punch, Ice Punch, Thunder Punch, Comet Punch/Mega Punch)
+-- Hitmonchan (Fire Punch, Ice Punch, Thunder Punch, Mega Punch)
 (107, 15), (107, 31), (107, 23), (107, 56),
 
--- Lickitung (Wrap/Pound, Stomp, Slam/Body Slam)
-(108, 4), (108, 96), (108, 7),
+-- Lickitung (Pound, Stomp, Body Slam)
+(108, 4), (108, 80), (108, 7),
 
 -- Koffing (Tackle, Sludge, Sludge Bomb, Self-Destruct)
-(109, 1), (109, 84), (109, 97), (109, 92),
--- Weezing (Sludge, Sludge Bomb, Self-Destruct, Dark Pulse/Fire Blast)
-(110, 84), (110, 97), (110, 92), (110, 17),
+(109, 1), (109, 39), (109, 54), (109, 92),
+-- Weezing (Sludge, Sludge Bomb, Self-Destruct, Fire Blast)
+(110, 39), (110, 54), (110, 92), (110, 17),
 
--- Rhyhorn (Tackle, Rock Throw, Stomp, Drill Run/Dig)
-(111, 1), (111, 36), (111, 96), (111, 52),
+-- Rhyhorn (Tackle, Rock Throw, Stomp, Dig)
+(111, 1), (111, 36), (111, 80), (111, 52),
 -- Rhydon (Rock Throw, Rock Blast, Earthquake, Surf)
 (112, 36), (112, 98), (112, 37), (112, 20),
 
@@ -608,10 +602,10 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 
 -- Goldeen (Peck, Water Gun, Horn Attack)
 (118, 48), (118, 18), (118, 102),
--- Seaking (Water Gun, Horn Attack, Waterfall, Smart Strike/Body Slam)
+-- Seaking (Water Gun, Horn Attack, Waterfall, Body Slam)
 (119, 18), (119, 102), (119, 103), (119, 7),
 
--- Staryu (Tackle, Water Gun, Swift/Bubble Beam)
+-- Staryu (Tackle, Water Gun, Bubble Beam)
 (120, 1), (120, 18), (120, 19),
 -- Starmie (Water Gun, Bubble Beam, Surf, Psychic)
 (121, 18), (121, 19), (121, 20), (121, 28),
@@ -631,17 +625,17 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 -- Magmar (Ember, Fire Punch, Flamethrower, Fire Blast)
 (126, 14), (126, 15), (126, 16), (126, 17),
 
--- Pinsir (Vise Grip, Bind/Tackle, Slash, X-Scissor)
+-- Pinsir (Vise Grip, Tackle, Slash, X-Scissor)
 (127, 106), (127, 1), (127, 9), (127, 62),
 
 -- Tauros (Tackle, Horn Attack, Stomp, Body Slam)
 (128, 1), (128, 102), (128, 80), (128, 7),
 
--- Magikarp (Splash, Tackle) - The struggle is real!
+-- Magikarp (Splash, Tackle)
 (129, 107), (129, 1),
 
--- Gyarados (Bite, Dragon Rage/Twister, Surf, Hydro Pump)
-(130, 109), (130, 29), (130, 20), (130, 21),
+-- Gyarados (Bite, Night Shade, Surf, Hydro Pump)
+(130, 59), (130, 29), (130, 20), (130, 21),
 
 -- Lapras (Water Gun, Body Slam, Ice Beam, Hydro Pump)
 (131, 18), (131, 7), (131, 32), (131, 21),
@@ -650,7 +644,7 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 (132, 108),
 
 -- Eevee (Tackle, Growl, Quick Attack, Bite)
-(133, 1), (133, 2), (133, 5), (133, 109),
+(133, 1), (133, 2), (133, 5), (133, 59),
 
 -- Vaporeon (Tackle, Quick Attack, Water Gun, Hydro Pump)
 (134, 1), (134, 5), (134, 18), (134, 21),
@@ -664,40 +658,40 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 -- Porygon (Tackle, Psybeam, Tri Attack, Thunderbolt)
 (137, 1), (137, 27), (137, 82), (137, 24),
 
--- Omanyte (Water Gun, Rollout/Rock Throw, Ancient Power)
-(138, 18), (138, 36), (138, 110),
+-- Omanyte (Water Gun, Rock Throw, Ancient Power)
+(138, 18), (138, 36), (138, 40),
 -- Omastar (Water Gun, Ancient Power, Surf, Hydro Pump)
-(139, 18), (139, 110), (139, 20), (139, 21),
+(139, 18), (139, 40), (139, 20), (139, 21),
 
--- Kabuto (Scratch, Absorb/Mega Drain, Ancient Power)
-(140, 3), (140, 12), (140, 110),
+-- Kabuto (Scratch, Mega Drain, Ancient Power)
+(140, 3), (140, 12), (140, 40),
 -- Kabutops (Scratch, Ancient Power, Slash, Waterfall)
-(141, 3), (141, 110), (141, 9), (141, 103),
+(141, 3), (141, 40), (141, 9), (141, 103),
 
 -- Aerodactyl (Wing Attack, Ancient Power, Crunch, Fly)
-(142, 46), (142, 110), (142, 113), (142, 35),
+(142, 46), (142, 40), (142, 113), (142, 35),
 
 -- Snorlax (Tackle, Headbutt, Body Slam, Giga Impact)
 (143, 1), (143, 90), (143, 7), (143, 111),
 
 -- Articuno (Gust, Ice Shard, Ice Beam, Blizzard)
-(144, 34), (144, 86), (144, 32), (144, 112),
+(144, 34), (144, 86), (144, 32), (144, 33),
 
 -- Zapdos (Gust, Thunder Shock, Thunderbolt, Thunder)
-(145, 34), (145, 22), (145, 114), (145, 25),
+(145, 34), (145, 22), (145, 24), (145, 25),
 
 -- Moltres (Gust, Ember, Flamethrower, Sky Attack)
 (146, 34), (146, 14), (146, 16), (146, 115),
 
--- Dratini (Wrap/Tackle, Thunder Wave/Thunder Shock, Dragon Rage)
+-- Dratini (Tackle, Thunder Shock, Night Shade)
 (147, 1), (147, 22), (147, 29),
--- Dragonair (Tackle, Dragon Rage, Slam/Body Slam, Surf)
+-- Dragonair (Tackle, Night Shade, Body Slam, Surf)
 (148, 1), (148, 29), (148, 7), (148, 20),
--- Dragonite (Wing Attack, Dragon Rage, Outrage, Hyper Beam)
+-- Dragonite (Wing Attack, Night Shade, Outrage, Hyper Beam)
 (149, 46), (149, 29), (149, 116), (149, 8),
 
 -- Mewtwo (Confusion, Psybeam, Psychic, Psystrike)
 (150, 26), (150, 27), (150, 28), (150, 117),
 
--- Mew (Pound, Psychic, Ancient Power, Transform) - The ultimate utility!
-(151, 4), (151, 28), (151, 110), (151, 108);
+-- Mew (Pound, Psychic, Ancient Power, Transform)
+(151, 4), (151, 28), (151, 40), (151, 108);

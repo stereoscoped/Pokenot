@@ -37,10 +37,10 @@ async function loadPokemonDatabase() {
         pokeDex = rawData.map(item => new Pokemon(item));
         console.log("Database Integration Successful!", pokeDex);
         
-
-        playerTeam[0] = pokeDex[150]; 
-        //enemyTeam[0] = pokeDex[1];  
-        console.log("player team test", playerTeam);
+        //Temp Mew as starter pokemon lol
+        //playerTeam[0] = structuredClone(pokeDex[150]); 
+        //enemyTeam[0] = structuredClone(pokeDex[1]);  
+        //console.log("player team test", playerTeam);
         //console.log("enemy team test", enemyTeam);
 
     } catch (error) {
@@ -112,6 +112,7 @@ function healParty() {
 
 function addPokemonToPlayerTeam(pokemon) {
     playerTeam.push(pokemon);
+    //console.log("player team test", playerTeam);
 
 }
 

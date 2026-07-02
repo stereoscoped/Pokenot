@@ -92,7 +92,7 @@ function drawHealthText(pokemon,who, x, y) {
     }
 
     ctx.beginPath();
-    let hp=(pokemon.hp/pokemon.maxHp)*150
+    let hp=(pokemon.hp/pokemon.maxHP)*150
     ctx.fillStyle = color;
     ctx.roundRect(x+50, y+10, hp, 20,20);
     ctx.lineWidth = 3;
@@ -100,7 +100,7 @@ function drawHealthText(pokemon,who, x, y) {
     ctx.fillStyle = "black";
 
     ctx.fillText(
-        "HP: " + pokemon.hp + "/" + pokemon.maxHp,
+        "HP: " + pokemon.hp + "/" + pokemon.maxHP,
         x,
         y + 30
     );
