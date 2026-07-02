@@ -35,6 +35,8 @@ const battle_background = new Image();
 battle_background.src = "assets/backgrounds/route1_battle_1.png";
 
 
+const stater_background = new Image();
+stater_background.src = "assets/backgrounds/stater.png";
 
 //audio//
 const music = {

@@ -5,8 +5,8 @@ function start_Game() {
 function update_start() {
     //run
     if (keys[" "]) {
-        gameState = OVERWORLD;
-        // gameLoop();  //the source of the game running too fast it seems?
+        gameState = STARTER;
         playMusic(currentMap.music);
+
     }
 }

@@ -15,24 +15,24 @@ class Pokemon {
 }
 
 // Global data states
-let pokeDex = [];
-let playerTeam = [];
-let enemyTeam = [];
+let pokeDex = []; 
+let playerTeam = [];          
+let enemyTeam = [];           
 
 // Gateway pulling from external PHP file
 async function loadPokemonDatabase() {
     try {
         const response = await fetch('fetch_pokemon.php');
         if (!response.ok) throw new Error("Database file response failed");
-
+        
         const rawData = await response.json();
-
+        
         //See if the server sent an error object instead of an array
         if (rawData.error) {
             console.error("The PHP server reported a database error:", rawData.error);
-            return;
+            return; 
         }
-
+        
         // Transform raw database rows into instance objects
         pokeDex = rawData.map(item => new Pokemon(item));
         console.log("Database Integration Successful!", pokeDex);

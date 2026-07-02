@@ -146,6 +146,28 @@ function movePlayerY(dy) {
     }
 
     if (!blocked) {
+        player.x = newX;
+    }
+}
+
+function movePlayerY(dy) {
+    if (dy === 0)
+        return;
+
+    let newY = player.y + dy;
+
+    let box = getPlayerBox(player.x, newY);
+
+    let blocked = false;
+
+    for (let wall of currentMap.walls) {
+        if (collides(box, wall)) {
+            blocked = true;
+            break;
+        }
+    }
+
+    if (!blocked) {
         playerBox = box;
         blocked = collideLedges();
     }

@@ -20,7 +20,7 @@ let healOptions = ["Use Potion", "Back"];
  
 // TEMPORARY!!! replace with player's inventory from DB
 let healingPotions = 3;
-let potionHealAmount = 4;
+let potionHealAmount = 50;
 
 // TEMPORARY!!! replace with player's team from DB
 let selectedTeamIndex = 0;
@@ -41,10 +41,19 @@ function startBattle() {
     myPokemon.src = `assets/pokemon_back_sprites/${pokemonName}.gif`;
     enemyPokemonSprite.src = `assets/pokemon_front_sprites/${pokemonName2}.gif`;
 
-    myPokemon.style.visibility = "visible";
-    enemyPokemonSprite.style.visibility = "visible";
+    //start hidden
+    myPokemon.style.visibility = "hidden";
+    enemyPokemonSprite.style.visibility = "hidden";
+
+    // position enemy off-screen to match intro start
+    enemyPokemonSprite.style.left = (typeof battleIntro.enemyX !== 'undefined') ? battleIntro.enemyX + 'px' : '-200px';
+    // ensure player sprite fully transparent until its phase
+    myPokemon.style.opacity = '0';
 
     playerPokemon = playerTeam[0]; // First Pokemon of the player's team
+
+    selectedTeamIndex = 0;
+    playerPokemon = playerTeam[selectedTeamIndex];
 
     enemyPokemon = structuredClone(pokeDex[randomNum2]); // Random Pokenot
 
@@ -55,13 +64,32 @@ function startBattle() {
     selectedBattleOption = 0;
     battleMenu = "main";
     battleOver = false;
-    battleMessage = "A wild " + enemyPokemon.name + " appeared!";
+    let enemypokemon=enemyPokemon.name;
+    battleMessage = "A wild " + enemypokemon.toUpperCase() + " appeared!";
 
-    playMusic("battleBGM");
+    // start intro animation timeline
+    startBattleIntro();
 }
 
+function makePokemon(name, hp, attack, defense, speed, moves) {
+    return {
+        name: name,
+        hp: hp,
+        maxHp: hp,
+        attack: attack,
+        defense: defense,
+        speed: speed,
+        moves: moves
+    };
+}
 
 function updateBattle() {
+
+    if (battleIntro.active) {
+        updateBattleIntro();
+        return;
+    }
+
     let options = getBattleOptions();
 
     if (keys["arrowup"] || keys["w"]) {
@@ -107,7 +135,6 @@ function getBattleOptions() {
 
         return switchOptions.concat(["Back"]);
     }
-    
 
     return mainBattleOptions;
 }
@@ -200,7 +227,7 @@ function usePotion() {
         return;
     }
 
-    if (playerPokemon.hp >= playerPokemon.maxHP) {
+    if (playerPokemon.hp >= playerPokemon.maxHp) {
         battleMessage = playerPokemon.name + " already has full HP!";
         battleMenu = "main";
         selectedBattleOption = 0;
@@ -211,16 +238,16 @@ function usePotion() {
 
     playerPokemon.hp += potionHealAmount;
 
+    // Prevents healing past max
     if (playerPokemon.hp > playerPokemon.maxHP) {
         playerPokemon.hp = playerPokemon.maxHP;
+        battleMessage = playerPokemon.name + " healed to MAX HP!";
+    } else {
+        let healedAmount = playerPokemon.hp - oldHp;
+        battleMessage = playerPokemon.name + " healed " + healedAmount + " HP!";
     }
 
     healingPotions--;
-
-    let healedAmount = playerPokemon.hp - oldHp;
-
-    battleMessage = playerPokemon.name + " healed " + healedAmount + " HP!";
-
     enemyAttack();
 
     battleMenu = "main";
