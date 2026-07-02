@@ -21,7 +21,7 @@ let healOptions = ["Use Potion", "Back"];
  
 // TEMPORARY!!! replace with player's inventory from DB
 let healingPotions = 3;
-let potionHealAmount = 4;
+let potionHealAmount = 50;
 
 // TEMPORARY!!! replace with player's team from DB
 let selectedTeamIndex = 0;
@@ -319,16 +319,16 @@ function usePotion() {
 
     playerPokemon.hp += potionHealAmount;
 
-    if (playerPokemon.hp > playerPokemon.maxHp) {
-        playerPokemon.hp = playerPokemon.maxHp;
+    // Prevents healing past max
+    if (playerPokemon.hp > playerPokemon.maxHP) {
+        playerPokemon.hp = playerPokemon.maxHP;
+        battleMessage = playerPokemon.name + " healed to MAX HP!";
+    } else {
+        let healedAmount = playerPokemon.hp - oldHp;
+        battleMessage = playerPokemon.name + " healed " + healedAmount + " HP!";
     }
 
     healingPotions--;
-
-    let healedAmount = playerPokemon.hp - oldHp;
-
-    battleMessage = playerPokemon.name + " healed " + healedAmount + " HP!";
-
     enemyAttack();
 
     battleMenu = "main";
