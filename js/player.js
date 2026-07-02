@@ -119,6 +119,11 @@ function movePlayerX(dx) {
     }
 
     if (!blocked) {
+        playerBox = box;
+        blocked = collideLedges();
+    }
+
+    if (!blocked) {
         player.x = newX;
     }
 }
@@ -220,6 +225,7 @@ function updatePlayer() {
     if (moving) {
         collideGrass();
         collideMapChange();
+        collideHealZone();
     }
 
     if (moving) {
