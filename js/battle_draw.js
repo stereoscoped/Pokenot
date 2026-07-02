@@ -138,7 +138,7 @@ function drawHealthText(pokemon, who, x, y) {
     ctx.fillStyle = "black";
 
     ctx.fillText(
-        "HP: " + pokemon.hp + "/" + pokemon.maxHp,
+        "HP: " + pokemon.hp + "/" + pokemon.maxHP,
         x,
         y + 30
     );

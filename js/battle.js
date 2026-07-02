@@ -50,47 +50,12 @@ function startBattle() {
     // ensure player sprite fully transparent until its phase
     myPokemon.style.opacity = '0';
 
-    // TEMPORARY!!! replace with player's selected Pokenot from DB
-    playerTeam = [
-        makePokemon(
-            pokemonName,
-            100,
-            15,
-            5,
-            10,
-            [
-                { name: "Tackle", power: 12 },
-                { name: "Fire Blast", power: 22 }
-            ]
-        ),
-        makePokemon(
-            "pikachu",
-            80,
-            18,
-            4,
-            14,
-            [
-                { name: "Quick Attack", power: 10 },
-                { name: "Thunder Shock", power: 20 }
-            ]
-        )
-    ];
+    playerPokemon = playerTeam[0]; // First Pokemon of the player's team
 
     selectedTeamIndex = 0;
     playerPokemon = playerTeam[selectedTeamIndex];
 
-    // TEMPORARY!!! replace with enemy/wild Pokenot from DB or encounter table
-    enemyPokemon = makePokemon(
-        pokemonName2,
-        100,
-        12,
-        4,
-        8,
-        [
-            { name: "Scratch", power: 10 },
-            { name: "Bite", power: 16 }
-        ]
-    );
+    enemyPokemon = structuredClone(pokeDex[randomNum2]); // Random Pokenot
 
     attackOptions = playerPokemon.moves.map(function(move) {
         return move.name;

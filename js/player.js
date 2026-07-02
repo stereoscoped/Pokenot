@@ -247,6 +247,7 @@ function updatePlayer() {
     if (moving) {
         collideGrass();
         collideMapChange();
+        collideHealZone();
     }
 
     if (moving) {
