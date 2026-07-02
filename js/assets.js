@@ -24,12 +24,6 @@ cave_entr.src = "assets/backgrounds/cave entr.png";
 const cave = new Image();
 cave.src = "assets/backgrounds/cave.png";
 
-const cave_entr = new Image();
-cave_entr.src = "assets/backgrounds/cave entr.png";
-
-const cave = new Image();
-cave.src = "assets/backgrounds/cave.png";
-
 const start_image = new Image();
 start_image.src = "assets/backgrounds/start.png";
 
