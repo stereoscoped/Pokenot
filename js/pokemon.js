@@ -123,3 +123,29 @@ function addPokemonToEnemyTeam(pokemon) {
 function clearEnemyTeam() {
     enemyTeam = [];
 }
+
+function getRarityColor(pokemon) {
+    let IV = (pokemon.attack + pokemon.defense + pokemon.speed);
+    switch (IV) {
+        case (IV < 100):
+            return "Common";
+        case (IV >= 100 && IV < 200):
+            return "Uncommon";
+        case (IV >= 200 && IV < 300):
+            return "Rare";
+        case (IV >= 300):
+            return "Legendary";
+        default:
+            return "gray";
+    }
+}
+
+
+
+function levelUpPokemon(pokemon) {
+    pokemon.maxHP += 10;
+    pokemon.attack += 5;
+    pokemon.defense += 5;
+    pokemon.speed += 5;
+    pokemon.hp = pokemon.maxHP; // Heal to full on level up
+}
