@@ -26,7 +26,7 @@ function startBattle() {
     let randomNum = Math.floor(Math.random() * 151) + 1;
     let randomNum2 = Math.floor(Math.random() * 151) + 1;
     //Player's first pokemon is always the first in the pokedex for now, enemy is random
-    let pokemonName = pokeDex[0].name;
+    let pokemonName = playerTeam[0].name;
     let pokemonName2 = pokeDex[randomNum2].name;
 
     myPokemon.src = `assets/pokemon_back_sprites/${pokemonName}.gif`;
@@ -35,7 +35,7 @@ function startBattle() {
     myPokemon.style.visibility = "visible";
     enemyPokemonSprite.style.visibility = "visible";
 
-    playerPokemon = pokeDex[0]; // Pikachu
+    playerPokemon = playerTeam[0]; // First Pokemon of the player's team
 
     enemyPokemon = pokeDex[randomNum2]; // Random Pokenot
 
