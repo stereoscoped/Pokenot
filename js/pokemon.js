@@ -124,19 +124,31 @@ function clearEnemyTeam() {
     enemyTeam = [];
 }
 
+function getRarity(pokemon) {
+    let IV = (pokemon.attack + pokemon.defense + pokemon.hp + pokemon.speed);
+    
+    //console.log("IV: ", IV);
+    if (IV < 180)
+        return "Common";
+    else if (IV < 260)
+        return "Uncommon";
+    else if (IV < 340)
+        return "Rare";
+    else
+        return "Legendary";
+}
+
 function getRarityColor(pokemon) {
-    let IV = (pokemon.attack + pokemon.defense + pokemon.speed);
-    switch (IV) {
-        case (IV < 100):
-            return "Common";
-        case (IV >= 100 && IV < 200):
-            return "Uncommon";
-        case (IV >= 200 && IV < 300):
-            return "Rare";
-        case (IV >= 300):
-            return "Legendary";
-        default:
-            return "gray";
+    let rarity = getRarity(pokemon);
+
+    if (rarity === "Common") {
+        return "white";
+    } else if (rarity === "Uncommon") {
+        return "#95E8A4";
+    } else if (rarity === "Rare") {
+        return "#66A3FF";
+    } else {
+        return "gold";
     }
 }
 
