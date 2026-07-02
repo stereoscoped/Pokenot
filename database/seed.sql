@@ -33,10 +33,10 @@ INSERT INTO pokemon (id, name, hp, attack, defense, speed, image_url) VALUES
 (26, 'Raichu',     60, 90, 55, 110, 'assets/pokemon_front_sprites/raichu.png'),
 (27, 'Sandshrew',  50, 75, 85, 40, 'assets/pokemon_front_sprites/sandshrew.png'),
 (28, 'Sandslash',  75, 100, 110, 65, 'assets/pokemon_front_sprites/sandslash.png'),
-(29, 'Nidoran',   55, 47,  52,  41, 'assets/pokemon_front_sprites/nidoranf.png'),
+(29, 'Nidoranf',   55, 47,  52,  41, 'assets/pokemon_front_sprites/nidoranf.png'),
 (30, 'Nidorina',   70, 62,  67,  56, 'assets/pokemon_front_sprites/nidorina.png'),
 (31, 'Nidoqueen',  90, 92,  87,  76, 'assets/pokemon_front_sprites/nidoqueen.png'),
-(32, 'Nidoran♂',   46, 57,  40,  50, 'assets/pokemon_front_sprites/nidoran_m.png'),
+(32, 'Nidoranm',   46, 57,  40,  50, 'assets/pokemon_front_sprites/nidoranm.png'),
 (33, 'Nidorino',   61, 72,  57,  65, 'assets/pokemon_front_sprites/nidorino.png'),
 (34, 'Nidoking',   81, 102, 77,  85, 'assets/pokemon_front_sprites/nidoking.png'),
 (35, 'Clefairy',   70, 45,  48,  35, 'assets/pokemon_front_sprites/clefairy.png'),
@@ -378,7 +378,7 @@ INSERT INTO pokemon_attacks (pokemon_id, attack_id) VALUES
 -- Sandslash (Scratch, Slash, Dig, Earthquake)
 (28, 3), (28, 9), (28, 52), (28, 37),
 
--- Nidoran♀ (Tackle, Growl, Poison Sting, Bite)
+-- Nidoran (Tackle, Growl, Poison Sting, Bite)
 (29, 1), (29, 2), (29, 53), (29, 59),
 -- Nidorina (Tackle, Poison Sting, Bite, Slash)
 (30, 1), (30, 53), (30, 59), (30, 9),
