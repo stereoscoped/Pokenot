@@ -24,7 +24,12 @@ pokemon.js     //handles db calls for pokemon and team data
 
 Instructions:
 
+Install xamp and the MySql modules
+
+Place Pokenot project folder in the xamp install directory insdie of the htdocs file
+(ex: C:\xampp\htdocs\Pokenot)
+
 Launch xamp then start the Apache and MySQL modules
 
-Then open the link in a browser http://localhost/Pokenot/
+Then navigate to the local host in a browser link: http://localhost/Pokenot/
 
