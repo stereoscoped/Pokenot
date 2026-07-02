@@ -5,7 +5,7 @@ class Pokemon {
         this.id = parseInt(data.id);
         this.name = data.name;
         this.hp = parseInt(data.hp);
-        this.maxHp = parseInt(data.hp);
+        this.maxHP = parseInt(data.hp);
         this.attack = parseInt(data.attack);
         this.defense = parseInt(data.defense);
         this.speed = parseInt(data.speed);

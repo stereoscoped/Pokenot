@@ -183,7 +183,7 @@ function enemyAttack() {
 // TEMPORARY!!! basic damage formula, replace later with DB/stat/business rules
 function getDamage(attacker, defender, move) {
     let randomBonus = Math.floor(Math.random() * 6);
-    let damage = move.power + attacker.attack - defender.defense + randomBonus;
+    let damage = attacker.attack - defender.defense + randomBonus;
 
     if (damage < 1) {
         damage = 1;
