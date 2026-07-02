@@ -37,10 +37,10 @@ async function loadPokemonDatabase() {
         pokeDex = rawData.map(item => new Pokemon(item));
         console.log("Database Integration Successful!", pokeDex);
         
-        // TEMPORARY SEED FOR TEAM BATTLE UI TESTING:
+
         if (pokeDex.length >= 2) {
-            playerTeam = [pokeDex[0]]; 
-            enemyTeam = [pokeDex[1]];  
+            playerTeam[0] = pokeDex[150]; 
+            enemyTeam[0] = pokeDex[1];  
             console.log("player team test", playerTeam);
             console.log("enemy team test", enemyTeam);
         }
