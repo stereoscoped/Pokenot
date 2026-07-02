@@ -3,8 +3,13 @@ function update() {
         case MENU:
             update_start();
             break;
+
         case OVERWORLD:
             updateOverworld();
+            break;
+
+        case HEAL:
+            updateHeal();
             break;
 
         case BATTLE_START:
@@ -22,11 +27,16 @@ function draw() {
         case MENU:
             start_Game();
             break;
+
         case OVERWORLD:
             drawOverworld();
             document.getElementById("mypokemon").style.visibility = "hidden";
             document.getElementById("encounterpokemon").style.visibility = "hidden";
 
+            break;
+        
+        case HEAL:
+            drawHeal();
             break;
 
         case BATTLE_START:

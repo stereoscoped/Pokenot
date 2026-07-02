@@ -1,5 +1,5 @@
 let grassParticles = [];
-const MAX_GRASS_PARTICLES = 100;
+const MAX_GRASS_PARTICLES = 500;
 
 let touchingLedge = false;
 let ledgeHoldTimer = 0;
@@ -67,11 +67,22 @@ function collideMapChange() {
     }
 }
 
+function collideHealZone() {
+    if (canHeal) {
+        for (let zone of currentMap.healZones) {
+            if (collides(playerBox, zone)) {
+                startHeal();
+                return;
+            }
+        }
+    }
+}
+
 //grass encounter
 function collideGrass() {
     for (let patch of currentMap.grass) {
         if (collides(playerBox, patch)) {
-            if (Math.random() < 0.2) {
+            if (Math.random() < 0.3) {
                 spawnGrassParticles();
             }
             if (Math.random() < 0.005) {
@@ -81,51 +92,51 @@ function collideGrass() {
     }
 }
 
-function spawnGrassParticles() {
+function spawnGrassParticles(battle = false) {
 
     if (grassParticles.length > MAX_GRASS_PARTICLES) {
         return;
     }
+    if (battle) {
+        for (let i = 0; i < 10; i++) {
+            let particle =
+            {
+                x: player.x + player.width / 2
+                    + (Math.random() - 0.5) * 24,
+                y: player.y + player.height
+                    + (Math.random() - 0.5) * 12,
 
-    for (let i = 0; i < 4; i++) {
+                vx: (Math.random() - 0.5) * 2,
+                vy: -1 - Math.random() * 2,
 
-        let particle =
-        {
-            x: player.x + player.width / 2,
-            y: player.y + player.height,
+                life: 20,
+                size: 5 + Math.random() * 5,
 
-            vx: (Math.random() - 0.5) * 1.5,
-            vy: -1 - Math.random(),
-
-            life: 20,
-            size: 4 + Math.random() * 3,
-
-            //rand rotation
-            angle: (Math.random() - 0.5) * 0.8,       // Initial angle (≈ ±45°)
-            rotationSpeed: (Math.random() - 0.5) * 0.15
-        };
-
-        //throw grass depending on player movement?
-        switch (player.direction) {
-
-            // case "up":
-            //     particle.vy = 1 + Math.random();
-            //     break;
-
-            // case "down":
-            //     particle.vy = -1 - Math.random();
-            //     break;
-
-            // case "left":
-            //     particle.vx = 1 + Math.random();
-            //     break;
-
-            // case "right":
-            //     particle.vx = -1 - Math.random();
-            //     break;
+                //rand rotation
+                angle: (Math.random() - 0.5) * 0.8,
+                rotationSpeed: (Math.random() - 0.5) * 0.5
+            };
+            grassParticles.push(particle);
         }
+    } else {
+        for (let i = 0; i < 4; i++) {
+            let particle =
+            {
+                x: player.x + player.width / 2,
+                y: player.y + player.height,
 
-        grassParticles.push(particle);
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: -1 - Math.random(),
+
+                life: 20,
+                size: 4 + Math.random() * 4,
+
+                //rand rotation
+                angle: (Math.random() - 0.5) * 0.8,
+                rotationSpeed: (Math.random() - 0.5) * 0.15
+            };
+            grassParticles.push(particle);
+        }
     }
 }
 
@@ -151,7 +162,7 @@ function updateGrassParticles() {
     }
 }
 
-function drawGrassParticles() {
+function drawGrassParticles(useCamera = true) {
 
     ctx.strokeStyle = "#35a535";
     ctx.lineWidth = 2;
@@ -160,16 +171,20 @@ function drawGrassParticles() {
 
         ctx.save();
 
-        // convert particle world coords to screen coords and scale size
-        let sx = p.x * MAP_SCALE - camera.x;
-        let sy = p.y * MAP_SCALE - camera.y;
-        let ssize = p.size * MAP_SCALE * 0.5; // smaller on screen
+        let sx = p.x * MAP_SCALE;
+        let sy = p.y * MAP_SCALE;
+
+        if (useCamera) {
+            sx -= camera.x;
+            sy -= camera.y;
+        }
+
+        let ssize = p.size * MAP_SCALE * 0.5;
 
         ctx.translate(sx, sy);
         ctx.rotate(p.angle);
 
         ctx.beginPath();
-
         ctx.moveTo(-2 * MAP_SCALE, 0);
         ctx.lineTo(0, -ssize);
         ctx.lineTo(2 * MAP_SCALE, 0);

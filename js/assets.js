@@ -24,8 +24,8 @@ cave_entr.src = "assets/backgrounds/cave entr.png";
 const cave = new Image();
 cave.src = "assets/backgrounds/cave.png";
 
-const start_image= new Image();
-start_image.src="assets/backgrounds/start.png";
+const start_image = new Image();
+start_image.src = "assets/backgrounds/start.png";
 
 const lab = new Image();
 lab.src = "assets/backgrounds/lab.png";
@@ -64,6 +64,24 @@ function playMusic(song) {
 
     currentSong.currentTime = 0;
     currentSong.play();
+}
+
+const sounds = {
+    teamHeal: new Audio("assets/audio/Team Healed.mp3"),
+
+}
+
+function playSound(soundName, volume = 1.0) {
+    let sound = sounds[soundName];
+
+    if (!sound)
+        return;
+
+    let s = sound.cloneNode();
+
+    s.volume = volume;
+
+    s.play();
 }
 
 const pokedex = {
