@@ -18,6 +18,7 @@ class Pokemon {
 let pokeDex = []; 
 let playerTeam = [];          
 let enemyTeam = [];           
+const MAX_TEAM_SIZE = 6;
 
 // Gateway pulling from external PHP file
 async function loadPokemonDatabase() {
@@ -110,9 +111,18 @@ function healParty() {
 
 
 
-function addPokemonToPlayerTeam(pokemon) {
-    playerTeam.push(pokemon);
-    //console.log("player team test", playerTeam);
+function addPokemonToPlayerTeam(pokemon, options = {}) {
+    // options: { atFront: bool, hp: number }
+    const atFront = options.atFront || false;
+    if (typeof options.hp !== 'undefined') {
+        pokemon.hp = options.hp;
+    }
+
+    if (atFront) {
+        playerTeam.unshift(pokemon);
+    } else {
+        playerTeam.push(pokemon);
+    }
 
 }
 

@@ -4,6 +4,7 @@ let selectedBattleOption = 0;
 let battleMenu = "main";
 let battleMessage = "A wild Pokenot appeared!";
 let battleOver = false;
+let enemyDefeated = false;
 
 // TEMPORARY!!! replace with player's selected Pokenot from DB
 let playerPokemon;
@@ -34,9 +35,18 @@ function startBattle() {
     // TEMPORARY!!! currently random pokemon sprites will appear
     let randomNum = Math.floor(Math.random() * pokeDex.length);
     let randomNum2 = Math.floor(Math.random() * pokeDex.length);
-    //Player's first pokemon is always the first in the pokedex for now, enemy is random
-    let pokemonName = playerTeam[0].name;
-    let pokemonName2 = pokeDex[randomNum2].name;
+    // Player's first pokemon is usually the first in the team. Guard against missing data.
+    let pokemonName;
+    if (playerTeam && playerTeam.length > 0 && playerTeam[0] && playerTeam[0].name) {
+        pokemonName = playerTeam[0].name;
+    } else if (pokeDex && pokeDex.length > 0 && pokeDex[randomNum] && pokeDex[randomNum].name) {
+        // fallback to random pokedex entry if team is empty
+        pokemonName = pokeDex[randomNum].name;
+    } else {
+        pokemonName = 'MissingNo';
+    }
+
+    let pokemonName2 = (pokeDex && pokeDex.length > 0 && pokeDex[randomNum2] && pokeDex[randomNum2].name) ? pokeDex[randomNum2].name : 'MissingNo';
 
     myPokemon.src = `assets/pokemon_back_sprites/${pokemonName}.gif`;
     enemyPokemonSprite.src = `assets/pokemon_front_sprites/${pokemonName2}.gif`;
@@ -50,20 +60,26 @@ function startBattle() {
     // ensure player sprite fully transparent until its phase
     myPokemon.style.opacity = '0';
 
-    playerPokemon = playerTeam[0]; // First Pokemon of the player's team
-
+    // Ensure selected team index points to a valid pokemon; otherwise use a fallback object
     selectedTeamIndex = 0;
-    playerPokemon = playerTeam[selectedTeamIndex];
+    if (playerTeam && playerTeam.length > 0 && playerTeam[selectedTeamIndex]) {
+        playerPokemon = playerTeam[selectedTeamIndex];
+    } else if (pokeDex && pokeDex.length > 0 && pokeDex[randomNum]) {
+        playerPokemon = structuredClone(pokeDex[randomNum]);
+    } else {
+        playerPokemon = makePokemon('MissingNo', 1, 1, 1, 1, []);
+    }
 
-    enemyPokemon = structuredClone(pokeDex[randomNum2]); // Random Pokenot
+    enemyPokemon = (pokeDex && pokeDex.length > 0 && pokeDex[randomNum2]) ? structuredClone(pokeDex[randomNum2]) : makePokemon('MissingNo', 1, 1, 1, 1, []);
 
-    attackOptions = playerPokemon.moves.map(function(move) {
-        return move.name;
+    attackOptions = (playerPokemon.moves || []).map(function(move) {
+        return move.name || 'Tackle';
     });
 
     selectedBattleOption = 0;
     battleMenu = "main";
     battleOver = false;
+    enemyDefeated = false;
     let enemypokemon=enemyPokemon.name;
     let rarity = getRarity(enemyPokemon);
 
@@ -132,18 +148,46 @@ function getBattleOptions() {
     }
     if (battleMenu === "switch") {
         switchOptions = playerTeam.map(function(pokemon) {
-            return pokemon.name;
+            return pokemon.name + (pokemon.hp <= 0 ? " (Fainted)" : "");
         });
 
         return switchOptions.concat(["Back"]);
+    }
+
+    if (battleMenu === "captureOffer") {
+        return ["Yes", "No"];
+    }
+
+    if (battleMenu === "captureSwap") {
+        switchOptions = playerTeam.map(function(pokemon) {
+            return pokemon.name;
+        });
+        return switchOptions.concat(["Cancel"]);
+    }
+
+    if (battleMenu === "captureComplete") {
+        return ["Continue"];
     }
 
     return mainBattleOptions;
 }
 
 function chooseBattleOption() {
-    if (battleOver) {
-        endBattle();
+    // If a battle just ended, first Enter either shows the capture offer (if enemy died)
+    // or simply ends the battle (if player lost)
+    if (battleOver && !(battleMenu === "captureOffer" || battleMenu === "captureSwap" || battleMenu === "captureComplete")) {
+        if (enemyDefeated) {
+            if (enemyPokemon && enemyPokemon.name) {
+                battleMenu = "captureOffer";
+                selectedBattleOption = 0;
+                battleMessage = "Add " + enemyPokemon.name + " to your team?";
+            } else {
+                endBattle();
+            }
+        } else {
+            // player lost or other end; just exit
+            endBattle();
+        }
         return;
     }
 
@@ -187,6 +231,41 @@ function chooseBattleOption() {
         } else {
             switchPokemon(selectedBattleOption);
         }
+    } else if (battleMenu === "captureOffer") {
+        if (selectedBattleOption === 0) { // Yes
+            if (playerTeam.length < MAX_TEAM_SIZE) {
+                addPokemonToPlayerTeam(structuredClone(enemyPokemon), { hp: 0 });
+                battleMessage = enemyPokemon.name + " has been added to your team! (They're still fainted goe now.) Press Enter.";
+                battleMenu = "captureComplete";
+                return;
+            } else {
+                // team full - offer swap
+                battleMenu = "captureSwap";
+                selectedBattleOption = 0;
+                battleMessage = "Team full. Choose a member to swap or Cancel.";
+                return;
+            }
+        } else { // No
+            endBattle();
+            return;
+        }
+    } else if (battleMenu === "captureSwap") {
+        if (selectedBattleOption === playerTeam.length) { // Cancel
+            endBattle();
+            return;
+        } else {
+            // swap selected team member with captured pokemon (at 0 HP)
+            let swapIndex = selectedBattleOption;
+            playerTeam[swapIndex] = structuredClone(enemyPokemon);
+            playerTeam[swapIndex].hp = 0;
+            battleMessage = "Swapped in " + enemyPokemon.name + " at 0 HP. Press Enter.";
+            battleMenu = "captureComplete";
+            return;
+        }
+    } else if (battleMenu === "captureComplete") {
+        // any selection simply continues and ends the battle
+        endBattle();
+        return;
     }
 }
 
@@ -212,7 +291,9 @@ function playerAttack(moveIndex) {
 
     if (enemyPokemon.hp <= 0) {
         battleMessage = "Enemy defeated! Press Enter.";
+        playMusic("victory");
         battleOver = true;
+        enemyDefeated = true;
     } else {
         enemyAttack();
     }
@@ -264,10 +345,18 @@ function switchPokemon(teamIndex) {
         return;
     }
 
+    // Prevent switching to fainted team members
+    if (!playerTeam[teamIndex] || playerTeam[teamIndex].hp <= 0) {
+        battleMessage = "You can't switch to a fainted Pokenot!";
+        // stay in switch menu so player can choose another
+        selectedBattleOption = 0;
+        return;
+    }
+
     selectedTeamIndex = teamIndex;
     playerPokemon = playerTeam[selectedTeamIndex];
-    attackOptions = playerPokemon.moves.map(function(move) {
-        return move.name;
+    attackOptions = (playerPokemon.moves || []).map(function(move) {
+        return move.name || 'Tackle';
     });
 
     let myPokemon = document.getElementById("mypokemon");
@@ -292,8 +381,42 @@ function enemyAttack() {
     battleMessage += " Enemy used " + move.name + "!";
 
     if (playerPokemon.hp <= 0) {
-        battleMessage = "You lost! Press Enter.";
-        battleOver = true;
+        // Try to auto-switch to the next non-fainted team member
+        let nextIndex = -1;
+        if (playerTeam && playerTeam.length > 0) {
+            for (let i = 1; i < playerTeam.length; i++) {
+                let idx = (selectedTeamIndex + i) % playerTeam.length;
+                if (playerTeam[idx] && playerTeam[idx].hp > 0) {
+                    nextIndex = idx;
+                    break;
+                }
+            }
+        }
+
+        if (nextIndex !== -1) {
+            selectedTeamIndex = nextIndex;
+            playerPokemon = playerTeam[selectedTeamIndex];
+            attackOptions = (playerPokemon.moves || []).map(function(move) { return move.name || 'Tackle'; });
+            let myPokemon = document.getElementById("mypokemon");
+            myPokemon.src = `assets/pokemon_back_sprites/${playerPokemon.name}.gif`;
+            battleMessage = playerPokemon.name + " is sent out!";
+            // Continue the battle; do not mark battleOver
+        } else {
+            battleMessage = "You lost! Press Enter.";
+            // No non-fainted team members remain: respawn at the lab and heal party
+            battleOver = true;
+            enemyDefeated = false;
+            // Heal the party and move player to lab spawn
+            if (typeof healParty === 'function') {
+                healParty();
+            }
+            if (typeof loadMap === 'function') {
+                // use the lab spawn point 'door' defined in maps.js
+                loadMap('lab', 'door');
+            }
+            // End the battle and return to overworld
+            endBattle();
+        }
     }
 }
 
