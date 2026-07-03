@@ -169,15 +169,26 @@ function chooseBattleOption() {
     // or simply ends the battle (if player lost)
     if (battleOver && !(battleMenu === "captureOffer" || battleMenu === "captureSwap" || battleMenu === "captureComplete")) {
         if (enemyDefeated) {
+            //Level up party
+            levelupPartyPokemon();
+            //battleMessage = "Your team leveled up! Press Enter.";
             if (enemyPokemon && enemyPokemon.name) {
                 battleMenu = "captureOffer";
                 selectedBattleOption = 0;
                 battleMessage = "Add " + enemyPokemon.name + " to your team?";
+                
             } else {
                 endBattle();
             }
         } else {
             // player lost or other end; just exit
+            if (typeof healParty === 'function') {
+                healParty();
+            }
+            if (typeof loadMap === 'function') {
+                // use the lab spawn point 'door' defined in maps.js
+                loadMap('lab', 'door');
+            }
             endBattle();
         }
         return;
@@ -373,6 +384,7 @@ function enemyAttack() {
     battleMessage += " Enemy used " + move.name + "!";
 
     if (playerPokemon.hp <= 0) {
+        battleMessage = playerPokemon.name + " fainted!";
         // Try to auto-switch to the next non-fainted team member
         let nextIndex = -1;
         if (playerTeam && playerTeam.length > 0) {
@@ -391,35 +403,39 @@ function enemyAttack() {
             attackOptions = (playerPokemon.moves || []).map(function(move) { return move.name || 'Tackle'; });
             let myPokemon = document.getElementById("mypokemon");
             myPokemon.src = `assets/pokemon_back_sprites/${playerPokemon.name}.gif`;
-            battleMessage = playerPokemon.name + " is sent out!";
+            battleMessage += playerPokemon.name + " is sent out!";
             // Continue the battle; do not mark battleOver
         } else {
             battleMessage = "You lost! Press Enter.";
             // No non-fainted team members remain: respawn at the lab and heal party
             battleOver = true;
             enemyDefeated = false;
+            
             // Heal the party and move player to lab spawn
-            if (typeof healParty === 'function') {
-                healParty();
-            }
-            if (typeof loadMap === 'function') {
-                // use the lab spawn point 'door' defined in maps.js
-                loadMap('lab', 'door');
-            }
+            //this is in choose battle
             // End the battle and return to overworld
-            endBattle();
+            //endBattle();
         }
     }
 }
 
-// TEMPORARY!!! basic damage formula, replace later with DB/stat/business rules
-function getDamage(attacker, defender, move) {
-    let randomBonus = Math.floor(Math.random() * 6);
-    let damage = attacker.attack - defender.defense + randomBonus;
 
-    if (damage < 1) {
-        damage = 1;
+
+function getDamage(attacker, defender, move) {
+
+    let movePower = move.damage || 40; 
+    
+    // move power/2 to nerf attacks to prevent 1 shots
+    let baseDamage = Math.floor((attacker.attack / defender.defense) * (movePower / 2));
+    
+    
+    let randomBonus = Math.floor(Math.random() * 6); 
+    let totalDamage = baseDamage + randomBonus;
+
+    // Safety floor check
+    if (totalDamage < 1) {
+        totalDamage = 1;
     }
 
-    return damage;
+    return totalDamage;
 }
