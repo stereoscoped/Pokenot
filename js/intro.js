@@ -53,6 +53,11 @@ function introAdvancePressed() {
     return a || b;
 }
 
+function introCapitalize(str) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function startIntro() {
     gameState = INTRO;
 
@@ -71,7 +76,7 @@ function startIntro() {
 function giveStarter(name) {
     playerTeam.length = 0;
 
-    let starter = pokeDex.find(
+    let starter = pokedex.find(
         p => p.name && p.name.toLowerCase() === name
     );
 
@@ -80,7 +85,7 @@ function giveStarter(name) {
         console.log("starter chosen:", name, playerTeam);
     }
     else {
-        console.error("starter '" + name + "' not found in pokeDex!");
+        console.error("starter '" + name + "' not found in pokedex!");
     }
 }
 
@@ -95,7 +100,7 @@ function updateIntro() {
             if (introTimer >= INTRO_FADE_TIME) {
                 introPhase = "oakFadeIn";
                 introTimer = 0;
-                playMusic("labBGM");
+                playMusic("town");
             }
             break;
 

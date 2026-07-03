@@ -1,6 +1,4 @@
 
-const DIALOGUE = "story_dialogue";
-
 const npcSprites = {};
 
 function loadNpcSprite(file) {
@@ -200,12 +198,12 @@ const LOSE_LINES = [
 ];
 
 function pokeByName(name) {
-    let p = pokeDex.find(
+    let p = pokedex.find(
         entry => entry.name && entry.name.toLowerCase() === name
     );
 
     if (!p) {
-        console.error("story.js: '" + name + "' not found in pokeDex!");
+        console.error("story.js: '" + name + "' not found in pokedex!");
         return null;
     }
 
