@@ -1,213 +1,349 @@
-let grassParticles = [];
-const MAX_GRASS_PARTICLES = 500;
+//playerdata
+const PLAYER_SCALE = 0.75; // additional scale applied to player sprite and hitbox
 
-let touchingLedge = false;
-let ledgeHoldTimer = 0;
+let player = {
+    x: 150,
+    y: 90,
 
-//collision check btwn objects
-function collides(a, b) {
-    return (
-        a.x < b.x + b.w &&
-        a.x + a.w > b.x &&
-        a.y < b.y + b.h &&
-        a.y + a.h > b.y
+    width: 25,
+    height: 30,
+
+    direction: "down",
+
+    frame: 0,
+    frameCounter: 0,
+    framesUntilUpdate: 8,
+
+    speed: 1.5,
+    jumpOffset: 0,
+};
+
+let playerBox = [];
+
+const animations = {
+    down:
+    {
+        startX: 280,
+        startY: 50,
+        frameWidth: 23,
+        frameTot: 4
+    },
+
+    up:
+    {
+        startX: 280,
+        startY: 154,
+        frameWidth: 23,
+        frameTot: 4
+    },
+
+    right:
+    {
+        startX: 275,
+        startY: 85,
+        frameWidth: 25,
+        frameTot: 4
+    },
+
+    left:
+    {
+        startX: 275,
+        startY: 118,
+        frameWidth: 25,
+        frameTot: 4
+    }
+};
+
+let jumpTimer = 0;
+const JUMP_TIME = 18;
+
+let jumping = false;
+let jumpStartY = 0;
+let jumpEndY = 0;
+
+let downHeld = 0;
+const DOWN_HOLD_TIME = 18;
+
+function getPlayerBox(x = player.x, y = player.y) {
+    return {
+        x: x + player.width * PLAYER_SCALE * 0.2,
+        y: y + player.height * PLAYER_SCALE * 0.75,
+        w: player.width * PLAYER_SCALE * 0.6,
+        h: player.height * PLAYER_SCALE / 4
+    };
+}
+
+function startJump(ledge) {
+    jumping = true;
+    jumpTimer = 0;
+    jumpStartY = player.y;
+    jumpEndY = ledge.y + 16;
+}
+
+function updateJump() {
+    jumpTimer++;
+    let t = jumpTimer / JUMP_TIME;
+
+    if (t > 1)
+        t = 1;
+
+    player.y =
+        jumpStartY +
+        (jumpEndY - jumpStartY) * t;
+
+
+    player.jumpOffset =
+        -Math.sin(t * Math.PI) * 12;
+
+    if (t >= 1) {
+        jumping = false;
+        player.jumpOffset = 0;
+    }
+}
+
+function movePlayerX(dx) {
+    if (dx === 0)
+        return;
+
+    let newX = player.x + dx;
+
+    let box = getPlayerBox(newX, player.y);
+
+    let blocked = false;
+
+    for (let wall of currentMap.walls) {
+        if (collides(box, wall)) {
+            blocked = true;
+            break;
+        }
+    }
+
+    if (!blocked) {
+        playerBox = box;
+        blocked = collideLedges();
+    }
+
+    if (!blocked) {
+        player.x = newX;
+    }
+}
+
+function movePlayerY(dy) {
+    if (dy === 0)
+        return;
+
+    let newY = player.y + dy;
+
+    let box = getPlayerBox(player.x, newY);
+
+    let blocked = false;
+
+    for (let wall of currentMap.walls) {
+        if (collides(box, wall)) {
+            blocked = true;
+            break;
+        }
+    }
+
+    if (!blocked) {
+        player.x = newX;
+    }
+}
+
+function movePlayerY(dy) {
+    if (dy === 0)
+        return;
+
+    let newY = player.y + dy;
+
+    let box = getPlayerBox(player.x, newY);
+
+    let blocked = false;
+
+    for (let wall of currentMap.walls) {
+        if (collides(box, wall)) {
+            blocked = true;
+            break;
+        }
+    }
+
+    if (!blocked) {
+        playerBox = box;
+        blocked = collideLedges();
+    }
+
+    if (!blocked) {
+        player.y = newY;
+    }
+}
+
+function updatePlayer() {
+    if (jumping) {
+        updateJump();
+        return;
+    }
+
+    let dx = 0;
+    let dy = 0;
+
+    if (keys["d"] || keys["arrowright"])
+        dx++;
+
+    if (keys["a"] || keys["arrowleft"])
+        dx--;
+
+    if (keys["w"] || keys["arrowup"])
+        dy--;
+
+    if (keys["s"] || keys["arrowdown"])
+        dy++;
+
+    //update look dir -> prioritize horizontal
+    if (dx > 0)
+        player.direction = "right";
+    else if (dx < 0)
+        player.direction = "left";
+    else if (dy > 0)
+        player.direction = "down";
+    else if (dy < 0)
+        player.direction = "up";
+
+    //normalize diagonal speed
+    let moving = (dx !== 0 || dy !== 0);
+
+    if (moving) {
+        let length = Math.sqrt(dx * dx + dy * dy);
+
+        dx /= length;
+        dy /= length;
+
+        dx *= player.speed;
+        dy *= player.speed;
+    }
+
+    movePlayerX(dx);
+    movePlayerY(dy);
+
+    player.x = Math.max(
+        0,
+        Math.min(
+            player.x,
+            currentMap.width - player.width * PLAYER_SCALE
+        )
+    );
+
+    player.y = Math.max(
+        0,
+        Math.min(
+            player.y,
+            currentMap.height - player.height * PLAYER_SCALE
+        )
+    );
+
+    //update hitbox
+    playerBox = getPlayerBox();
+
+    //collision checks that dont affect movement
+    if (moving) {
+        stadium();
+        collideGrass();
+        collideMapChange();
+        collideHealZone();
+    }
+
+    if (moving) {
+        player.frameCounter++;
+
+        if (player.frameCounter > player.framesUntilUpdate) {
+            player.frame++;
+            player.frame %= animations[player.direction].frameTot;
+            player.frameCounter = 0;
+        }
+    }
+    else {
+        player.frame = 1;
+        player.frameCounter = 0;
+    }
+}
+
+function drawPlayer() {
+    //select anim set based on direction
+    let anim =
+        animations[player.direction];
+
+    //get coords of current frame in sprite sheet
+    let sourceX =
+        anim.startX +
+        player.frame * anim.frameWidth;
+
+    let sourceY =
+        anim.startY;
+
+    let drawX =
+        player.x * MAP_SCALE -
+        camera.x;
+
+    let drawY =
+        player.y * MAP_SCALE -
+        camera.y +
+        player.jumpOffset;
+
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        drawX + player.width * MAP_SCALE * PLAYER_SCALE / 2,
+        player.y * MAP_SCALE - camera.y + player.height * MAP_SCALE * PLAYER_SCALE,
+
+        10,
+        4,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+    ctx.drawImage(
+        trainer,
+
+        sourceX,
+        sourceY,
+
+        anim.frameWidth,
+        player.height,
+
+        drawX,
+        drawY,
+
+        player.width * MAP_SCALE * PLAYER_SCALE,
+        player.height * MAP_SCALE * PLAYER_SCALE
     );
 }
 
-//func collideWall(){}
+function drawPlayerTransition() {
 
-function collideLedges() {
-    let onLedge = false;
+    let anim = animations[player.direction];
 
-    for (let ledge of currentMap.ledges) {
-        if (!collides(playerBox, ledge))
-            continue;
+    let sourceX =
+        anim.startX +
+        player.frame * anim.frameWidth;
 
-        onLedge = true;
+    let sourceY = anim.startY;
 
-        let fromTop =
-            player.y + player.height < ledge.y + 8;
+    ctx.drawImage(
+        trainer,
 
-        if (!fromTop)
-            return true;
+        sourceX,
+        sourceY,
 
-        if (keys["s"] || keys["arrowdown"]) {
-            ledgeHoldTimer++;
+        anim.frameWidth,
+        player.height,
 
-            if (ledgeHoldTimer >= DOWN_HOLD_TIME) {
-                startJump(ledge);
-                ledgeHoldTimer = 0;
-                return false;
-            }
-        }
-        else {
-            ledgeHoldTimer = 0;
-        }
-        return true;
-    }
+        player.x * MAP_SCALE,
+        player.y * MAP_SCALE,
 
-    // Not touching any ledge anymore
-    if (!onLedge) {
-        ledgeHoldTimer = 0;
-    }
-
-    return false;
+        player.width * MAP_SCALE * PLAYER_SCALE,
+        player.height * MAP_SCALE * PLAYER_SCALE
+    );
 }
-
-function collideMapChange() {
-    // console.log("calling collide map change func");
-    for (let exit of currentMap.exits) {
-        if (collides(playerBox, exit)) {
-            console.log("loading " + exit.destination + ": " + exit.entrance);
-            loadMap(
-                exit.destination,
-                exit.entrance
-            );
-        }
-    }
-}
-
-function collideHealZone() {
-    if (canHeal) {
-        for (let zone of currentMap.healZones) {
-            if (collides(playerBox, zone)) {
-                startHeal();
-                return;
-            }
-        }
-    }
-}
-
-function stadium() {
-    for (let sta of currentMap.battle) {
-        if (collides(playerBox, sta)) {
-            if (Math.random() < 0.3) {
-                //  spawnGrassParticles();
-            }
-            isBossBattle = true;
-            battleTransition();
-        }}
-}
-
-
-//grass encounter
-function collideGrass() {
-    for (let patch of currentMap.grass) {
-        if (collides(playerBox, patch)) {
-            if (Math.random() < 0.3) {
-                spawnGrassParticles();
-            }
-            if (Math.random() < 0.005) {
-                battleTransition();
-            }
-        }
-    }
-}
-
-function spawnGrassParticles(battle = false) {
-
-    if (grassParticles.length > MAX_GRASS_PARTICLES) {
-        return;
-    }
-    if (battle) {
-        for (let i = 0; i < 10; i++) {
-            let particle =
-            {
-                x: player.x + player.width / 2
-                    + (Math.random() - 0.5) * 24,
-                y: player.y + player.height
-                    + (Math.random() - 0.5) * 12,
-
-                vx: (Math.random() - 0.5) * 2,
-                vy: -1 - Math.random() * 2,
-
-                life: 20,
-                size: 5 + Math.random() * 5,
-
-                //rand rotation
-                angle: (Math.random() - 0.5) * 0.8,
-                rotationSpeed: (Math.random() - 0.5) * 0.5
-            };
-            grassParticles.push(particle);
-        }
-    } else {
-        for (let i = 0; i < 4; i++) {
-            let particle =
-            {
-                x: player.x + player.width / 2,
-                y: player.y + player.height,
-
-                vx: (Math.random() - 0.5) * 1.5,
-                vy: -1 - Math.random(),
-
-                life: 20,
-                size: 4 + Math.random() * 4,
-
-                //rand rotation
-                angle: (Math.random() - 0.5) * 0.8,
-                rotationSpeed: (Math.random() - 0.5) * 0.15
-            };
-            grassParticles.push(particle);
-        }
-    }
-}
-
-function updateGrassParticles() {
-
-    for (let i = grassParticles.length - 1; i >= 0; i--) {
-
-        let p = grassParticles[i];
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        //bit of gravity
-        p.vy += 0.15;
-
-        p.angle += p.rotationSpeed;
-
-        p.life--;
-
-        if (p.life <= 0) {
-            grassParticles.splice(i, 1);
-        }
-    }
-}
-
-function drawGrassParticles(useCamera = true) {
-
-    ctx.strokeStyle = "#35a535";
-    ctx.lineWidth = 2;
-
-    for (let p of grassParticles) {
-
-        ctx.save();
-
-        let sx = p.x * MAP_SCALE;
-        let sy = p.y * MAP_SCALE;
-
-        if (useCamera) {
-            sx -= camera.x;
-            sy -= camera.y;
-        }
-
-        let ssize = p.size * MAP_SCALE * 0.5;
-
-        ctx.translate(sx, sy);
-        ctx.rotate(p.angle);
-
-        ctx.beginPath();
-        ctx.moveTo(-2 * MAP_SCALE, 0);
-        ctx.lineTo(0, -ssize);
-        ctx.lineTo(2 * MAP_SCALE, 0);
-
-        ctx.stroke();
-
-        ctx.restore();
-    }
-
-    ctx.lineWidth = 1;
-}
-
-//line of sight of npc trainer?
-//func collideAggro(){}
