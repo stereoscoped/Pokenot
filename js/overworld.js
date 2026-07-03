@@ -23,6 +23,7 @@ function updateOverworld() {
     updatePlayer();
     updateCamera();
     updateGrassParticles();
+    checkcutsceneTrigger();
 }
 
 function updateCamera() {
