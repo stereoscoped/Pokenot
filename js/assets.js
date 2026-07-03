@@ -242,3 +242,17 @@ const pokedex = {
     150: "mewtwo",
     151: "mew"
 };
+
+// Pokemon database loaded from server
+let pokeDex = [];
+
+async function loadPokemonDatabase() {
+    try {
+        const response = await fetch('fetch_pokemon.php');
+        if (!response.ok) throw new Error('Failed to fetch pokemon');
+        pokeDex = await response.json();
+        console.log("Loaded " + pokeDex.length + " pokemon from database");
+    } catch (error) {
+        console.error("Error loading pokemon database:", error);
+    }
+}
