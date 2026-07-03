@@ -15,9 +15,6 @@ trainer.src = "assets/trainers/trainer_sprite.png";
 const portraitSheet = new Image();
 portraitSheet.src = "assets/trainers/portrait_sheet.png";
 
-const lab = new Image();
-lab.src = "assets/backgrounds/lab.png";
-
 const town = new Image();
 town.src = "assets/backgrounds/town.png";
 
