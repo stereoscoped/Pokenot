@@ -117,15 +117,19 @@ function drawHealthText(pokemon, who, x, y) {
     ctx.fill();
     ctx.stroke();
 
+    //let color;
+    let red=pokemon.maxHP * .30;
+    let  yellow = pokemon.maxHP * .50;
+    let green = pokemon.maxHP * .80
     let color;
-    if (pokemon.hp < 55 && pokemon.hp > 30) {
-        color = "#F7E563";
+    if(pokemon.hp < green  && pokemon.hp >red){
+        color= "#F7E563";
     }
-    if (pokemon.hp >= 55) {
-        color = "#95E8A4";
+    if(pokemon.hp >= yellow) {
+        color= "#95E8A4";
     }
-    if (pokemon.hp <= 30) {
-        color = "#DA6546";
+    if(pokemon.hp <=red){
+        color= "#DA6546";
 
     }
 
