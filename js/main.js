@@ -3,6 +3,13 @@ function update() {
         case INTRO:
             updateIntro();
             break;
+        case DIALOGUE:
+            updateDialogue();
+        break;
+        case WIN:
+        case LOSE:
+            updateEnding();
+            break;
         case MENU:
             update_start();
             break;
@@ -24,6 +31,17 @@ function draw() {
     switch (gameState) {
         case INTRO:
             drawIntro();
+            break;
+        case DIALOGUE:
+            drawDialogue();
+            break;
+
+        case WIN:
+            drawEnding(WIN_LINES);
+            break;
+
+        case LOSE:
+            drawEnding(LOSE_LINES);
             break;
         case MENU:
             start_Game();

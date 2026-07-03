@@ -22,6 +22,7 @@ function updateOverworld() {
     updatePlayer();
     updateCamera();
     updateGrassParticles();
+    updateNpcs();
 }
 
 function updateCamera() {
@@ -122,7 +123,7 @@ function drawOverworld() {
             playerBox.h * MAP_SCALE
         );
     }
-
+    drawNpcs();
     drawPlayer();
     drawGrassParticles();
 }

@@ -42,7 +42,7 @@ function collideGrass() {
                 spawnGrassParticles();
             }
             if (Math.random() < 0.005) {
-                battleTransition();
+                storyGrassBattle();
             }
         }
     }
