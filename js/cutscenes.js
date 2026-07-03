@@ -1,13 +1,41 @@
 const portraits = {
 
     scientist: {
-        angry: scientistAngry,
-        smug: scientistSmug
+
+        angry: {
+            sheet: portraitSheet,
+            x: 290,
+            y: 30,
+            w: 290,
+            h: 440
+        },
+
+        smug: {
+            sheet: portraitSheet,
+            x: 720,
+            y: 30,
+            w: 290,
+            h: 440
+        }
     },
 
     trainer: {
-        angry: trainerAngry,
-        smug: trainerSmug
+
+        angry: {
+            sheet: portraitSheet,
+            x: 290,
+            y: 545,
+            w: 290,
+            h: 420
+        },
+
+        smug: {
+            sheet: portraitSheet,
+            x: 720,
+            y: 545,
+            w: 290,
+            h: 420
+        }
     }
 
 };
