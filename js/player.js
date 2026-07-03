@@ -346,4 +346,4 @@ function drawPlayerTransition() {
         player.width * MAP_SCALE * PLAYER_SCALE,
         player.height * MAP_SCALE * PLAYER_SCALE
     );
-}
+} 
