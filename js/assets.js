@@ -242,3 +242,4 @@ const pokedex = {
     150: "mewtwo",
     151: "mew"
 };
+ 
