@@ -181,4 +181,4 @@ function levelupPartyPokemon() {
     for (let pokemon of playerTeam) {
         levelupPokemon(pokemon);
     }
-}
+} 
