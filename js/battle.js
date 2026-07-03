@@ -273,6 +273,8 @@ function chooseBattleOption() {
 }
 
 function endBattle() {
+    if (storyHandleBattleEnd())
+        return;
     let myPokemon = document.getElementById("mypokemon");
     let enemyPokemonSprite = document.getElementById("encounterpokemon");
 
@@ -293,6 +295,11 @@ function playerAttack(moveIndex) {
     battleMessage = playerPokemon.name + " used " + move.name + "!";
 
     if (enemyPokemon.hp <= 0) {
+        if (storyEnemyFainted()) {
+            battleMenu = "main";
+            selectedBattleOption = 0;
+            return;
+        }
         battleMessage = "Enemy defeated! Press Enter.";
         playMusic("victory");
         battleOver = true;
