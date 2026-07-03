@@ -245,6 +245,7 @@ function updatePlayer() {
 
     //collision checks that dont affect movement
     if (moving) {
+        stadium();
         collideGrass();
         collideMapChange();
         collideHealZone();

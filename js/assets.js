@@ -38,6 +38,9 @@ battle_background.src = "assets/backgrounds/route1_battle_1.png";
 const stater_background = new Image();
 stater_background.src = "assets/backgrounds/stater.png";
 
+const cave_battle = new Image();
+cave_battle.src = "assets/backgrounds/cave_battle.webp";
+
 //audio//
 const music = {
     townBGM: new Audio("assets/audio/Driftveil City.mp3"),
@@ -239,17 +242,3 @@ const pokedex = {
     150: "mewtwo",
     151: "mew"
 };
-
-// Pokemon database loaded from server
-let pokeDex = [];
-
-async function loadPokemonDatabase() {
-    try {
-        const response = await fetch('fetch_pokemon.php');
-        if (!response.ok) throw new Error('Failed to fetch pokemon');
-        pokeDex = await response.json();
-        console.log("Loaded " + pokeDex.length + " pokemon from database");
-    } catch (error) {
-        console.error("Error loading pokemon database:", error);
-    }
-}

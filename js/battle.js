@@ -5,7 +5,7 @@ let battleMenu = "main";
 let battleMessage = "A wild Pokenot appeared!";
 let battleOver = false;
 let enemyDefeated = false;
-
+let isBossBattle = false;
 // TEMPORARY!!! replace with player's selected Pokenot from DB
 let playerPokemon;
 
@@ -26,32 +26,28 @@ let potionHealAmount = 50;
 // TEMPORARY!!! replace with player's team from DB
 let selectedTeamIndex = 0;
 
-function startBattle() {
+function startBattle(challengerPokemon) {
     gameState = BATTLE;
 
     let myPokemon = document.getElementById("mypokemon");
     let enemyPokemonSprite = document.getElementById("encounterpokemon");
 
     // TEMPORARY!!! currently random pokemon sprites will appear
-    let randomNum = Math.floor(Math.random() * pokeDex.length);
-    let randomNum2 = Math.floor(Math.random() * pokeDex.length);
+    //let randomNum = Math.floor(Math.random() * pokeDex.length);
+    //let randomNum2 = Math.floor(Math.random() * pokeDex.length);
     // Player's first pokemon is usually the first in the team. Guard against missing data.
     selectedTeamIndex = playerTeam.findIndex(function(pokemon) {
         return pokemon.hp > 0;
     });
-
+    
     if (selectedTeamIndex !== -1) {
         playerPokemon = playerTeam[selectedTeamIndex];
-    } else if (pokeDex && pokeDex.length > 0 && pokeDex[randomNum]) {
-        playerPokemon = structuredClone(pokeDex[randomNum]);
-    } else {
-        playerPokemon = makePokemon('MissingNo', 1, 1, 1, 1, []);
     }
 
-    let pokemonName2 = (pokeDex && pokeDex.length > 0 && pokeDex[randomNum2] && pokeDex[randomNum2].name) ? pokeDex[randomNum2].name : 'MissingNo';
-
+    enemyPokemon = challengerPokemon;
+    enemyPokemonName = enemyPokemon.name;
     myPokemon.src = `assets/pokemon_back_sprites/${playerPokemon.name}.gif`;
-    enemyPokemonSprite.src = `assets/pokemon_front_sprites/${pokemonName2}.gif`;
+    enemyPokemonSprite.src = `assets/pokemon_front_sprites/${enemyPokemonName}.gif`;
 
     //start hidden
     myPokemon.style.visibility = "hidden";
@@ -62,7 +58,6 @@ function startBattle() {
     // ensure player sprite fully transparent until its phase
     myPokemon.style.opacity = '0';
 
-    enemyPokemon = (pokeDex && pokeDex.length > 0 && pokeDex[randomNum2]) ? structuredClone(pokeDex[randomNum2]) : makePokemon('MissingNo', 1, 1, 1, 1, []);
 
     attackOptions = (playerPokemon.moves || []).map(function(move) {
         return move.name || 'Tackle';
@@ -79,18 +74,6 @@ function startBattle() {
 
     // start intro animation timeline
     startBattleIntro();
-}
-
-function makePokemon(name, hp, attack, defense, speed, moves) {
-    return {
-        name: name,
-        hp: hp,
-        maxHp: hp,
-        attack: attack,
-        defense: defense,
-        speed: speed,
-        moves: moves
-    };
 }
 
 function updateBattle() {
@@ -273,14 +256,13 @@ function chooseBattleOption() {
 }
 
 function endBattle() {
-    if (storyHandleBattleEnd())
-        return;
     let myPokemon = document.getElementById("mypokemon");
     let enemyPokemonSprite = document.getElementById("encounterpokemon");
 
     myPokemon.style.visibility = "hidden";
     enemyPokemonSprite.style.visibility = "hidden";
 
+    isBossBattle = false;
     gameState = OVERWORLD;
     playMusic(currentMap.music);
 }
@@ -295,11 +277,6 @@ function playerAttack(moveIndex) {
     battleMessage = playerPokemon.name + " used " + move.name + "!";
 
     if (enemyPokemon.hp <= 0) {
-        if (storyEnemyFainted()) {
-            battleMenu = "main";
-            selectedBattleOption = 0;
-            return;
-        }
         battleMessage = "Enemy defeated! Press Enter.";
         playMusic("victory");
         battleOver = true;

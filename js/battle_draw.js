@@ -48,13 +48,23 @@ function drawBattleBackground() {
     ctx.fillStyle = "lightgreen";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(
-        battle_background,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+    if (isBossBattle) {
+        ctx.drawImage(
+            boss_battle_background,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+    } else {
+        ctx.drawImage(
+            battle_background,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+    }
 }
 function drawPokemonInfo() {
     ctx.fillStyle = "black";

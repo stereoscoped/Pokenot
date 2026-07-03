@@ -78,6 +78,18 @@ function collideHealZone() {
     }
 }
 
+function stadium() {
+    for (let sta of currentMap.battle) {
+        if (collides(playerBox, sta)) {
+            if (Math.random() < 0.3) {
+                //  spawnGrassParticles();
+            }
+            isBossBattle = true;
+            battleTransition();
+        }}
+}
+
+
 //grass encounter
 function collideGrass() {
     for (let patch of currentMap.grass) {
@@ -86,7 +98,7 @@ function collideGrass() {
                 spawnGrassParticles();
             }
             if (Math.random() < 0.005) {
-                storyGrassBattle();
+                battleTransition();
             }
         }
     }
