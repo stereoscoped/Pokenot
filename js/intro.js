@@ -33,6 +33,7 @@ let chosenStarter = null;
 const INTRO_FADE_TIME = 60; 
 
 let introKeyLatch = {};
+let pokemonDatabaseLoaded = false;
 
 function introKeyPressed(k) {
     if (keys[k]) {
@@ -59,6 +60,11 @@ function introCapitalize(str) {
 }
 
 function startIntro() {
+    if (!pokemonDatabaseLoaded) {
+        loadPokemonDatabase();
+        pokemonDatabaseLoaded = true;
+    }
+
     gameState = INTRO;
 
     introPhase = "fadeOutTitle";
@@ -76,41 +82,17 @@ function startIntro() {
 function giveStarter(name) {
     playerTeam.length = 0;
 
-    let starter = makePokemonByName(name);
+    let starter = pokeDex.find(
+        p => p.name && p.name.toLowerCase() === name.toLowerCase()
+    );
 
     if (starter) {
-        addPokemonToPlayerTeam(starter);
+        addPokemonToPlayerTeam(structuredClone(starter));
         console.log("starter chosen:", name, playerTeam);
     }
     else {
-        console.error("starter '" + name + "' not found!");
+        console.error("starter '" + name + "' not found in database!");
     }
-}
-
-function makePokemonByName(name) {
-    // Create pokemon objects based on name
-    const baseStats = {
-        bulbasaur: { hp: 45, attack: 49, defense: 49, speed: 45 },
-        charmander: { hp: 39, attack: 52, defense: 43, speed: 65 },
-        squirtle: { hp: 44, attack: 48, defense: 65, speed: 43 },
-        venusaur: { hp: 80, attack: 82, defense: 83, speed: 80 },
-        charizard: { hp: 78, attack: 84, defense: 78, speed: 100 },
-        blastoise: { hp: 79, attack: 83, defense: 100, speed: 78 },
-        pidgeotto: { hp: 63, attack: 60, defense: 55, speed: 71 }
-    };
-
-    let stats = baseStats[name.toLowerCase()];
-    if (!stats) return null;
-
-    return {
-        name: name,
-        hp: stats.hp,
-        maxHP: stats.hp,
-        attack: stats.attack,
-        defense: stats.defense,
-        speed: stats.speed,
-        moves: [{ name: "Tackle", power: 12 }]
-    };
 }
 
 function updateIntro() {

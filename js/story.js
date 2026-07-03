@@ -198,44 +198,16 @@ const LOSE_LINES = [
 ];
 
 function pokeByName(name) {
-    // Create pokemon objects based on name
-    const baseStats = {
-        bulbasaur: { hp: 45, attack: 49, defense: 49, speed: 45 },
-        charmander: { hp: 39, attack: 52, defense: 43, speed: 65 },
-        squirtle: { hp: 44, attack: 48, defense: 65, speed: 43 },
-        venusaur: { hp: 80, attack: 82, defense: 83, speed: 80 },
-        charizard: { hp: 78, attack: 84, defense: 78, speed: 100 },
-        blastoise: { hp: 79, attack: 83, defense: 100, speed: 78 },
-        pidgeotto: { hp: 63, attack: 60, defense: 55, speed: 71 },
-        caterpie: { hp: 45, attack: 52, defense: 43, speed: 35 },
-        weedle: { hp: 40, attack: 35, defense: 30, speed: 50 },
-        pidgey: { hp: 40, attack: 45, defense: 40, speed: 56 },
-        rattata: { hp: 30, attack: 56, defense: 35, speed: 72 },
-        oddish: { hp: 45, attack: 50, defense: 55, speed: 30 },
-        zubat: { hp: 40, attack: 45, defense: 35, speed: 55 },
-        gastly: { hp: 30, attack: 35, defense: 30, speed: 80 },
-        geodude: { hp: 40, attack: 80, defense: 100, speed: 20 },
-        onix: { hp: 35, attack: 45, defense: 160, speed: 30 },
-        magnemite: { hp: 25, attack: 35, defense: 70, speed: 45 },
-        magikarp: { hp: 20, attack: 10, defense: 55, speed: 80 },
-        mewtwo: { hp: 106, attack: 110, defense: 90, speed: 130 }
-    };
+    let p = pokeDex.find(
+        entry => entry.name && entry.name.toLowerCase() === name.toLowerCase()
+    );
 
-    let stats = baseStats[name.toLowerCase()];
-    if (!stats) {
-        console.error("story.js: '" + name + "' not found!");
+    if (!p) {
+        console.error("story.js: '" + name + "' not found in database!");
         return null;
     }
 
-    return {
-        name: name,
-        hp: stats.hp,
-        maxHP: stats.hp,
-        attack: stats.attack,
-        defense: stats.defense,
-        speed: stats.speed,
-        moves: [{ name: "Tackle", power: 12 }]
-    };
+    return structuredClone(p);
 }
 
 
