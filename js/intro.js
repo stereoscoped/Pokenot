@@ -319,7 +319,7 @@ function drawIntroTextBox(text, showArrow) {
 
     ctx.fillStyle = "white";
     ctx.font = "18px 'Press Start 2P'";
-    drawWrappedBattleMessage(text, 45, 500, canvas.width - 120, 28);
+    drawWrappedText(text, 45, 500, canvas.width - 120, 28);
 
     if (showArrow && Math.floor(introTicker / 30) % 2 === 0) {
         ctx.fillStyle = "white";
@@ -329,5 +329,27 @@ function drawIntroTextBox(text, showArrow) {
         ctx.lineTo(canvas.width - 45, 575);
         ctx.closePath();
         ctx.fill();
+    }
+}
+
+function drawWrappedText(text, x, y, maxWidth, lineHeight) {
+    let words = text.split(" ");
+    let currentLine = "";
+
+    for (let i = 0; i < words.length; i++) {
+        let testLine = currentLine + (currentLine ? " " : "") + words[i];
+        let testWidth = ctx.measureText(testLine).width;
+
+        if (testWidth > maxWidth && currentLine !== "") {
+            ctx.fillText(currentLine, x, y);
+            currentLine = words[i];
+            y += lineHeight;
+        } else {
+            currentLine = testLine;
+        }
+    }
+
+    if (currentLine) {
+        ctx.fillText(currentLine, x, y);
     }
 }
