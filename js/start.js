@@ -5,6 +5,8 @@ function start_Game() {
 function update_start() {
     //run
     if (keys[" "]) {
-        startIntro();
+        gameState = STARTER;
+        playMusic(currentMap.music);
+
     }
 }
