@@ -3,7 +3,8 @@
 
 <head>
     <title>proj3 - pokenot</title>
-
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         #gameBox {
             position: relative;
@@ -34,7 +35,7 @@
         /* back sprite */
         #mypokemon {
             left: 230px;
-            top: 350px;
+            top: 450px;
             width: 220px;
             height: auto;
         }
@@ -42,23 +43,96 @@
         /* front sprite */
         #encounterpokemon {
             left: 620px;
-            top: 250px;
+            top: 300px;
             width: 150px;
             height: auto;
         }
+
+        #stater1 {
+            left: 200px;
+            top: 400px;
+            width: 220px;
+            height: auto;
+        }
+
+        #stater2 {
+            left: 430px;
+            top: 400px;
+            width: 220px;
+            height: auto;
+        }
+
+        #stater3 {
+            left: 650px;
+            top: 400px;
+            width: 220px;
+            height: auto;
+        }
+
+        .starter {
+            position: absolute;
+            width: 220px;
+            height: 200px;
+
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+
+            image-rendering: pixelated;
+            z-index: 5;
+        }
+
+        #btn_stater_1 {
+            left: 100px;
+            top: 230px;
+            background-image: url("assets/pokemon_front_sprites/bulbasaur.gif");
+
+        }
+
+        #btn_stater_2 {
+            left: 300px;
+            top: 230px;
+            background-image: url("assets/pokemon_front_sprites/squirtle.gif");
+
+        }
+
+        #btn_stater_3 {
+            left: 500px;
+            top: 230px;
+            background-image: url("assets/pokemon_front_sprites/charmander.gif");
+
+        }
+
+        .starter:hover {
+            transform: scale(1.25) translateY(-8px);
+            filter: drop-shadow(0 0 10px white) drop-shadow(0 0 18px yellow) drop-shadow(0 0 26px orange);
+            z-index: 20;
+        }
     </style>
+
 </head>
 
 <body>
-<div id="gameBox">
-    <canvas id="canvas" width="800" height="600"></canvas>
-    <img class = "pokemon" id="mypokemon" src="assets/pokemon_back_sprites/charizard.gif">
-    <img class = "pokemon"id="encounterpokemon" src="assets/pokemon_front_sprites/charizard.gif">
+    <div id="gameBox">
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <img class="pokemon" id="mypokemon" src="assets/pokemon_back_sprites/charizard.gif">
+        <img class="pokemon" id="encounterpokemon" src="assets/pokemon_front_sprites/charizard.gif">
+        <!--    <img class = "pokemon" id="stater1" src="assets/pokemon_front_sprites/bulbasaur.gif">-->
+        <!--    <img class = "pokemon"id="stater2" src="assets/pokemon_front_sprites/squirtle.gif">-->
+        <!--    <img class = "pokemon" id="stater3" src="assets/pokemon_front_sprites/charmander.gif">-->
+        <button class="starter" id="btn_stater_1" onclick="drawBulb()"> </button>
+        <button class="starter" id="btn_stater_2" onclick="drawSqu()"></button>
+        <button class="starter" id="btn_stater_3" onclick="drawChar()"></button>
 
-</div>
+    </div>
 
     <!-- load first -->
     <script src="js/assets.js"></script>
+
     <script src="js/maps.js"></script>
     <script src="js/input.js"></script>
     <script src="js/pokemon.js"></script>
@@ -67,6 +141,8 @@
     <script src="js/overworld.js"></script>
     <script src="js/battle_start.js"></script>
     <script src="js/battle.js"></script>
+    <script src="js/battle_anim.js"></script>
+    <script src="js/battle_draw.js"></script>
     <script src="js/game.js"></script>
     <script src="js/intro.js"></script>
     <script src="js/story.js"></script>

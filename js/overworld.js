@@ -15,6 +15,7 @@ function loadMap(mapName, entrance) {
     camera.x = 0;
     camera.y = 0;
 
+    canHeal = true;
     playMusic(currentMap.music);
 }
 

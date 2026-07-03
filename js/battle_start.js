@@ -23,7 +23,7 @@ let targetFocusY = 0;
 
 function battleTransition() {
     gameState = BATTLE_START;
-    playMusic("battle");
+    playMusic("battleBGM");
 
     transitionTimer = 0;
     zoomScale = 1;
@@ -93,6 +93,12 @@ function updateTransition() {
             (targetFocusY - startFocusY) * t;
     }
 
+    if (Math.random() < (transitionTimer / TRANSITION_TIME)) {
+        spawnGrassParticles(true);
+    }
+
+    updateGrassParticles();
+
     if (transitionTimer >= TRANSITION_TIME) {
         zoomScale = 1;
         startBattle();
@@ -125,16 +131,8 @@ function drawTransition() {
         currentMap.height * MAP_SCALE
     );
 
-    // for (let wall of currentMap.walls) {
-    //     ctx.strokeRect(
-    //         wall.x * MAP_SCALE,
-    //         wall.y * MAP_SCALE,
-    //         wall.w * MAP_SCALE,
-    //         wall.h * MAP_SCALE
-    //     );
-    // }
-
     drawPlayerTransition();
+    drawGrassParticles(false);
 
     ctx.restore();
 }
