@@ -7,6 +7,18 @@ const labMap = {
 
     width: 320,
     height: 277,
+
+    cutscenes: [
+        {
+            x: 160,
+            y: 120,
+            w: 20,
+            h: 20,
+            triggered: false,
+            script: bossIntro
+        }
+    ],
+
     walls: [
         //back wall
         { x: 0, y: 0, w: 1000, h: 35 },
@@ -75,6 +87,8 @@ const townMap = {
 
     width: 320,
     height: 280,
+
+    cutscenes: [],
 
     walls: [
         // =========================
@@ -199,6 +213,9 @@ const route1Map = {
 
     width: 320,
     height: 576,
+
+    cutscenes: [],
+
     walls: [
         // DO NOT CHANGE THESE
         // left wall
@@ -335,6 +352,9 @@ const caveEntrMap = {
 
     width: 320,
     height: 568,
+
+    cutscenes: [],
+
     walls: [
         // left wall
         { x: 0, y: 0, w: 136, h: 440 },
@@ -403,10 +423,13 @@ const caveMap = {
 
     width: 320,
     height: 480,
+
+    cutscenes: [],
+
     walls: [
         { x: 0, y: 0, w: 1000, h: 166 },
         { x: 0, y: 420, w: 1000, h: 166 },
-    
+
 
         { x: 0, y: 0, w: 90, h: 1000 },
         { x: 0, y: 275, w: 145, h: 15 },
@@ -421,7 +444,7 @@ const caveMap = {
     ledges: [],
 
     grass: [],
-    
+
     healZones: [],
 
     exits: [

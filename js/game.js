@@ -8,5 +8,6 @@ const STARTER = "starter";
 const GYM = "gym";
 const WIN = "win";
 const LOSE = "lose";
+const CUTSCENE = "cutscene";
 
 let gameState = MENU;

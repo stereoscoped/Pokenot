@@ -199,3 +199,13 @@ function drawGrassParticles(useCamera = true) {
 
 //line of sight of npc trainer?
 //func collideAggro(){}
+function collideConvoZone() {
+    for (let zone of currentMap.cutsceneZones) {
+        if (zone.triggered) continue;
+        if (collides(playerBox, zone)) {
+            zone.triggered = true;
+            startCutscene(zone.cutscene);
+            return;
+        }
+    }
+}
