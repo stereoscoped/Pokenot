@@ -40,8 +40,9 @@ const labMap = {
     grass: [],
 
     healZones: [
-        { x: 250, y: 50, w: 30, h: 10 },
+        { x: 240, y: 50, w: 50, h: 25 },
     ],
+    battle: [],
 
     exits: [
         {
@@ -57,12 +58,12 @@ const labMap = {
 
     spawnPoints: {
         door:
-        {
-            x: 150,
-            y: 250,
+            {
+                x: 150,
+                y: 250,
 
-            direction: "up"
-        }
+                direction: "up"
+            }
     }
 };
 
@@ -149,6 +150,7 @@ const townMap = {
     grass: [],
 
     healZones: [],
+    battle: [],
 
     exits: [
         {
@@ -173,19 +175,19 @@ const townMap = {
 
     spawnPoints: {
         north:
-        {
-            x: 175,
-            y: 30,
+            {
+                x: 175,
+                y: 30,
 
-            direction: "down"
-        },
+                direction: "down"
+            },
         lab:
-        {
-            x: 195,
-            y: 175,
+            {
+                x: 195,
+                y: 175,
 
-            direction: "down"
-        }
+                direction: "down"
+            }
     }
 };
 
@@ -286,6 +288,7 @@ const route1Map = {
     ],
 
     healZones: [],
+    battle: [],
 
     exits: [
         {
@@ -310,19 +313,19 @@ const route1Map = {
 
     spawnPoints: {
         south:
-        {
-            x: 170,
-            y: 520,
+            {
+                x: 170,
+                y: 520,
 
-            direction: "up"
-        },
+                direction: "up"
+            },
         north:
-        {
-            x: 175,
-            y: 30,
+            {
+                x: 175,
+                y: 30,
 
-            direction: "down"
-        }
+                direction: "down"
+            }
     }
 };
 
@@ -354,7 +357,7 @@ const caveEntrMap = {
     grass: [],
 
     healZones: [],
-
+    battle: [],
     exits: [
         {
             x: 95,
@@ -378,19 +381,19 @@ const caveEntrMap = {
 
     spawnPoints: {
         south:
-        {
-            x: 150,
-            y: 530,
+            {
+                x: 150,
+                y: 530,
 
-            direction: "up"
-        },
+                direction: "up"
+            },
         north:
-        {
-            x: 150,
-            y: 80,
+            {
+                x: 150,
+                y: 80,
 
-            direction: "down"
-        }
+                direction: "down"
+            }
     }
 };
 
@@ -406,7 +409,7 @@ const caveMap = {
     walls: [
         { x: 0, y: 0, w: 1000, h: 166 },
         { x: 0, y: 420, w: 1000, h: 166 },
-    
+
 
         { x: 0, y: 0, w: 90, h: 1000 },
         { x: 0, y: 275, w: 145, h: 15 },
@@ -420,9 +423,12 @@ const caveMap = {
 
     ledges: [],
 
-    grass: [],
-    
+    grass: []
+    ,
+
     healZones: [],
+    battle: [ { x: 100, y:160 , w: 130, h: 130 },
+    ],
 
     exits: [
         {
@@ -438,20 +444,21 @@ const caveMap = {
 
     spawnPoints: {
         south:
-        {
-            x: 150,
-            y: 390,
+            {
+                x: 150,
+                y: 390,
 
-            direction: "up"
-        },
+                direction: "up"
+            },
         north:
-        {
-            x: 175,
-            y: 30,
+            {
+                x: 175,
+                y: 30,
 
-            direction: "down"
-        }
+                direction: "down"
+            }
     }
+
 };
 
 

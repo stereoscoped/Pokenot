@@ -38,6 +38,9 @@ battle_background.src = "assets/backgrounds/route1_battle_1.png";
 const stater_background = new Image();
 stater_background.src = "assets/backgrounds/stater.png";
 
+const cave_battle = new Image();
+cave_battle.src = "assets/backgrounds/cave_battle.webp";
+
 //audio//
 const music = {
     townBGM: new Audio("assets/audio/Driftveil City.mp3"),
