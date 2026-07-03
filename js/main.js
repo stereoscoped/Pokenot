@@ -79,3 +79,4 @@ trainer.onload = async function() {
     //Plays intro - starter will be added when player chooses one in the starter screen
     gameLoop();
 };
+ 
