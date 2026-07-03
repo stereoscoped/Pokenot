@@ -163,3 +163,4 @@ function drawOverworld() {
     drawPlayer();
     drawGrassParticles();
 }
+ 
