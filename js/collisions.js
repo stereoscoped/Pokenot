@@ -200,11 +200,20 @@ function drawGrassParticles(useCamera = true) {
 //line of sight of npc trainer?
 //func collideAggro(){}
 function collideConvoZone() {
-    for (let zone of currentMap.cutsceneZones) {
+    // maps define cutscenes in currentMap.cutscenes (script property)
+    try {
+        console.log('collideConvoZone: checking', (currentMap && currentMap.cutscenes) ? currentMap.cutscenes.length : 0, 'zones');
+    } catch (e) {
+        console.warn('collideConvoZone: currentMap not available', e);
+    }
+
+    for (let zone of currentMap.cutscenes) {
+        console.log('collideConvoZone: zone', zone.x, zone.y, zone.w, zone.h, 'triggered=', zone.triggered);
         if (zone.triggered) continue;
         if (collides(playerBox, zone)) {
+            console.log('collideConvoZone: player collided with zone, starting cutscene');
             zone.triggered = true;
-            startCutscene(zone.cutscene);
+            startCutscene(zone.script);
             return;
         }
     }

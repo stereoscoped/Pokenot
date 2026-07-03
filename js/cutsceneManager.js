@@ -21,7 +21,13 @@ function startCutscene(script) {
     gameState = CUTSCENE;
 
     player.canMove = false;
+    try {
+        console.log('startCutscene: script length', script ? script.length : 0, 'script=', script);
+    } catch (e) {
+        console.warn('startCutscene: could not log script', e);
+    }
 }
+
 
 function endCutscene() {
     cutscene.active = false;
@@ -82,11 +88,14 @@ function wait(ms) {
 function handleCutsceneInput() {
     if (!cutscene.active) return;
 
-    if (keys["Enter"]) {
-        keys["Enter"] = false;
+    // accept Enter or Space to advance; input.js lowercases keys
+    if (keys["enter"] || keys[" "]) {
+        keys["enter"] = false;
+        keys[" "] = false;
         nextEvent();
     }
 }
+
 
 // -------------------------------
 // EVENT FLOW
@@ -103,6 +112,7 @@ function nextEvent() {
     }
 
     let event = cutscene.script[cutscene.index];
+    console.log('nextEvent: index=' + cutscene.index + ' event=', event);
 
     // auto-handle non-dialogue events
     if (event.type === "battle") {
@@ -210,7 +220,34 @@ function drawPortrait(ctx, event, x, y, isActive) {
         ctx.globalAlpha = 1.0;
     }
 
-    ctx.drawImage(img, x, y);
+    // portrait entry can be either an Image or a sprite descriptor
+    // descriptor format: { sheet: Image, x, y, w, h }
+    if (img && img.sheet && typeof img.x !== 'undefined') {
+        // draw the region from the sheet
+        try {
+            ctx.drawImage(
+                img.sheet,
+                img.x,
+                img.y,
+                img.w,
+                img.h,
+                x,
+                y,
+                img.w,
+                img.h
+            );
+        } catch (e) {
+            // fallback: if drawing fails, skip quietly
+            console.error('Failed drawing portrait sprite:', e);
+        }
+    } else if (img) {
+        // assume it's an Image
+        try {
+            ctx.drawImage(img, x, y);
+        } catch (e) {
+            console.error('Failed drawing portrait image:', e);
+        }
+    }
 
     ctx.restore();
 }
