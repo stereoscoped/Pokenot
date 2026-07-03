@@ -102,8 +102,12 @@ function updateTransition() {
     if (transitionTimer >= TRANSITION_TIME) {
         zoomScale = 1;
         randomNum = Math.floor(Math.random() * pokeDex.length);
+        if(isBossBattle){
+            startBattle(structuredClone(pokeDex[149]));
+
+        }else{
         startBattle(structuredClone(pokeDex[randomNum]));
-    }
+    }}
 }
 
 function drawTransition() {

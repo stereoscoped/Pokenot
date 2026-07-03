@@ -5,7 +5,7 @@ let battleMenu = "main";
 let battleMessage = "A wild Pokenot appeared!";
 let battleOver = false;
 let enemyDefeated = false;
-
+let isBossBattle = false;
 // TEMPORARY!!! replace with player's selected Pokenot from DB
 let playerPokemon;
 
@@ -263,6 +263,7 @@ function endBattle() {
 
     myPokemon.style.visibility = "hidden";
     enemyPokemonSprite.style.visibility = "hidden";
+    isBossBattle = false;
 
     gameState = OVERWORLD;
     playMusic(currentMap.music);

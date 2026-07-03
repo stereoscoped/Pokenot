@@ -92,6 +92,33 @@ function drawOverworld() {
         );
     }
 
+
+
+
+    //debug collision boxes
+    for (let ledge of currentMap.ledges) {
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(
+            ledge.x * MAP_SCALE - camera.x,
+            ledge.y * MAP_SCALE - camera.y,
+
+            ledge.w * MAP_SCALE,
+            ledge.h * MAP_SCALE
+        );
+    }
+
+    //debug heal zone
+    for (let zone of currentMap.healZones) {
+        ctx.strokeStyle = "green";
+        ctx.strokeRect(
+            zone.x * MAP_SCALE - camera.x,
+            zone.y * MAP_SCALE - camera.y,
+
+            zone.w * MAP_SCALE,
+            zone.h * MAP_SCALE
+        );
+    }
+
     //debug grass
     for (let gras of currentMap.grass) {
         ctx.strokeStyle = "red";
@@ -100,6 +127,15 @@ function drawOverworld() {
             gras.y * MAP_SCALE - camera.y,
             gras.w * MAP_SCALE,
             gras.h * MAP_SCALE
+        );
+    }
+    for (let bat of currentMap.battle) {
+        ctx.strokeStyle = "gold";
+        ctx.strokeRect(
+            bat.x * MAP_SCALE - camera.x,
+            bat.y * MAP_SCALE - camera.y,
+            bat.w * MAP_SCALE,
+            bat.h * MAP_SCALE
         );
     }
 
@@ -124,7 +160,7 @@ function drawOverworld() {
             playerBox.h * MAP_SCALE
         );
     }
-    drawNpcs();
+
     drawPlayer();
     drawGrassParticles();
 }
