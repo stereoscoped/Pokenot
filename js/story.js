@@ -551,4 +551,4 @@ function drawEnding(lines) {
         ctx.fillText(line, canvas.width / 2 - w / 2, y);
         y += 44;
     }
-}
+} 
