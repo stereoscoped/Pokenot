@@ -12,6 +12,12 @@ document.getElementById("encounterpokemon").style.visibility = "hidden";
 const trainer = new Image();
 trainer.src = "assets/trainers/trainer_sprite.png";
 
+const portraitSheet = new Image();
+portraitSheet.src = "assets/trainers/portrait_sheet.png";
+
+const lab = new Image();
+lab.src = "assets/backgrounds/lab.png";
+
 const town = new Image();
 town.src = "assets/backgrounds/town.png";
 
@@ -29,6 +35,8 @@ start_image.src = "assets/backgrounds/start.png";
 
 const lab = new Image();
 lab.src = "assets/backgrounds/lab.png";
+
+
 
 //const battle_grass
 const battle_background = new Image();
