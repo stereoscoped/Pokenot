@@ -11,6 +11,7 @@ class Pokemon {
         this.speed = parseInt(data.speed);
         this.image_url = data.image_url; 
         this.moves = data.moves || []; 
+        this.level = 0;
     }
 }
 
@@ -140,9 +141,9 @@ function getRarity(pokemon) {
     //console.log("IV: ", IV);
     if (IV < 180)
         return "Common";
-    else if (IV < 260)
+    else if (IV < 325)
         return "Uncommon";
-    else if (IV < 340)
+    else if (IV < 375)
         return "Rare";
     else
         return "Legendary";
@@ -164,10 +165,18 @@ function getRarityColor(pokemon) {
 
 
 
-function levelUpPokemon(pokemon) {
-    pokemon.maxHP += 10;
-    pokemon.attack += 5;
-    pokemon.defense += 5;
-    pokemon.speed += 5;
-    pokemon.hp = pokemon.maxHP; // Heal to full on level up
+function levelupPokemon(pokemon) {
+    pokemon.maxHP += 3;
+    pokemon.attack += 1;
+    pokemon.defense += 2;
+    pokemon.speed += 1;
+    //increase level added at later date
+    //pokemon.hp = pokemon.maxHP; // Heal to full on level up
+}
+
+
+function levelupPartyPokemon() {
+    for (let pokemon of playerTeam) {
+        levelupPokemon(pokemon);
+    }
 }

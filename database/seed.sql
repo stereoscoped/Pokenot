@@ -87,7 +87,7 @@ INSERT INTO pokemon (id, name, hp, attack, defense, speed, image_url) VALUES
 (80, 'Slowbro',    95, 75, 110, 30, 'assets/pokemon_front_sprites/slowbro.png'),
 (81, 'Magnemite',  25, 35, 70, 45, 'assets/pokemon_front_sprites/magnemite.png'),
 (82, 'Magneton',   50, 60, 95, 70, 'assets/pokemon_front_sprites/magneton.png'),
-(83, 'Farfetch''d', 52, 90, 55, 60, 'assets/pokemon_front_sprites/farfetchd.png'),
+(83, 'Farfetchd', 52, 90, 55, 60, 'assets/pokemon_front_sprites/farfetchd.png'),
 (84, 'Doduo',      35, 85, 45, 75, 'assets/pokemon_front_sprites/doduo.png'),
 (85, 'Dodrio',     60, 110, 70, 110, 'assets/pokemon_front_sprites/dodrio.png'),
 (86, 'Seel',       65, 45, 55, 45, 'assets/pokemon_front_sprites/seel.png'),
