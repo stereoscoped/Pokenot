@@ -172,7 +172,7 @@ function drawIntro() {
         return;
     }
 
-    ctx.drawImage(lab, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(start_image, 0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "rgba(0,0,0,0.45)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
