@@ -15,7 +15,7 @@ const labMap = {
             w: 20,
             h: 20,
             triggered: false,
-            script: bossIntro
+            script: bossBattle
         }
     ],
 
