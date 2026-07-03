@@ -157,4 +157,4 @@ function endBattleIntro() {
     battleIntro.playerAlpha = 1;
     battleIntro.playerWhite = false;
     playerBattle.frame = 0;
-}
+} 
