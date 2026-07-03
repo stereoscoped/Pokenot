@@ -13,10 +13,10 @@ for (let name of STARTER_NAMES) {
 
 
 const introDialogue = [
-    "Hello there! Welcome to the world of POKEMON!",
-    "My name is OAK! People call me the POKEMON PROFESSOR!",
-    "This world is inhabited by creatures called POKEMON!",
-    "Your very own POKEMON legend is about to unfold!",
+    "Hello there! Welcome to the world of pokenot!",
+    "My name is OAK! People call me the pokenot professor!",
+    "This world is inhabited by creatures called pokenot!",
+    "Your very own pokenot legend is about to unfold!",
     "Now... it's time to choose your very first partner!"
 ];
 
@@ -76,17 +76,41 @@ function startIntro() {
 function giveStarter(name) {
     playerTeam.length = 0;
 
-    let starter = pokedex.find(
-        p => p.name && p.name.toLowerCase() === name
-    );
+    let starter = makePokemonByName(name);
 
     if (starter) {
-        addPokemonToPlayerTeam(structuredClone(starter));
+        addPokemonToPlayerTeam(starter);
         console.log("starter chosen:", name, playerTeam);
     }
     else {
-        console.error("starter '" + name + "' not found in pokedex!");
+        console.error("starter '" + name + "' not found!");
     }
+}
+
+function makePokemonByName(name) {
+    // Create pokemon objects based on name
+    const baseStats = {
+        bulbasaur: { hp: 45, attack: 49, defense: 49, speed: 45 },
+        charmander: { hp: 39, attack: 52, defense: 43, speed: 65 },
+        squirtle: { hp: 44, attack: 48, defense: 65, speed: 43 },
+        venusaur: { hp: 80, attack: 82, defense: 83, speed: 80 },
+        charizard: { hp: 78, attack: 84, defense: 78, speed: 100 },
+        blastoise: { hp: 79, attack: 83, defense: 100, speed: 78 },
+        pidgeotto: { hp: 63, attack: 60, defense: 55, speed: 71 }
+    };
+
+    let stats = baseStats[name.toLowerCase()];
+    if (!stats) return null;
+
+    return {
+        name: name,
+        hp: stats.hp,
+        maxHP: stats.hp,
+        attack: stats.attack,
+        defense: stats.defense,
+        speed: stats.speed,
+        moves: [{ name: "Tackle", power: 12 }]
+    };
 }
 
 function updateIntro() {
