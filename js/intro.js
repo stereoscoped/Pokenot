@@ -358,4 +358,4 @@ function drawWrappedText(text, x, y, maxWidth, lineHeight) {
     if (currentLine) {
         ctx.fillText(currentLine, x, y);
     }
-}
+}  
