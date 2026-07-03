@@ -126,7 +126,7 @@ INSERT INTO pokemon (id, name, hp, attack, defense, speed, image_url) VALUES
 (119, 'Seaking',    80, 92,  65,  68, 'assets/pokemon_front_sprites/seaking.png'),
 (120, 'Staryu',     30, 45,  55,  85, 'assets/pokemon_front_sprites/staryu.png'),
 (121, 'Starmie',    60, 75,  85,  115, 'assets/pokemon_front_sprites/starmie.png'),
-(122, 'Mr. Mime',   40, 45,  65,  90, 'assets/pokemon_front_sprites/mr_mime.png'),
+(122, 'MrMime',   40, 45,  65,  90, 'assets/pokemon_front_sprites/mr_mime.png'),
 (123, 'Scyther',    70, 110, 80,  105, 'assets/pokemon_front_sprites/scyther.png'),
 (124, 'Jynx',       65, 50,  35,  95, 'assets/pokemon_front_sprites/jynx.png'),
 (125, 'Electabuzz', 65, 83,  57,  105, 'assets/pokemon_front_sprites/electabuzz.png'),

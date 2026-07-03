@@ -50,6 +50,8 @@ async function loadPokemonDatabase() {
     }
 }
 
+
+
 let canHeal = true;
 let healTimer = 0;
 const HEAL_TIME = 150;

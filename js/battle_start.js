@@ -101,7 +101,8 @@ function updateTransition() {
 
     if (transitionTimer >= TRANSITION_TIME) {
         zoomScale = 1;
-        startBattle();
+        randomNum = Math.floor(Math.random() * pokeDex.length);
+        startBattle(structuredClone(pokeDex[randomNum]));
     }
 }
 
