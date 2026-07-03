@@ -36,19 +36,21 @@ function startBattle() {
     let randomNum = Math.floor(Math.random() * pokeDex.length);
     let randomNum2 = Math.floor(Math.random() * pokeDex.length);
     // Player's first pokemon is usually the first in the team. Guard against missing data.
-    let pokemonName;
-    if (playerTeam && playerTeam.length > 0 && playerTeam[0] && playerTeam[0].name) {
-        pokemonName = playerTeam[0].name;
-    } else if (pokeDex && pokeDex.length > 0 && pokeDex[randomNum] && pokeDex[randomNum].name) {
-        // fallback to random pokedex entry if team is empty
-        pokemonName = pokeDex[randomNum].name;
+    selectedTeamIndex = playerTeam.findIndex(function(pokemon) {
+        return pokemon.hp > 0;
+    });
+
+    if (selectedTeamIndex !== -1) {
+        playerPokemon = playerTeam[selectedTeamIndex];
+    } else if (pokeDex && pokeDex.length > 0 && pokeDex[randomNum]) {
+        playerPokemon = structuredClone(pokeDex[randomNum]);
     } else {
-        pokemonName = 'MissingNo';
+        playerPokemon = makePokemon('MissingNo', 1, 1, 1, 1, []);
     }
 
     let pokemonName2 = (pokeDex && pokeDex.length > 0 && pokeDex[randomNum2] && pokeDex[randomNum2].name) ? pokeDex[randomNum2].name : 'MissingNo';
 
-    myPokemon.src = `assets/pokemon_back_sprites/${pokemonName}.gif`;
+    myPokemon.src = `assets/pokemon_back_sprites/${playerPokemon.name}.gif`;
     enemyPokemonSprite.src = `assets/pokemon_front_sprites/${pokemonName2}.gif`;
 
     //start hidden
@@ -59,16 +61,6 @@ function startBattle() {
     enemyPokemonSprite.style.left = (typeof battleIntro.enemyX !== 'undefined') ? battleIntro.enemyX + 'px' : '-200px';
     // ensure player sprite fully transparent until its phase
     myPokemon.style.opacity = '0';
-
-    // Ensure selected team index points to a valid pokemon; otherwise use a fallback object
-    selectedTeamIndex = 0;
-    if (playerTeam && playerTeam.length > 0 && playerTeam[selectedTeamIndex]) {
-        playerPokemon = playerTeam[selectedTeamIndex];
-    } else if (pokeDex && pokeDex.length > 0 && pokeDex[randomNum]) {
-        playerPokemon = structuredClone(pokeDex[randomNum]);
-    } else {
-        playerPokemon = makePokemon('MissingNo', 1, 1, 1, 1, []);
-    }
 
     enemyPokemon = (pokeDex && pokeDex.length > 0 && pokeDex[randomNum2]) ? structuredClone(pokeDex[randomNum2]) : makePokemon('MissingNo', 1, 1, 1, 1, []);
 
@@ -431,4 +423,3 @@ function getDamage(attacker, defender, move) {
 
     return damage;
 }
-
