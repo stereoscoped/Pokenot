@@ -1,5 +1,3 @@
-const INTRO = "intro";
-
 const oak = new Image();
 oak.src = "assets/trainers/oak.png";
 

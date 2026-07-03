@@ -7,6 +7,6 @@ const BATTLE = "battle";
 const GYM = "gym";
 const WIN = "win";
 const LOSE = "lose";
+const DIALOGUE = "story_dialogue";
 
 let gameState = MENU;
-playMusic(currentMap.music);

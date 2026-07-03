@@ -3,7 +3,6 @@
 let selectedBattleOption = 0;
 let battleMenu = "main";
 let battleMessage = "A wild Pokenot appeared!";
-storySetupBattle();
 let battleOver = false;
 
 // TEMPORARY!!! replace with player's selected Pokenot from DB
